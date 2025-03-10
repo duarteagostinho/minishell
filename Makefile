@@ -17,6 +17,11 @@ LIBFT_SRCS = $(wildcard $(LIBFT_DIR)/*.c)
 LIBFT_OBJS = $(LIBFT_SRCS:.c=.o)
 LIBFT_LIB = $(LIBFT_DIR)/libft.a
 
+# get_next_line variables
+GNL_DIR = get_next_line
+GNL_SRCS = $(wildcard $(GNL_DIR)/*.c)
+GNL_OBJS = $(GNL_SRCS:.c=.o)
+
 # Rules
 all: $(NAME)
 

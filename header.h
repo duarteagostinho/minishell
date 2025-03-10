@@ -13,10 +13,6 @@
 #ifndef HELPERS_H
 # define HELPERS_H
 
-/* ANSY COLOURS */
-# define BHRED "\e[1;91m"
-# define BHGRN "\e[1;92m"
-
 # include "ft_printf/ft_printf.h"
 # include "libft/libft.h"
 # include <unistd.h>
