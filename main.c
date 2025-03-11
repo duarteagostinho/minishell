@@ -14,15 +14,17 @@
 
 int main(int ac, char **av)
 {
-	int i = 0;
-	char **builtins = ft_split(av[1], ' ');
-	
-	if (ac == 2)
-	{
-		while (builtins[i])
-		{
-			ft_printf("%s\n", builtins[i]);
-			i++;
-		}
-	}
+	int i;
+  char  *prompt;
+
+  i = 0;
+  (void) ac;
+  prompt = NULL;
+  while(av[i])
+  {
+    prompt = readl_prompt(av[1]);
+    ft_printf("prompt = %s\n", prompt);
+    i++;
+  }
+  return 0;
 }

@@ -12,5 +12,15 @@
 
 #include "header.h"
 
-/*char  **take_arguments(char **cmd_line)*/
-/*{}*/
+char  *readl_prompt(char  *prompt)
+{
+  char  *line;
+
+  line = NULL;
+  if (!prompt || !*prompt)
+      return (NULL);
+  line = readline(prompt);
+  if (!line || !*line)
+    return (NULL);
+  return (line);
+}

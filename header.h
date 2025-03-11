@@ -19,5 +19,10 @@
 # include <fcntl.h>
 # include <stdlib.h>
 # include <stdarg.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include "get_next_line/get_next_line.h"
+
+char  *readl_prompt(char  *prompt);
 
 #endif
