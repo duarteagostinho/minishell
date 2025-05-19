@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:20:18 by duandrad          #+#    #+#             */
-/*   Updated: 2025/04/23 18:18:53 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/05/16 17:38:34 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*readl_prompt(char  *prompt)
 }
 #include <unistd.h>
 
-typedef char  *string;
+typedef char *string;
 
 
 void mark_pipes(string line, char x)
@@ -52,7 +52,7 @@ void mark_pipes(string line, char x)
 typedef enum s_type{
 	HEREDOC,
 	CREATE,
-	APPENDE,
+	APPEND,
 	READ,
 }	t_type;
 
@@ -69,7 +69,6 @@ typedef struct s_cmd {
 	string *matrix;
 	int write;
 	int read;
-
 
 	t_fd *fd;
 	struct s_cmd *next;

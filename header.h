@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:50:34 by duandrad          #+#    #+#             */
-/*   Updated: 2025/04/23 18:16:52 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/05/19 14:44:09 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,25 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdbool.h>
+# include <signal.h>
+# include "libft/libft.h"
+# include "ft_printf/ft_printf.h"
+# include "get_next_line/get_next_line.h"
+
+#define PARENT 1
+#define CHILD 2
+#define IGNORE 3
+#define ERR_SYN_QUOTES "Syntax error: quotes unclosed\n"
+#define ERR_SYN_RD "Syntax error: redirections\n"
+#define ERR_SYN_PIPE "Syntax error: pipes\n"
+#define EXIT_SYN_QUOTES 2
+#define EXIT_SYN_RD 2
+#define EXIT_SYN_PIPE 2
+#define OK 100
+#define NOT_FOUND 101
+#define FAILED 102
+#define FAIL_SYCALL_PARENT 1
+#define FAIL_SYCALL_CHILD 2
 
 typedef char* string;
 
