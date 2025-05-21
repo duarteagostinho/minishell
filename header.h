@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   header.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:50:34 by duandrad          #+#    #+#             */
-/*   Updated: 2025/05/19 14:44:09 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/05/19 15:05:17 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,22 +42,24 @@
 
 typedef char* string;
 
+typedef enum	s_token
+{
+	NONE = 0,
+	PIPE = 1,
+	TRUNCATE = 2,
+	APPEND = 3,
+	REDIRECT_INPUT = 4,
+	HEREDOC = 5
+}	t_token;
+
 typedef struct	s_lexer_list
 {
-	string				str;
-	t_token				type;
-	int					index;
+	string				      str;
+	t_token				      type;
+	int					        index;
 	struct s_lexer_list	*prev;
 	struct s_lexer_list	*next;
 }	t_lexer_list;
-
-typedef	struct	s_info
-{
-	int			wstatus;
-	t_shell		*shell;
-	int			stdin_copy;
-	pid_t * 	pids;
-}	t_info;
 
 typedef struct	s_shell
 {
@@ -68,15 +70,14 @@ typedef struct	s_shell
 	struct s_executor		*executor;
 }	t_shell;
 
-typedef enum	s_token
+
+typedef	struct	s_info
 {
-	NONE = 0,
-	PIPE = 1,
-	TRUNCATE = 2,
-	APPEND = 3,
-	REDIRECT_INPUT = 4,
-	HEREDOC = 5
-}	t_token;
+	int			wstatus;
+	t_shell		*shell;
+	int			stdin_copy;
+	pid_t * 	pids;
+}	t_info;
 
 typedef struct s_environ_node
 {
@@ -97,7 +98,7 @@ typedef struct s_executor
 	bool	heredoc;
 	string	path;
 	string	execs;
-	struct s_executor	prev;
+	struct s_executor	*prev;
 	struct s_executor	*next;
 }	t_executor;
 

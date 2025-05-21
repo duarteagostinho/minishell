@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   funcs1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:24:42 by duandrad          #+#    #+#             */
-/*   Updated: 2025/05/19 14:49:56 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/05/19 16:15:41 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,17 +138,4 @@ Parameters
 Returns
 A pointer the the found node, or NULL if not found or parameters are invalid. */
 }
-
-
-char	**free_str_arr(char **arr)
-{
-	int	i;
-
-	i = 0;
-	while (arr[i])
-		free(arr[i]);
-	free(arr);
-	return (NULL);
-}
-
 
