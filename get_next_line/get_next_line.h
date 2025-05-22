@@ -1,30 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/26 16:47:10 by duandrad          #+#    #+#             */
-/*   Updated: 2025/03/03 15:01:35 by duandrad         ###   ########.fr       */
+/*   Created: 2024/11/29 12:56:07 by duandrad          #+#    #+#             */
+/*   Updated: 2024/11/29 18:24:48 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lib/minishell.h"
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
-int main(int ac, char **av)
-{
-	int i;
-  char  *prompt;
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 5
+# endif
 
-  i = 0;
-  (void) ac;
-  prompt = NULL;
-  while(av[i])
-  {
-    prompt = readl_prompt(av[1]);
-    ft_printf("prompt = %s\n", prompt);
-    i++;
-  }
-  return 0;
-}
+# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <fcntl.h>
+
+char	*get_next_line(int fd);
+
+#endif

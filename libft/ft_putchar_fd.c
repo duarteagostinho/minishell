@@ -1,30 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: duarte <duarte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/26 16:47:10 by duandrad          #+#    #+#             */
-/*   Updated: 2025/03/03 15:01:35 by duandrad         ###   ########.fr       */
+/*   Created: 2024/11/06 12:30:09 by duandrad          #+#    #+#             */
+/*   Updated: 2024/11/07 13:53:29 by duarte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lib/minishell.h"
+#include "libft.h"
 
-int main(int ac, char **av)
+void	ft_putchar_fd(char c, int fd)
 {
-	int i;
-  char  *prompt;
-
-  i = 0;
-  (void) ac;
-  prompt = NULL;
-  while(av[i])
-  {
-    prompt = readl_prompt(av[1]);
-    ft_printf("prompt = %s\n", prompt);
-    i++;
-  }
-  return 0;
+	write(fd, &c, 1);
 }

@@ -1,30 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   printptr.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/26 16:47:10 by duandrad          #+#    #+#             */
-/*   Updated: 2025/03/03 15:01:35 by duandrad         ###   ########.fr       */
+/*   Created: 2024/11/14 19:34:30 by duandrad          #+#    #+#             */
+/*   Updated: 2024/11/18 18:23:12 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lib/minishell.h"
+#include "ft_printf.h"
 
-int main(int ac, char **av)
+int	printptr(void *ptr)
 {
-	int i;
-  char  *prompt;
+	int	count;
 
-  i = 0;
-  (void) ac;
-  prompt = NULL;
-  while(av[i])
-  {
-    prompt = readl_prompt(av[1]);
-    ft_printf("prompt = %s\n", prompt);
-    i++;
-  }
-  return 0;
+	if (!ptr)
+		return (printstr("(nil)"));
+	count = printstr("0x");
+	count += printlowx((unsigned long)ptr);
+	return ((unsigned long)count);
 }

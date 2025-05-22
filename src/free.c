@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
+#include "lib/minishell.h"
 
 char	**free_str_arr(char **arr)
 {

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
+#include "lib/minishell.h"
 
 pid_t	ft_getpid(void)
 {

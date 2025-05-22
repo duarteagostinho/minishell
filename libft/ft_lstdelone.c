@@ -1,30 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/26 16:47:10 by duandrad          #+#    #+#             */
-/*   Updated: 2025/03/03 15:01:35 by duandrad         ###   ########.fr       */
+/*   Created: 2024/11/09 18:25:35 by duarte            #+#    #+#             */
+/*   Updated: 2024/11/13 13:49:27 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lib/minishell.h"
+#include "libft.h"
 
-int main(int ac, char **av)
+void	ft_lstdelone(t_list *lst, void (*del)(void *))
 {
-	int i;
-  char  *prompt;
-
-  i = 0;
-  (void) ac;
-  prompt = NULL;
-  while(av[i])
-  {
-    prompt = readl_prompt(av[1]);
-    ft_printf("prompt = %s\n", prompt);
-    i++;
-  }
-  return 0;
+	if (!lst || !del)
+		return ;
+	del(lst->content);
+	free(lst);
 }

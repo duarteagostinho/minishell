@@ -1,30 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   printchar.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/26 16:47:10 by duandrad          #+#    #+#             */
-/*   Updated: 2025/03/03 15:01:35 by duandrad         ###   ########.fr       */
+/*   Created: 2024/11/14 19:31:51 by duandrad          #+#    #+#             */
+/*   Updated: 2024/11/20 17:34:38 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lib/minishell.h"
+#include "ft_printf.h"
 
-int main(int ac, char **av)
+int	printchar(int c)
 {
-	int i;
-  char  *prompt;
-
-  i = 0;
-  (void) ac;
-  prompt = NULL;
-  while(av[i])
-  {
-    prompt = readl_prompt(av[1]);
-    ft_printf("prompt = %s\n", prompt);
-    i++;
-  }
-  return 0;
+	return (write(1, &c, 1));
 }
