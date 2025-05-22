@@ -6,19 +6,19 @@ OBJS = $(SRCS:.c=.o)
 NAME = minishell
 
 # ft_printf variables
-FT_PRINTF_DIR = ft_printf
+FT_PRINTF_DIR = lib/ft_printf
 FT_PRINTF_SRCS = $(wildcard $(FT_PRINTF_DIR)/*.c)
 FT_PRINTF_OBJS = $(FT_PRINTF_SRCS:.c=.o)
 FT_PRINTF_LIB = $(FT_PRINTF_DIR)/libftprintf.a
 
 # libft variables
-LIBFT_DIR = libft
+LIBFT_DIR = lib/libft
 LIBFT_SRCS = $(wildcard $(LIBFT_DIR)/*.c)
 LIBFT_OBJS = $(LIBFT_SRCS:.c=.o)
 LIBFT_LIB = $(LIBFT_DIR)/libft.a
 
 # get_next_line variables
-GNL_DIR = get_next_line
+GNL_DIR = lib/get_next_line
 GNL_SRCS = $(wildcard $(GNL_DIR)/*.c)
 GNL_OBJS = $(GNL_SRCS:.c=.o)
 
