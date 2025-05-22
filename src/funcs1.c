@@ -175,7 +175,6 @@ Parameters
 bool	parser(t_shell *shell)
 {
 	/*
-
 Parses the input using the lexer.
 
 Performs the parsing operation using the lexer. It first frees the existing lexer list if it exists. Then uses lexer() to generate a new list. If it failes to produce a new list, returns false. Else returns true.
@@ -228,5 +227,24 @@ int	ft_isspace(int c)
 
 string	replace_with_clean(string rl_copy, size_t start, size_t end)
 {
-	
+	/* 
+
+Removes characters from a string that are before and after a given index.
+
+Creates a new string containing characters from the input string (rl_copy) starting from the 'start' index up to the 'end' index. If allocation fails, a error message is displayed and NULL is returned.
+
+Parameters
+    rl_copy	The input string.
+    start	The starting index.
+    end	The ending index.
+
+Returns
+    A new allocated string with the pulled portion of the input string, or NULL if malloc failed. 
+
+ */
+}
+
+string	clean_rl_copy(string rl_copy)
+{
+	string	clean;
 }
