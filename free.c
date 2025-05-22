@@ -59,16 +59,21 @@ t_lexer_list	*free_lex(t_lexer_list *lex_head)
 }
 
 t_executor	*free_exec_list(t_executor *list)
-{
-	t_executor	*tmp;
+{/*
 
-	while (list)
-	{
-		tmp = list->next;
-		free(list->append);
-		free(list->execs);
-		free(list->fd_in);
-		free(list->fd_out);
-		
-	}
+Frees the allocated memory of a linked list of t_executor elements.
+
+Frees the memory of each node in the linked list, also frees the allocated members path and execs of each node. The entire linked list is freed. Its pointer is set to NULL.
+
+Parameters
+    list	A pointer to the head of the t_executor linked list.
+
+Returns
+    Always NULL. 
+
+*/}
+
+void  free_heap(t_shell *shell)
+{
+  shell-
 }
