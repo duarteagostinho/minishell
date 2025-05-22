@@ -12,7 +12,6 @@
 
 #include "header.h"
 
-
 char	**free_str_arr(char **arr)
 {
 	int	i;
@@ -75,5 +74,11 @@ Returns
 
 void  free_heap(t_shell *shell)
 {
-  shell-
+	/* Frees the memory used by the main data structure (shell environment).
+
+Releases the memory allocated for the main data structure and it's components, including the environment list, readline input, etc.
+
+Parameters
+    [in,out]	shell	A pointer to the shell structure to be freed.  */
 }
+

@@ -139,3 +139,94 @@ Returns
 A pointer the the found node, or NULL if not found or parameters are invalid. */
 }
 
+bool	check_pipe_syntax(t_lexer_list *lexer)
+{
+	/* 
+
+Performs a pipe syntax check on the given list of lexems t_lexer_list *lexer.
+
+Checks the lexer list for a syntax error with pipes, by checking if a valid token is encounterd after a PIPE token.
+
+Parameters
+    lexer	A pointer to the lexer list.
+
+Returns
+    bool true if syntax is correct, otherwise false. 
+
+ */
+}
+
+t_lexer_list	*lexer(t_shell *shell)
+{
+	/*Lexical analysis and tokenization of the input string.
+
+Performs the lexical analysis and tokenization of the input string.
+
+First frees the previous 'rl_copy' if it exists, then creates a clean copy of the input string and removes leading/trailing whitespaces.
+
+Checks the syntax of the quotes. If syntax is incorrect, print message, set g_exit_code and return NULL.
+
+Calls tokenize() to tokenize the clean copy and returns the head of the returned lexer list.
+
+Parameters
+    shell	The shell data structure (main data structure). @ return A pointer to the head of the lexer list if successful, otherwise NULL. */
+}
+
+bool	parser(t_shell *shell)
+{
+	/*
+
+Parses the input using the lexer.
+
+Performs the parsing operation using the lexer. It first frees the existing lexer list if it exists. Then uses lexer() to generate a new list. If it failes to produce a new list, returns false. Else returns true.
+
+Parameters
+    shell	The shell data structure (main data structure).
+
+Returns
+    true if parsing is successful, false otherwise. 
+
+*/
+}
+
+int	get_end_quote(const string input, char c)
+{
+	int	i;
+
+	i = -1;
+	while (input[++i])
+	{
+		if (input[i] == c)
+			return (i);
+	}
+	return (i);
+}
+
+bool	check_quote_syntax(const string *input)
+{
+	/* 
+
+Check the syntax of quotes in the input string.
+
+Checks if the syntax of quoted parts (single or double quotes) in the input string is valid. Opening and closing quotes need to be correctly matched. Handles escape characters. If all quoted parts are correct, return true, else return false.
+
+Parameters
+    input	The string to be checked.
+
+Returns
+    Bool Returns true if all parts are valid, otherwise returns false. 
+
+ */
+}
+
+int	ft_isspace(int c)
+{
+	if (c == 32 || (c >= 9 && c <= 13))
+		return (1);
+	return (0);
+}
+
+string	replace_with_clean(string rl_copy, size_t start, size_t end)
+{
+	
+}
