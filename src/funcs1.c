@@ -10,7 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lib/minishell.h"
+#include "../lib/minishell.h"
+#include <stdlib.h>
 
 pid_t	ft_getpid(void)
 {
@@ -244,7 +245,131 @@ Returns
  */
 }
 
+
 string	clean_rl_copy(string rl_copy)
 {
 	string	clean;
+  int i;
+  int j;
+
+  i = 0;
+  j = -1;
+  clean = malloc(sizeof(string) * ft_strlen(rl_copy));
+  if (!clean)
+    return (NULL);
+  while (ft_isspace(rl_copy[i]))
+    i++;
+  while(rl_copy[i])
+    clean[++j] = rl_copy[i++];
+  clean[j] = '\0';
+  return (clean);
+}
+
+t_token assign_type(char tok)
+{
+  /*Assign a type based on the input char.
+
+Parameters
+tok	The input char to assign a tyoe for.
+Returns
+The assigned type for the the input char.*/
+}
+
+t_token which_type(string token)
+{
+/*Set the type of token.
+
+Takes an input string('token') and chooses the type of token it represents. Only sets if the token is a pipe or some redirection, otherwise sets type to NONE.
+
+Parameters
+s	The input string ('token') to identify the type for.
+Returns
+The type of token identified.*/
+}
+
+t_lexer_list  *create_lexer_list(char **input_arr)
+{
+  /*Allocates memory for the lexer list.
+
+Creates a double-linked list using the size of the input array. Calculates size of input array. and allocates memory for the lexer list. If malloc fails, displays error message, returns NULL.
+
+Parameters
+input_array	The array with the substrings('tokens').
+Returns
+A pointer to the head of the allocated list, or NULL if allocation failed.*/
+}
+
+t_lexer_list  *fill_lexer_list(char **input_arr)
+{
+  /*Fills the lexer list using the input array.
+
+Calls create_lexer_list() to allocates a double-linked list with as many nodes as substrings in input_array. Fills each node of the list with information about each 'token'.
+
+Parameters
+input_array	The array with the substrings('tokens').
+Returns
+A pointer to the head of the filled lexer list, or NULL on failure.*/
+}
+
+t_lexer_list  *tokenize(t_shell *shell)
+{
+  /*Tokenizes the input string and creates the lexer list.
+
+Tokenizes the input by creating an array of substrings. Creates a linked list of lexer tokens using the substrings. Returns a pointer to the head of the lexer linked list. if malloc fails for input_array or lexer list, display message and return NULL.
+
+Parameters
+shell	The shell data structure (main data structure). @ return The head of the lexer list if successful, otherwise NULL.
+*/
+}
+
+int len_substr(string str)
+{
+  /*Calculates the length of a substring('token') until a delimiter or a token is found.
+
+Takes an input string and finds the length of the substring('token') until a delimiter(whitespaces) or token('<', '>', '|') is encountered. Iterates over the string while checking for delimiter and token. If delimiter is not found, call no_delim_found() to modify the len. Returns the len of the substring until the delimiter or token.
+
+Parameters
+str	The input string to find the lenght of substring for.
+Returns
+len The lenght of the substring until the delimiter or token is found.*/
+}
+
+int count_elements(string rl_copy)
+{
+  /*Count the number of elements in the input string.
+
+Takes an input and counts the substrings('tokens') in it. Makes use of len_substr() to get the length of each substring. Returns the number of substrings found.
+
+Parameters
+rl_copy	The string for which to count the number of substrings.
+Returns
+The number of substrings('tokens') in the input string.*/
+}
+
+int find_token(char **input_arr, char **input, int index)
+{
+  /*Finds predefined tokens in the input string and adds it to the input_array.
+
+Finds tokens in the input string and adds them to the input_array. It calls is_token() and is_token2() to check for existing valid tokens. If a token is found, a substring is created and added to the input_array.
+
+Parameters
+input_array	Pointer to the array of strings.
+input	Pointer to the input string.
+index	Current index in the input_array.
+Returns
+index The updated index after adding a substring/token to the array of strings.*/
+}
+
+
+char  **fill_input_array(char **input_array,string input)
+{
+  /*Fills the array of strings with substrings('tokens') from the input string.
+
+Takes an input string, splits it into substrings('tokens') and fills the given array of strings with these substrings('tokens'). The function iterates over the input, calls find_token() to find predefined 'tokens' and adds them to the array. Also handles whitespace separated substrings and adds them to the array.
+
+Parameters
+input_array	Pointer to the array of strings to fill.
+input	The input string.
+Returns
+input_array The array of strings with the tokens and whitespace separated substrings.*/
 }
