@@ -373,3 +373,37 @@ input	The input string.
 Returns
 input_array The array of strings with the tokens and whitespace separated substrings.*/
 }
+
+char  **create_input_array(t_shell *shell)
+{
+  /*Create an array of input strings for tokenization.
+
+Creates an array of tokens from shell->rl_copy(removed leading and trailing whitespaces). Calculates the number of elements needed for the array and allocates for it. Calls fill_input_array() to fill the array with substrings ('tokens').
+
+Parameters
+shell	The main data structure.
+Returns
+An array of substrings('tokens').*/
+}
+
+int skip_quotes(string str)
+{
+  int   i;
+  char  quote;
+
+  i = 0;
+  while (str[i])
+  {
+    if (str[i] == '"' || str[i] == '\'')
+    {
+      quote = str[i++];
+      while (str[i] && str[i] != quote)
+        i++;
+      if (str[i] == quote)
+        i++;
+      break;
+    }
+    i++;
+  }
+  return (i);
+}
