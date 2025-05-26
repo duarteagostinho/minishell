@@ -39,6 +39,7 @@
 #define FAILED 102
 #define FAIL_SYCALL_PARENT 1
 #define FAIL_SYCALL_CHILD 2
+#define MALLOC_ERROR 202
 
 typedef char* string;
 

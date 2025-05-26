@@ -386,24 +386,376 @@ Returns
 An array of substrings('tokens').*/
 }
 
-int skip_quotes(string str)
+int	skip_quotes(string str)
 {
-  int   i;
-  char  quote;
+	int		i;
+	char	quote;
 
-  i = 0;
-  while (str[i])
-  {
-    if (str[i] == '"' || str[i] == '\'')
-    {
-      quote = str[i++];
-      while (str[i] && str[i] != quote)
-        i++;
-      if (str[i] == quote)
-        i++;
-      break;
-    }
-    i++;
-  }
-  return (i);
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '"' || str[i] == '\'')
+		{
+			quote = str[i++];
+			while (str[i] && str[i] != quote)
+				i++;
+			if (str[i] == quote)
+				i++;
+			break;
+		}
+		i++;
+	}
+	return (i);
+}
+
+void	no_delim_found(string str, int *len)
+{
+	/* Checks if there is a quote('\'' or '"') at the current position the given string.
+
+The function is called when no delimiter(whitespace) is found. Checks if the current position in the string is a quote ('\'' or '"') and calls skip_quotes() to skip over the quoted section. Otherwise it incremets the lenght(and current position).
+
+Parameters
+str	The input string.
+*len	A pointer to the lenght(and current index) of the string.
+ */
+}
+
+bool	is_token(char to_check)
+{
+	if (to_check == '<' || to_check == '>' || to_check == '|')
+		return (true);
+	return (false);
+}
+
+int	get_size_executor(t_lexer_list *head)
+{
+	/* Calculates the number of t_executor elements/nodes needed.
+
+Calculates the number of t_executor elements/nodes needed based on the number of pipe token in the lexer linked list. Each pipe token represents a new t_executor node. Example: 2 pipe token -> 2 + 1 t_executor nodes.
+
+Parameters
+head	A pointer to the head of the lexer linked list.
+Returns
+The size of the t_executor linked list. */
+}
+
+t_executor	*create_executor_list(int size)
+{
+/* Create a linked list of t_executor nodes/elements.
+
+Allocates memory for a linked list of t_executor nodes, based on the size.
+
+Parameters
+size	The size of the t_executor linked list.
+Returns
+A pointer to the linked list, or NULL if allocation fails. */
+}
+
+void	set_executor_defaults(t_executor *node)
+{
+	/* Sets default values for a t_executor node.
+
+Initializes the variables of a t_executor node with default values. They include filediscriptors and bools.
+
+Parameters
+node	A pointer to the t_executor node to initialize.
+ */
+}
+
+t_executor	*init_executor_list(int size)
+{
+	/* Initializes the t_executor linked list.
+
+Initializes the t_executor linked list, by first calling create_executor_list() to allocate memory for it. It sets every nodes id and overall size, then calls set_executor_defaults() for setting default values.
+
+Parameters
+size	The amount of nodes in the t_executor linked list.
+Returns
+A pointer to the initialized t_executor linked list, or NULL on error. */
+}
+
+t_executor	*prepare_executor(t_shell *shell)
+{
+	/* Prepare a linked list of t_executor elements for the executor.
+
+Prepares a linked list of t_executor elements by calculating the number of elements needed, initializing them and filling them with the relevant data from the lexer linked list and the environ linked list.
+
+Parameters
+shell	A pointer to the main data structure.
+Returns
+A pointer to the t_executor linked list, or NULL on error. */
+}
+
+char	**combine_execs(chhar **resplit, char **new_execs, char **execs)
+{
+	/* Combine resplit array with execs array into new_execs array.
+
+Takes 2 arrays of strings, 'resplit' and 'execs', combines them into a new array 'new_execs'. Also frees the memory of the input arrays.
+
+!!!!!Warning!!!!!
+The memory for new_execs is allocated outside of the function.
+
+Parameters
+[in]	resplit	The first array of strings.
+[in,out]	new_execs	The resulting array of strings after combining.
+[in]	execs	The second array of strings.
+Returns
+new_execs The combined array of strings. */
+}
+
+int	after_expand(t_executor *current)
+{
+	/* Process the execs array of the current executor node after expansion.
+
+Takes a node of the executor list, splits its execs array (execution command) and combines the resulting strings with the existing execs array.
+
+Parameters
+[in,out]	current	The current executor node.
+Returns
+The result of the process (OK, NOT_FOUND, or FAILED). */
+}
+
+bool	check_execs_after_expand(t_shell *shell)
+{
+	/* Checks and processes execution commands after expansion.
+
+Iterates through the executor list ands calls after_expand() on each of the nodes of that list. Retuns true if all processing is successfull, or false if any processing fails.
+
+Parameters
+[in,out]	shell	The main data structure.
+Returns
+True if all processing succeeds, false if any processing fails.
+ */
+}
+
+void	set_path_executor(t_executor *list, t_environ_list *env)
+{
+	/* Sets the path variable for t_executor nodes.
+
+Sets the path variable for t_executor nodes in the provided linked list. If PATH doesn't exist then t_executor->path remains at default(NULL);
+
+Parameters
+list	A pointer to the head of the t_executor linked list.
+environ	A pointer to the environ linked list. */
+}
+
+int	process_out_append(t_executor *current, t_lexer_list *lexer)
+{
+/* Processes output redirections and append for the given node of the executor list.
+
+Handles output redirections and append for the given executor list node by calling its subfunctions. Has some edgecase handling.
+
+Parameters
+current	A pointer to the current t_executor node.
+lexer	A pointer to the current lexer list node.
+Returns
+OK if successful, FAILED if an error occurs, NOT_FOUND if not applicable. */
+}
+
+int	process_in_heredoc(t_executor *current, t_lexer_list *lexer)
+{
+/* Processes input redirections and heredoc for the given node of the executor list.
+
+Handles input redirections and heredoc for the given executor list node by calling its subfunctions. Has some edgecase handling.
+
+Parameters
+current	A pointer to the current t_executor node.
+lexer	A pointer to the current lexer list node.
+Returns
+OK if successful, FAILED if an error occurs, NOT_FOUND if not applicable. */
+}
+
+int	process_command(t_executor *current, t_lexer_list *lexer)
+{
+/* Processes the command part for the given node of the executor list.
+
+Handles the command part of the given executor list node by creating an array of command arguments.
+
+Parameters
+current	A pointer to the current t_executor node.
+lexer	A pointer to the current lexer list node.
+Returns
+OK if successful, FAILED if an error occurs, NOT_FOUND if not applicable. */
+}
+
+t_executor	*process_lexemes(t_executor *list,
+	 t_executor *current, t_lexer_list **lexer)
+{
+/* Processes lexemes and sets values in the given t_executor node.
+
+Processes lexemes in the lexer linked list and populates the executor linked list accordingly. It handles output redirections, input redirections inclusive heredoc and command executions. On error, frees the entire t_executor linked list and returns NULL.
+
+Parameters
+list	A pointer to the t_executor linked list.
+current	A pointer to the current t_executor node.
+lexer	A pointer to the lexer linked list.
+Returns
+A pointer to the updated t_executor node, or NULL on error. */
+}
+
+t_executor	*fill_executor_list(t_shell *shell, t_executor *list)
+{
+/* Fills the t_executor linked list with info about the parsed commands.
+
+Fills the t_executor linked list by processing the lexer linked list and setting values in a t_executor node for each command and its operation.
+
+Parameters
+shell	A pointer to the main data structure.
+list	A pointer the t_executor linked list to be filled.
+Returns
+A pointer to the filled t_executor linked list, or NULL on error. */
+}
+
+bool	close_outputfile(int fd)
+{
+	if (close(fd) == 0)
+		return (true);
+	else
+		return (false);
+}
+
+bool	open_outputfile(t_executor *curr, t_lexer_list *lexer)
+{
+/* Handles opening an output file.
+
+Handles opening an output file for the given t_executor node, based on the given lexer list token type. It supports truncating and appending to the file.
+
+Parameters
+current	A pointer to the current t_executor node.
+lexer	A pointer to the current t_lexer_list node.
+Returns
+True if the file is opened and closed successfully, false on error. */
+}
+
+bool	get_input(int fd, string delim)
+{
+/* Reads input for a here-document until a specified delimiter.
+
+Reads input from the user, displaying a prompt, until the specified delimiter is entered. The input is written to the given file descriptor. Also handles ctrl-d (end-of-file from readline).
+
+Parameters
+fd	The file descriptor to write the input to.
+delimiter	The delimiter that signals the end of the here-document.
+Returns
+True if successful, false on error. */
+}
+
+int	create_heredoc(string delm)
+{
+/* Creates a here-document file and gathers input.
+
+Creates a temporary file for a here-document, gathers input for it by calling get_input().
+Returns a file descriptor to the created file.
+
+Parameters
+delimiter	The delimiter that signals the end of the here-document.
+
+Returns
+The file descriptor of the created here-document, or -1 on error. */
+}
+
+bool	open_inputfile(t_executor *curr, t_lexer_list *lexer)
+{
+/* Handles opening an input file.
+
+Handles opening an input file for the given t_executor node, based on the given lexer list token type. It supports input redirection and here-document.
+
+Parameters
+current	A pointer to the current t_executor node.
+lexer	A pointer to the current t_lexer_list node.
+Returns
+True if the file is opened successfully, false on error. */
+}
+
+int	get_size_execs(t_lexer_list *lexer)
+{
+/* Calculates the number of consecutive NONE type lexer list nodes.
+
+Calculates the number of command arguments based on the number of consecutive NONE type tokens in the lexer list. Each NONE token represents one of the following: a command(executable/buildin), a command option(-i –version), or a command argument(filenames, etc).
+
+Parameters
+lexer	A pointer to the current lexer list node.
+Returns
+The number of consecutive NONE type tokens found. */
+}
+
+char	**get_execs_array(t_lexer_list *lexer, int size)
+{
+/* Creates an array of the found NONE type tokens from the lexer list.
+
+Allocates memory for an array of NONE tokens. Fills the array with the strings from the consecutive NONE type tokens in the lexer list.
+
+Parameters
+lexer	A pointer to the current lexer list node.
+int	The size of the array.
+Returns
+A pointer to the allocated array, or NULL if allocation failed. */
+}
+
+void	update_old(t_shell *shell, string old)
+{
+/* Update OLDPWD.
+
+Updates the OLDPWD environment variable with the value of the previous working directory before the change.
+
+Parameters
+[in]	shell	A pointer to the shell struct.
+[in]	old	The previous working directory.
+ */
+}
+
+int	env_var_update(t_shell *shell, string old, string new)
+{
+/* Update PWD after directory change.
+
+Updates the environment variable PWD and passes the OLDPWD to the other update function.
+
+Parameters
+[in]	shell	A pointer to the shell struct.
+[in]	old	The previous working directory.
+[in]	new	The new working directory.
+Returns
+An exit status (EXIT_SUCCESS on success, EXIT_FAILURE on failure). */
+}
+
+int	cd_no_args(t_shell *shell)
+{
+/* Handles the case when changing to a directory with no arguments.
+
+This function is called when the cd command is executed without any arguments. It attempts to change the current working directory to the user's home directory (retrieved from the environment variable HOME).
+
+Parameters
+[in]	shell	A pointer to the shell struct.
+Returns
+An exit status (EXIT_SUCCESS on success, EXIT_FAILURE on failure). */
+}
+
+int	cd(t_shell *shell, char **args)
+{
+/* Handles changing the current working directory with specified arguments.
+
+This function is called when the cd command is executed with one argument, which is the target directory to change to. It checks the number of arguments, validates the input, and attempts to change the current working directory.
+
+Parameters
+[in]	shell	A pointer to the shell struct.
+[in]	args	An array of strings containing command arguments.
+Returns
+An exit status (EXIT_SUCCESS on success, EXIT_FAILURE on failure). */
+}
+
+int	get_sizeof_args(char **args)
+{
+/* Retrieves the number of arguments in an array of strings.
+
+This function counts the number of elements (arguments) in an array of strings and returns the count.
+
+Parameters
+[in]	args	An array of strings containing command arguments.
+Returns
+The number of arguments in the array. */
+}
+
+int	pwd(void)
+{
+	getcwd()
 }
