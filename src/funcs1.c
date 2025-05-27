@@ -11,18 +11,9 @@
 /* ************************************************************************** */
 
 #include "../lib/minishell.h"
+#include <stdbool.h>
 #include <stdlib.h>
-
-pid_t	ft_getpid(void)
-{
-	pid_t	pid;
-
-	
-	pid = getpid();
-	if (pid < 1)
-		return (-1);
-	return (pid);
-}
+#include <unistd.h>
 
 void	signal_setup(int process)
 {
@@ -189,19 +180,6 @@ Returns
 */
 }
 
-int	get_end_quote(const string input, char c)
-{
-	int	i;
-
-	i = -1;
-	while (input[++i])
-	{
-		if (input[i] == c)
-			return (i);
-	}
-	return (i);
-}
-
 bool	check_quote_syntax(const string *input)
 {
 	/* 
@@ -217,13 +195,6 @@ Returns
     Bool Returns true if all parts are valid, otherwise returns false. 
 
  */
-}
-
-int	ft_isspace(int c)
-{
-	if (c == 32 || (c >= 9 && c <= 13))
-		return (1);
-	return (0);
 }
 
 string	replace_with_clean(string rl_copy, size_t start, size_t end)
@@ -243,26 +214,6 @@ Returns
     A new allocated string with the pulled portion of the input string, or NULL if malloc failed. 
 
  */
-}
-
-
-string	clean_rl_copy(string rl_copy)
-{
-	string	clean;
-  int i;
-  int j;
-
-  i = 0;
-  j = -1;
-  clean = malloc(sizeof(string) * ft_strlen(rl_copy));
-  if (!clean)
-    return (NULL);
-  while (ft_isspace(rl_copy[i]))
-    i++;
-  while(rl_copy[i])
-    clean[++j] = rl_copy[i++];
-  clean[j] = '\0';
-  return (clean);
 }
 
 t_token assign_type(char tok)
@@ -386,28 +337,6 @@ Returns
 An array of substrings('tokens').*/
 }
 
-int	skip_quotes(string str)
-{
-	int		i;
-	char	quote;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '"' || str[i] == '\'')
-		{
-			quote = str[i++];
-			while (str[i] && str[i] != quote)
-				i++;
-			if (str[i] == quote)
-				i++;
-			break;
-		}
-		i++;
-	}
-	return (i);
-}
-
 void	no_delim_found(string str, int *len)
 {
 	/* Checks if there is a quote('\'' or '"') at the current position the given string.
@@ -418,13 +347,6 @@ Parameters
 str	The input string.
 *len	A pointer to the lenght(and current index) of the string.
  */
-}
-
-bool	is_token(char to_check)
-{
-	if (to_check == '<' || to_check == '>' || to_check == '|')
-		return (true);
-	return (false);
 }
 
 int	get_size_executor(t_lexer_list *head)
@@ -486,7 +408,7 @@ Returns
 A pointer to the t_executor linked list, or NULL on error. */
 }
 
-char	**combine_execs(chhar **resplit, char **new_execs, char **execs)
+char	**combine_execs(char **resplit, char **new_execs, char **execs)
 {
 	/* Combine resplit array with execs array into new_execs array.
 
@@ -604,14 +526,6 @@ shell	A pointer to the main data structure.
 list	A pointer the t_executor linked list to be filled.
 Returns
 A pointer to the filled t_executor linked list, or NULL on error. */
-}
-
-bool	close_outputfile(int fd)
-{
-	if (close(fd) == 0)
-		return (true);
-	else
-		return (false);
 }
 
 bool	open_outputfile(t_executor *curr, t_lexer_list *lexer)
@@ -755,7 +669,140 @@ Returns
 The number of arguments in the array. */
 }
 
-int	pwd(void)
+int export_no_args(t_shell *shell)
 {
-	getcwd()
+/*Handles the "export" command without arguments.
+
+This function is called when the export command is executed without any arguments. It displays the names and values of all currently set environment variables in the "declare -x KEY=VALUE" format.
+
+Parameters
+[in]	shell	A pointer to the shell struct.
+Returns
+An exit status (EXIT_SUCCESS on success, or an error code on failure).*/
 }
+
+void  exporting(t_shell *shell, string str)
+{
+/*Updates or creates environment variables based on user-provided arguments.
+
+This function processes individual argument strings and sets or modifies environment variables accordingly. It checks for the validity of identifiers and updates their values.
+
+Parameters
+[in]	shell	A pointer to the shell struct.
+[in]	str	The argument string to be processed and used as an environment variable.*/
+}
+
+int export_args(t_shell *shell, char **args)
+{
+/*Handles the export command with specified arguments.
+
+This function is called when the export command is executed with one or more arguments. It processes the arguments and sets or modifies environment variables accordingly.
+
+Parameters
+[in]	shell	A pointer to the shell struct.
+[in]	args	An array of strings containing the arguments.
+Returns
+An exit status (EXIT_SUCCESS on success, or an error code on failure).*/
+}
+
+int export(t_shell *shell, char **args)
+{
+/*Implements the export builtin function.
+
+This function is responsible for executing the export command. It handles cases where the command is executed with or without arguments and calls the appropriate functions to set or display environment variables. When executed with arguments, it processes each argument and sets or modifies the corresponding environment variable. If executed without arguments, it displays the names and values of all currently set environment variables in the "declare -x KEY=VALUE" format.
+
+Parameters
+[in]	shell	A pointer to the shell struct.
+[in]	args	An array of strings containing the arguments.
+Returns
+An exit status (EXIT_SUCCESS on success, or an error code on failure).*/
+}
+
+int env(t_shell *shell, char **args)
+{
+/*Displays the environment variables and their values.
+
+This function implements the "env" command, which is used to display the environment variables and their corresponding values to the standard output.
+
+Parameters
+[in]	shell	A pointer to the shell struct.
+[in]	args	An array of strings containing the arguments.
+Returns
+An exit status (EXIT_SUCCESS on success, or an error code on failure).*/
+}
+
+void  child(t_shell *shell, char **args, int nbr)
+{
+/*Handles the exit command when executed within a child process.
+
+This function is called when the exit command is executed within a child process. It handles the termination of the child process based on the provided arguments, including the exit status.
+
+Parameters
+[in]	shell	A pointer to the shell struct.
+[in]	args	An array of strings containing the arguments.
+[in]	number	The number of arguments in the array.*/
+}
+
+void  handle_child(t_shell *shell, char **args, int nbr)
+{
+/*Handles the exit command when executed within a child process.
+
+This function is called when the exit command is executed within a child process. It handles the termination of the child process based on the provided arguments, including the exit status.
+
+Parameters
+[in]	shell	A pointer to the shell struct.
+[in]	args	An array of strings containing the arguments.
+[in]	number	The number of arguments in the array.*/
+}
+
+int exit_builtin(t_shell *shell, char **args, bool is_child)
+{
+/*Handles the exit command when executed in a child process.
+
+This function is called when the exit command is executed within a child process. It handles the termination of the child process based on the provided arguments.
+
+Parameters
+[in]	shell	A pointer to the shell struct.
+[in]	args	An array of strings containing the arguments.
+[in]	in_child	A boolean indicating whether the function is called in a child process.
+Returns
+The exit status of the child process.*/
+}
+
+void  delete_variable(t_shell *shell, string arg)
+{
+/*Deletes an environment variable.
+
+This function deletes an environment variable specified by its name (arg) from the shell's environment linked list. It finds the variable to delete and removes it from the linked list, freeing the associated memory.
+
+Parameters
+[in,out]	shell	A pointer to the shell struct.
+[in]	arg	The name of the environment variable to delete.*/
+}
+
+void  unset_arg(t_shell *shell, string arg, int *fails)
+{
+/*Unsets an environment variable or prints an error message.
+
+This function unsets an environment variable specified by its name (arg) if it's a valid identifier (starts with an alphabetic character or '_'). If the identifier is not valid, it prints an error message and increments the failure count.
+
+Parameters
+[in,out]	shell	A pointer to the shell struct.
+[in]	arg	The name of the environment variable to unset.
+[in,out]	fails	A pointer to the failure count.*/
+}
+
+int unset(t_shell *shell, char **args)
+{
+/*Executes the "unset" command to remove environment variables.
+
+This function processes the "unset" command and removes the specified environment variables based on the provided arguments. It returns EXIT_SUCCESS on success or EXIT_FAILURE if any errors occurred.
+
+Parameters
+[in,out]	shell	A pointer to the shell struct.
+[in]	args	An array of strings containing the arguments.
+Returns
+An exit status (EXIT_SUCCESS on success, or EXIT_FAILURE on failure).*/
+}
+
+
