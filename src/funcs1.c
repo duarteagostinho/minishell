@@ -805,4 +805,147 @@ Returns
 An exit status (EXIT_SUCCESS on success, or EXIT_FAILURE on failure).*/
 }
 
+int echo(char **args)
+{
+/*Implements the "echo" command to display text to the standard output.
 
+This function handles the "echo" command, which displays text to the standard output. It can be called with multiple arguments, and it processes the -n option to omit the trailing newline character.
+
+Parameters
+[in]	args	An array of strings containing the arguments.
+Returns
+An exit status EXIT_SUCCESS always.*/
+}
+
+bool  expander(t_shell *shell)
+{
+/*Starting point of variable expansion.
+
+This function is the starting point for expanding variables.It iterates through each command and applies variable expansion if needed or just copies from the input.
+
+Parameters
+[in,out]	shell	A pointer to the shell struct.
+*/
+}
+
+int expand_var(t_shell *shell, char **cmd, t_expander *exp, int pos)
+{
+/*Expand variables.
+
+This function is expanding variables. It iterates through the command string, identifies variables and replaces them with the corresponding values.
+
+Parameters
+[in]	shell	A pointer to the shell struct.
+[in,out]	str	A pointer to the command string.
+[in,out]	exp	A pointer to the expander struct.
+[in]	pos	The current position in the result string.
+Returns
+The updated position in the result string after expansion.*/
+}
+
+string  handle_quotes(t_shell *shell, char **cmd,
+                      char end_quote, t_expander * inter)
+{
+/*Handles quoted strings within a shell command.
+
+This function processes quoted strings within a shell command, including variable expansions if present. It handles both single (' ') and double (" ") quotes.
+
+Parameters
+[in]	shell	A pointer to the shell struct.
+[in,out]	str	A pointer to the command string to be processed.
+[in]	end_quote	The character that marks the end of the quoted string (' ' or " ").
+[in,out]	inter	A pointer to the expander struct.
+Returns
+A dynamically allocated string with the processed contents.
+*/
+}
+
+string  interpolate(t_shell *shell, string str)
+{
+/*Interpolates variables and handles quotes within a shell command.
+
+This function processes variable interpolation and handles quotes (single or double) within the shell prompt. It iterates through the prompt string, expanding variables and preserving quoted strings.
+
+Parameters
+[in]	shell	A pointer to the shell struct.
+[in,out]	str	A pointer to the command string to be processed.
+[in]	inter	A pointer to the expander struct.
+Returns
+A dynamically allocated string containing the processed contents or NULL on failure.
+*/
+}
+
+t_expander  *init_expander(string str)
+{
+/*Initializes the expander struct for variable expansion.
+
+This function initializes the expander struct used during variable expansion. It allocates memory for various fields and sets their initial values.
+
+Parameters
+[in]	str	The input string to be expanded.
+Returns
+A pointer to the initialized expander struct or NULL on allocation failure.
+*/
+}
+
+string  realloc_str(string original, int pos)
+{
+/*Reallocates memory for a string.
+
+This function reallocates memory for a string, extending its size while preserving its existing content. It is used to dynamically expand the result string during variable expansion.
+
+Parameters
+[in]	res	The original string to be reallocated.
+[in]	pos	The current position in the result string.
+Returns
+A pointer to the reallocated string or NULL on allocation failure.
+*/
+}
+
+string  ft_strjoin_expander(const string s1, const string s2)
+{
+/*Concatenates two strings and expands the memory as needed.
+
+This function takes two input strings, s1 and s2, and concatenates them into a new string. The memory for the resulting string is dynamically allocated to accommodate both input strings. The memory for s1 is freed before returning the result.
+
+Parameters
+s1	The first input string.
+s2	The second input string.
+Returns
+A pointer to the concatenated string, or NULL if memory allocation fails.*/
+}
+
+string  ft_charjoin_expander(const string s, const char c)
+{
+/*Concatenates character to the end of a string.
+
+This function takes an input string s and a character c, and concatenates the character to the end of the string. The memory for the resulting string is dynamically allocated to accommodate the additional character. The memory for the original string is freed before returning the result.
+
+Parameters
+s	The input string.
+c	The character to concatenate.
+Returns
+A pointer to the concatenated string, or NULL if memory allocation fails.
+*/
+}
+
+void  close_fds(t_executor *current)
+{
+/*Close file descriptors based on command redirection settings.
+
+This function is responsible for closing file descriptors associated with input and output redirection, as determined by the settings in the current executor node.
+
+Parameters
+[in]	current	A pointer to the executor struct.*/
+}
+
+void  handle_single(t_shell *shell)
+{
+/*Handle the execution of a single command.
+
+The handle_single function first checks if the command is an empty string and fails accordingly. If the command is a builtin it would execute it in the parent process, otherwise it would do a fork and execute the external command in the child process.
+
+Parameters
+[in,out]	shell	A pointer to the shell struct.
+*/
+}

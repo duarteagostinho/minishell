@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lib/minishell.h"
+#include "../lib/minishell.h"
 
 char	**free_str_arr(char **arr)
 {
@@ -82,3 +82,12 @@ Parameters
     [in,out]	shell	A pointer to the shell structure to be freed.  */
 }
 
+void  free_exp(t_expander *exp)
+{
+/*Frees resources associated with the expander struct.
+
+This function deallocates memory used by the expander struct and its associated fields. It ensures that no memory leaks occur during variable expansion.
+
+Parameters
+[in]	exp	A pointer to the expander struct to be freed.*/
+}
