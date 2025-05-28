@@ -6,7 +6,7 @@
 /*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 14:24:42 by duandrad          #+#    #+#             */
-/*   Updated: 2025/05/19 16:15:41 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/05/28 16:42:42 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -601,44 +601,6 @@ lexer	A pointer to the current lexer list node.
 int	The size of the array.
 Returns
 A pointer to the allocated array, or NULL if allocation failed. */
-}
-
-void	update_old(t_shell *shell, string old)
-{
-/* Update OLDPWD.
-
-Updates the OLDPWD environment variable with the value of the previous working directory before the change.
-
-Parameters
-[in]	shell	A pointer to the shell struct.
-[in]	old	The previous working directory.
- */
-}
-
-int	env_var_update(t_shell *shell, string old, string new)
-{
-/* Update PWD after directory change.
-
-Updates the environment variable PWD and passes the OLDPWD to the other update function.
-
-Parameters
-[in]	shell	A pointer to the shell struct.
-[in]	old	The previous working directory.
-[in]	new	The new working directory.
-Returns
-An exit status (EXIT_SUCCESS on success, EXIT_FAILURE on failure). */
-}
-
-int	cd_no_args(t_shell *shell)
-{
-/* Handles the case when changing to a directory with no arguments.
-
-This function is called when the cd command is executed without any arguments. It attempts to change the current working directory to the user's home directory (retrieved from the environment variable HOME).
-
-Parameters
-[in]	shell	A pointer to the shell struct.
-Returns
-An exit status (EXIT_SUCCESS on success, EXIT_FAILURE on failure). */
 }
 
 int	cd(t_shell *shell, char **args)

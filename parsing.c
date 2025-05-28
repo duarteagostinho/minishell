@@ -10,7 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
+#include "lib/libft/libft.h"
+#include "lib/minishell.h"
 
 char	*readl_prompt(char  *prompt)
 {
@@ -84,3 +85,5 @@ string *parsed(string line)
 	mark_pipes(line);
 	matrix = ft_split(line, 2)
 }
+
+
