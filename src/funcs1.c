@@ -1059,7 +1059,7 @@ string  get_path(t_shell *shell, bool printerror)
 
 The function checks if the input for the command is already an absolute path. If not, it transforms the input to have the correct format else if just copies the absolute path into the path variable.
 
-/*Parameters*/
+Parameters
 [in]	shell	A pointer to the shell struct.
 Returns
 The path to the executable or NULL in case of an error.
@@ -1113,4 +1113,166 @@ Parameters
 [in]	shell	A pointer to the shell struct.
 Returns
 A dynamically allocated environment array or NULL in case of an error.*/
+}
+
+t_info  *init_info(t_shell  *shell)
+{
+/*Initializes the t_info structure.
+
+This function allocates memory for the t_info structure, stores process IDs for child processes, a copy of the standard input file descriptor, and a reference to the minishell main data structure.
+
+Parameters
+shell	The minishell main data structure.
+Returns
+A pointer to the initialized t_info structure.
+*/
+}
+
+void  wait_pipeline(t_info *info, int nbr)
+{
+/*Wait for child processes to finish execution + update the exit code.
+
+This function waits for the child processes created during command execution to finish and updates the exit code based on their exit status only if the exit status is not 79 (exit without argument). Then it frees the info struct and all it's allocated members.
+
+Parameters
+info	Pointer to the t_info structure.
+number	Number of child processes to wait for.
+*/
+}
+
+void  handle_multi(t_shell  *shell, t_executor  *current)
+{
+/*Handle errors during command execution and set the exit code accordingly.
+
+This function checks for specific error conditions during command execution (e.g., command not found or permission denied) and sets the exit code accordingly before exiting. Afterwards it frees everything in heap.
+
+Parameters
+current	The current executor representing a command.
+info	Pointer to the t_info structure.*/
+}
+
+int handle_redir_pipeline(int *fildes, t_executor *curr, t_info *info)
+{
+/*Handles file redirections and file descriptor setup.
+
+Sets up file descriptors for a child process in a pipeline, including standard input and output redirection. Manages file descriptors for communication if more commands are in the pipeline.
+
+Parameters
+fildes	Array of pipe file descriptors.
+current	The current node of the executor list representing a command.
+info	Pointer to the t_info structure.
+Returns
+OKAY on success, FAIL_SYSCALL on failure.
+*/
+}
+
+void  exec_builtin_child(t_executor *current, t_info *info)
+{
+/*Executes a built-in command in a child process and exits.
+
+This function executes a built-in command in a child process, sets the exit code accordingly, frees the heap and then exits the child process.
+
+Parameters
+current	The current node of the executor list representing a command.
+info	Pointer to the t_info structure.*/
+}
+
+string  exec_other_helper(t_executor *curr)
+{
+/*Helper function to find the executable path.
+
+This function searches for the executable in the directories listed in the PATH environment variable and returns the full path to the executable.
+
+Parameters
+current	The current node of the executor list representing a command.
+Returns
+The full path to the executable or NULL on failure.
+*/
+}
+
+int exec_other(t_executor *curr, t_info *info)
+{
+/*Executes a non-built-in command in a child process using execve.
+
+This function executes a non-built-in command in a child process using the execve() system call and sets the exit code accordingly. If the path is not absolute then it uses execute_other_helper() to get one. Before the execve() call the function transforms the env list into a 2D array in order to pass it to execve().
+
+Parameters
+current	The current node of the executor list representing a command.
+info	Pointer to the t_info structure.
+Returns
+FAIL_SYSCALL on failure (should not return if successful).
+*/
+}
+
+int child_handler_multi(int *fildes, t_executor *curr, t_info *info)
+{
+/*Handles the execution of a child process in a multi-command.
+
+This function handles the execution of a child process, including setting up file descriptors, executing built-in or non-built-in commands, and managing the child process's exit status.
+
+Parameters
+fildes	Array of pipe file descriptors.
+current	The current node of the executor list representing a command.
+info	Pointer to the t_info structure.
+Returns
+FAIL_SYSCALL_CHILD on failure (should not return if successful).
+*/
+}
+
+int handle_pipes(int fildes[2])
+{
+/*Creates a pipe and sets the file descriptors in the given array.
+
+This function creates a pipe using the provided file descriptor array and sets the appropriate file descriptors for communication between commands.
+
+Parameters
+fildes	Array to store pipe file descriptors.
+Returns
+0 on success, -1 on failure.
+*/
+}
+
+pid_t handle_forks(void)
+{
+/*Creates a child process using fork() and returns the process ID.
+
+This function creates a child process using the fork() system call and returns the process ID for the child process.
+
+Returns
+Process ID of the child process or -1 on failure.
+*/
+}
+
+int parent_handler_multi(int *fildes, t_executor *curr)
+{
+/*Handles the parent process during multi-command execution.
+
+This function manages file descriptors for input and output redirection. It manages the pipe for the parent process.
+
+Parameters
+fildes	Array of pipe file descriptors.
+current	The current node of the executor list representing a command.
+Returns
+OKAY on success, FAIL_SYSCALL on failure.
+*/
+}
+
+int handle_pipeline(int *fildes, t_executor *curr, t_info *info, int i)
+{
+  /*Handles the execution of a pipeline of commands.
+
+This function manages the execution of multiple commands, including creating pipes, forking child processes, calling child and parent handlers and handling error conditions.
+
+Parameters
+fildes	Array of pipe file descriptors.
+current	The current node of the executor list representing a command.
+info	Pointer to the t_info structure.
+i	Index of the current command/child in the pipeline.
+Returns
+OKAY on success, FAIL_SYSCALL/FAIL_SYSCALL_PARENT on failure.*/
+}
+
+int g_exit_code(void)
+{
+
 }

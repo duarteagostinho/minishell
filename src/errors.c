@@ -44,3 +44,16 @@ Parameters
 [in]	environ_array	A pointer to the environment array to be freed.
 */
 }
+
+void  ft_error(t_executor *current, t_info *info)
+{
+/*Handle errors during command execution and set the exit code accordingly.
+
+This function checks for specific error conditions during command execution (e.g., command not found or permission denied) and sets the exit code accordingly before exiting. Afterwards it frees everything in heap.
+
+Parameters
+current	The current executor representing a command.
+info	Pointer to the t_info structure.*/
+}
+
+
