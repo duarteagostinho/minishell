@@ -13,6 +13,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <stdio.h>
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdlib.h>
@@ -42,6 +43,8 @@
 #define MALLOC_ERROR 202
 
 typedef char* string;
+typedef char** vector;
+typedef int* array;
 
 typedef enum	s_token
 {
@@ -126,6 +129,9 @@ typedef struct s_environ_list
 }	t_environ_list;
 
 
+void  unset_arg(t_shell *shell, string arg, array fails);
+void  del_var(t_shell *shell, string arg);
+int	  unset(t_shell *shell, vector args);
 char  *readl_prompt(char  *prompt);
 
 #endif
