@@ -11,9 +11,6 @@
 /* ************************************************************************** */
 
 #include "../lib/minishell.h"
-#include <stdbool.h>
-#include <stdlib.h>
-#include <unistd.h>
 
 void	signal_setup(int process)
 {
@@ -948,4 +945,172 @@ The handle_single function first checks if the command is an empty string and fa
 Parameters
 [in,out]	shell	A pointer to the shell struct.
 */
+}
+
+void  executor(t_shell *shell)
+{
+/*Primary entrypoint of command execution.
+
+The executor function determines whether to handle a single command or multiple command based on the size of commands passed to it.
+
+Parameters
+[in,out]	shell	A pointer to the shell struct*/
+}
+
+bool  is_builtin(string cmd)
+{
+  if(ft_strcmp(cmd, "echo") == 0 ||
+     ft_strcmp(cmd, "cd") == 0 ||
+     ft_strcmp(cmd, "pwd") == 0 || 
+     ft_strcmp(cmd, "export") == 0 || 
+     ft_strcmp(cmd, "unset") == 0 || 
+     ft_strcmp(cmd, "env") == 0 || 
+     ft_strcmp(cmd, "exit") == 0)
+      return (true);
+  return (false);
+}
+
+void  execute_builtin(t_shell *shell)
+{
+/*Execute a builtin-command.
+
+The execute_builtin function executes the appropriate builtin-command based on the provided command name in the execs array. It sets the global g_exit_code variable to the exit status of the command.
+
+Parameters
+[in,out]	shell	A pointer to the shell struct.
+*/
+}
+
+int handle_single_builtin(t_shell *shell)
+{
+/*Handle the execution of a single builtin-command.
+
+The handle_single_builtin function checks if the provided command is a builtin, saves the file descriptors, handles standard input and output redirections, executes the builtin-command and restores standard file descriptors.
+
+Parameters
+[in,out]	shell	A pointer to the shell struct.
+Returns
+The status code indicating the execution result.*/
+}
+
+void  saving_stds(int *stdin_cpy, int *stdout_cpy)
+{
+/*Save the stdin and stdout file descriptors.
+
+The saving_stds function saves the stdin and stdout file descriptors by duplicating and storing them.
+
+Parameters
+[out]	stdin_cpy	A pointer to store the duplicated stdin file descriptor.
+[out]	stdout_cpy	A pointer to store the duplicated stdout file descriptor.
+*/
+}
+
+bool  restore_stds(int stdin_cpy, int stdout_cpy)
+{
+/*Restore the stdin and stdout file descriptors.
+
+The restore_stds function restores the standard input and output file descriptors by duplicating the saved file descriptors back to stdin and stdout. It also handles errors if somehow the restoration fails.
+
+Parameters
+[in]	stdin_cpy	The duplicated stdin file descriptor.
+[in]	stdout_cpy	The duplicated stdout file descriptor.
+Returns
+Returns true if the restoration is successful, or false if an error occurs.*/
+}
+
+void  handle_single_child(t_shell *shell)
+{
+/*Process creation for execution of non-builtin command.
+
+The handle_single_child function creates a child process and executes a non-built-in command in the child process. It waits for the child process to complete and updates the environment variable "_=".
+
+Parameters
+[in,out]	shell	A pointer to the shell struct.*/
+}
+
+bool  handle_redirs_single_child(t_shell *shell)
+{
+/*Handle redirections for single non-builtin command in child process.
+
+The handle_redirections_single_child function handles redirections for a single non-builtin command. It duplicates the file descriptors needed by the child process and closes back the copy.
+
+Parameters
+[in,out]	shell	A pointer to the shell struct.
+Returns
+Returns true if redirections are successfully handled, or false if an error occurs.
+*/
+}
+
+string  get_abs_path(t_shell *shell)
+{
+/*Transform the non-absolut path into one.
+
+The get_absolute_path function constructs the absolute path to an executable by combining it with each directory in the PATH environment variable. If the provided executable path is not absolute and is found in PATH, it is converted to an absolute path.
+
+Parameters
+[in]	shell	A pointer to the shell struct.
+Returns
+The absolute path to the executable if found; otherwise, the original executable name (if not in PATH).*/
+}
+
+string  get_path(t_shell *shell, bool printerror)
+{
+/*Get the path to an executable or convert it to an absolute path.
+
+The function checks if the input for the command is already an absolute path. If not, it transforms the input to have the correct format else if just copies the absolute path into the path variable.
+
+/*Parameters*/
+[in]	shell	A pointer to the shell struct.
+Returns
+The path to the executable or NULL in case of an error.
+*/
+}
+
+int get_size_env(t_environ_node *current)
+{
+/*Get the size of the environment list.
+
+The get_size_environ function counts and returns the size of the list of environment variables.
+
+Parameters
+[in]	current	A pointer to the head of the environment variable list.
+Returns
+The number of elements in the linked list.*/
+}
+
+char  **create_env_array(t_environ_list *env)
+{
+/*Create the environment array based on the list size.
+
+The create_environ_array function allocates memory for the environment array. It gets the size of the list from get_size_environ and returns the allocated array.
+
+Parameters
+[in]	environ	A pointer to the environment variable linked list.
+Returns
+A dynamically allocated array of environment variable strings or NULL in case of an error.
+*/
+}
+
+void  transform_helper(t_environ_node *current, char **env_array)
+{
+/*Copy environment variables into the env array.
+
+The transform_helper function is responsible for copying the linked list into the environment array used for execve calls. It allocates memory for each environment variable string and combines the key + value with an equal sign.
+
+Parameters
+[in]	current	A pointer to the head of the environment variable list.
+[out]	environ_array	A pointer to the environment array.
+*/
+}
+
+char  **transform_env_array(t_shell *shell)
+{
+/*Copy the environment variables into an array for execve.
+
+The transform_environ_array function creates an environment array for execve. It first allocates memory for the environment array and then calls transform_helper to populate it with environment variable strings.
+
+Parameters
+[in]	shell	A pointer to the shell struct.
+Returns
+A dynamically allocated environment array or NULL in case of an error.*/
 }
