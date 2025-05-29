@@ -33,6 +33,7 @@ void	del_var(t_shell *shell, string arg)
 		current = current->next;
 	}
 	shell->env->head = dummy->next;
+	free(dummy);
 }
 
 void	unset_arg(t_shell *shell, string arg, array fails)
