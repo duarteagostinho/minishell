@@ -69,7 +69,7 @@ typedef struct	s_shell
 {
 	string					rl_input;
 	string					rl_copy;
-	struct s_env_list		*environ;
+	struct s_env_list		*env;
 	struct s_lxr_list		*lx_head;
 	struct s_exec			*exec;
 }	t_shell;
@@ -85,8 +85,8 @@ typedef	struct	s_info
 
 typedef struct s_env_node
 {
-	string	key;
-	string	value;
+	string				key;
+	string				value;
 	struct s_env_node	*next;
 }	t_env_node;
 
@@ -125,7 +125,7 @@ typedef struct s_expander
 typedef struct s_env_list
 {
 	struct s_env_node	*head;
-	int						size;
+	int					size;
 }	t_env_list;
 
 
