@@ -56,22 +56,22 @@ typedef enum	s_token
 	HEREDOC = 5
 }	t_token;
 
-typedef struct	s_lexer_list
+typedef struct	s_lxr_list
 {
-	string				      str;
-	t_token				      type;
-	int					        index;
-	struct s_lexer_list	*prev;
-	struct s_lexer_list	*next;
-}	t_lexer_list;
+	string				str;
+	t_token				type;
+	int					index;
+	struct s_lxr_list	*prev;
+	struct s_lxr_list	*next;
+}	t_lxr_list;
 
 typedef struct	s_shell
 {
 	string					rl_input;
 	string					rl_copy;
-	struct s_environ_list	*environ;
-	struct s_lexer_list		*lex_head;
-	struct s_executor		*executor;
+	struct s_env_list		*environ;
+	struct s_lxr_list		*lx_head;
+	struct s_exec			*exec;
 }	t_shell;
 
 
@@ -83,28 +83,28 @@ typedef	struct	s_info
 	pid_t * 	pids;
 }	t_info;
 
-typedef struct s_environ_node
+typedef struct s_env_node
 {
 	string	key;
 	string	value;
-	struct s_environ_node	*next;
-}	t_environ_node;
+	struct s_env_node	*next;
+}	t_env_node;
 
-typedef struct s_executor
+typedef struct s_exec
 {
-	int		id;
-	int		size;
-	int		fd_in;
-	int		fd_out;
-	bool	truncate;
-	bool	append;
-	bool	redirect_input;
-	bool	heredoc;
-	string	path;
-	string	execs;
-	struct s_executor	*prev;
-	struct s_executor	*next;
-}	t_executor;
+	int				id;
+	int				size;
+	int				fd_in;
+	int				fd_out;
+	bool			truncate;
+	bool			append;
+	bool			redirect_input;
+	bool			heredoc;
+	string			path;
+	string			execs;
+	struct s_exec	*prev;
+	struct s_exec	*next;
+}	t_exec;
 
 typedef struct s_expander
 {
@@ -122,11 +122,11 @@ typedef struct s_expander
 	int		flag;
 }	t_expander;
 
-typedef struct s_environ_list
+typedef struct s_env_list
 {
-	struct s_environ_node	*head;
+	struct s_env_node	*head;
 	int						size;
-}	t_environ_list;
+}	t_env_list;
 
 
 void  unset_arg(t_shell *shell, string arg, array fails);
