@@ -133,5 +133,7 @@ void  unset_arg(t_shell *shell, string arg, array fails);
 void  del_var(t_shell *shell, string arg);
 int	  unset(t_shell *shell, vector args);
 char  *readl_prompt(char  *prompt);
+int	  pwd(void);
+
 
 #endif

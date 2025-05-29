@@ -1,7 +1,7 @@
 # Variables
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
-SRCS = $(wildcard *.c src/*.c)
+SRCS = main.c
 OBJS = $(SRCS:.c=.o)
 NAME = minishell
 

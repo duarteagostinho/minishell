@@ -6,7 +6,7 @@
 /*   By: duandrad <duandrad@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 16:35:35 by duandrad          #+#    #+#             */
-/*   Updated: 2025/05/28 17:07:42 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/05/28 21:34:41 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ Updates the OLDPWD environment variable with the value of the previous working d
 Parameters
 [in]	shell	A pointer to the shell struct.
 [in]	old	The previous working directory.
- */
+ */	
+	getcwd
 	shell->environ->head->value
 }
 
