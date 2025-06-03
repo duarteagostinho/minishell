@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   cd_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 16:35:35 by duandrad          #+#    #+#             */
-/*   Updated: 2025/05/28 21:34:41 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/06/03 18:48:54 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../lib/minishell.h"
 
 
-void	update_old(t_shell *shell, string old)
+void	update_old(t_shell *shell, char* old)
 {
 /* Update OLDPWD.
 
@@ -27,7 +27,7 @@ Parameters
 	shell->environ->head->value
 }
 
-int	env_var_update(t_shell *shell, string old, string new)
+int	env_var_update(t_shell *shell, char* old, char* new)
 {
 /* Update PWD after directory change.
 

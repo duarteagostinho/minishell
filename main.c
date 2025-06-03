@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 17:22:29 by duandrad          #+#    #+#             */
-/*   Updated: 2025/05/28 21:34:34 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/06/03 18:45:07 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int	pwd(void)
 {
-	string curr_dir;
+	char* curr_dir;
 
   curr_dir = getcwd(NULL, 0);
   if (!curr_dir)
@@ -28,7 +28,7 @@ int	pwd(void)
 
 int	main(int ac, vector av)
 {
-	string	line;
+	char*	line;
 
 	while (line = readline())
 	{
