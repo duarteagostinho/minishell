@@ -87,6 +87,7 @@ typedef struct s_env_node
 {
 	string				key;
 	string				value;
+	int					is_exported;
 	struct s_env_node	*next;
 }	t_env_node;
 
@@ -134,6 +135,6 @@ void  del_var(t_shell *shell, string arg);
 int	  unset(t_shell *shell, vector args);
 char  *readl_prompt(char  *prompt);
 int	  pwd(void);
-
+int	  get_sizeof_args(vector args);
 
 #endif
