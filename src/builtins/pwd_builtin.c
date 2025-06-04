@@ -12,7 +12,7 @@
 
 #include "../../lib/minishell.h"
 
-int	get_sizeof_args(vector args)
+int	get_sizeof_args(char **args)
 {
 	int	size;
 
@@ -24,7 +24,7 @@ int	get_sizeof_args(vector args)
 
 int	pwd(void)
 {
-	string	pwd;
+	char  *pwd;
 
 	pwd = getcwd(NULL, 0);
 	if (!pwd)

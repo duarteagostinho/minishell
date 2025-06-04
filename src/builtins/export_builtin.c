@@ -12,7 +12,7 @@
 
 #include "../../lib/minishell.h"
 
-t_shell	*parse_export(t_shell *shell, vector args)
+t_shell	*parse_export(t_shell *shell, char **args)
 {
 	while (args)
 	{
@@ -32,22 +32,22 @@ t_shell	*parse_export(t_shell *shell, vector args)
 	return (shell);
 }
 
-int	export(t_shell *shell, vector args)
+int	export(t_shell *shell, char **args)
 {
 
 }
 
-int	export_args(t_shell *shell, vector args)
+int	export_args(t_shell *shell, char **args)
 {
 
 }
 
-int	export_no_args(t_shell *shell, string arg)
+int	export_no_args(t_shell *shell, char *arg)
 {
 
 }
 
-void  exporting(t_shell *shell, string arg)
+void  exporting(t_shell *shell, char *arg)
 {
 	
 }

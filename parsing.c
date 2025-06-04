@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:20:18 by duandrad          #+#    #+#             */
-/*   Updated: 2025/05/16 17:38:34 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/06/03 18:45:40 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*readl_prompt(char  *prompt)
 typedef char *string;
 
 
-void mark_pipes(string line, char x)
+void mark_pipes(char* line, char x)
 {
 	int i;
 	int c;
@@ -59,15 +59,15 @@ typedef enum s_type{
 
 typedef struct s_fd {
 	int fd;
-	string file;
+	char* file;
 	t_type type;
 	struct  s_fd *next;
 	
 }		t_fd;
 
 typedef struct s_cmd {
-	string line;
-	string *matrix;
+	char* line;
+	char* *matrix;
 	int write;
 	int read;
 
@@ -76,9 +76,9 @@ typedef struct s_cmd {
 }		t_cmd;
 
 
-string *parsed(string line)
+char* *parsed(char* line)
 {
-	string *matix;
+	char* *matix;
 
 	if (*line)
 		return (NULL);
