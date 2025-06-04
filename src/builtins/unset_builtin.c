@@ -12,7 +12,7 @@
 
 #include "../../lib/minishell.h"
 
-void	del_var(t_shell *shell, char* arg)
+void	del_var(t_shell *shell, char *arg)
 {
 	t_env_node	*dummy;
 	t_env_node	*current;
@@ -36,7 +36,7 @@ void	del_var(t_shell *shell, char* arg)
 	free(dummy);
 }
 
-void	unset_arg(t_shell *shell, char* arg, array fails)
+void	unset_arg(t_shell *shell, char *arg, int *fails)
 {
 	if (arg && (ft_isalpha(*arg) || *arg == '_'))
 		del_var(shell, arg);
@@ -44,7 +44,7 @@ void	unset_arg(t_shell *shell, char* arg, array fails)
 		fails++;
 }
 
-int	unset(t_shell *shell, vector args)
+int	unset(t_shell *shell, char **args)
 {
 	int	fails;
 

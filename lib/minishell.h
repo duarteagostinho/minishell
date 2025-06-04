@@ -54,7 +54,7 @@ typedef enum s_token
 
 typedef struct s_lxr_list
 {
-	char*				str;
+	char				*str;
 	t_token				type;
 	int					index;
 	struct s_lxr_list	*prev;
@@ -63,8 +63,8 @@ typedef struct s_lxr_list
 
 typedef struct s_shell
 {
-	char*				rl_input;
-	char*				rl_copy;
+	char				*rl_input;
+	char				*rl_copy;
 	struct s_env_list	*env;
 	struct s_lxr_list	*lx_head;
 	struct s_exec		*exec;
@@ -80,8 +80,9 @@ typedef struct s_info
 
 typedef struct s_env_node
 {
-	char*				key;
-	char*				value;
+	char				*key;
+	char				*value;
+	int					is_exported;
 	struct s_env_node	*next;
 }	t_env_node;
 
@@ -95,21 +96,21 @@ typedef struct s_exec
 	bool				append;
 	bool				redirect_input;
 	bool				heredoc;
-	char*				path;
-	char*				execs;
+	char				*path;
+	char				*execs;
 	struct s_exec		*prev;
 	struct s_exec		*next;
 }	t_exec;
 
 typedef struct s_expander
 {
-	char*				beginning;
-	char*				res;
-	char*				invalid;
-	char*				env_val;
-	char*				var;
-	char*				str;
-	char*				conv;
+	char*				*beginning;
+	char*				*res;
+	char*				*invalid;
+	char*				*env_val;
+	char*				*var;
+	char*				*str;
+	char*				*conv;
 	int					pos;
 	int					len;
 	int					recently_invalid;
@@ -123,18 +124,20 @@ typedef struct s_env_list
 	int					size;
 }	t_env_list;
 
-void	unset_arg(t_shell *shell, char* arg, array fails);
-void	del_var(t_shell *shell, char* arg);
-int		unset(t_shell *shell, vector args);
+/*EXECUTION FUNCTIONS*/
+void	unset_arg(t_shell *shell, char *arg, int *fails);
+void	del_var(t_shell *shell, char *arg);
+int		unset(t_shell *shell, char **args);
 char	*readl_prompt(char *prompt);
 int		pwd(void);
+int		get_sizeof_args(char **args);
 
 /*PARSING FUNCTIONS*/
 int		ft_isspace(int c);
-char*	replace_with_clean(char* rl_copy, size_t start, size_t end);
-char*	clean_rl_copy(char* rl_copy);
+char	*replace_with_clean(char* rl_copy, size_t start, size_t end);
+char	*clean_rl_copy(char* rl_copy);
 int		get_end_quote(const char* input, char c);
-bool	check_quote_syntax(const vector input);
+bool	check_quote_syntax(const char **input);
 int		skip_quotes(char* str);
 bool	is_token(char to_check);
 void	no_delim_found(char* str, int *len);

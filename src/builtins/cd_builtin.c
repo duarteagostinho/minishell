@@ -13,7 +13,7 @@
 #include "../../lib/minishell.h"
 
 
-void	update_old(t_shell *shell, char* old)
+void	update_old(t_shell *shell, char *old)
 {
 /* Update OLDPWD.
 
@@ -24,10 +24,10 @@ Parameters
 [in]	old	The previous working directory.
  */	
 	getcwd
-	shell->environ->head->value
+	shell->env->head->value
 }
 
-int	env_var_update(t_shell *shell, char* old, char* new)
+int	env_var_update(t_shell *shell, char *old, char *new)
 {
 /* Update PWD after directory change.
 
