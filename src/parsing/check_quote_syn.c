@@ -25,7 +25,7 @@ int	get_end_quote(const char* input, char c)
 	return (-1);
 }
 
-bool	check_quote_syntax(const vector input)
+bool	check_quote_syntax(const char **input)
 {
 	int		i;
 	int		k;

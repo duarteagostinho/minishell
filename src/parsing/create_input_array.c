@@ -6,7 +6,7 @@
 /*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 23:33:33 by duandrad          #+#    #+#             */
-/*   Updated: 2025/06/03 18:49:39 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/06/06 17:43:25 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,33 +28,41 @@ int len_substr(char* str)
 	return (i);
 }
 
-int count_elements(char* rl_copy)
+int	count_elements(char* rl_copy)
 {
-  /*Count the number of elements in the input string.
-
-Takes an input and counts the substrings('tokens') in it. Makes use of len_substr() to get the length of each substring. Returns the number of substrings found.
-
-Parameters
-rl_copy	The string for which to count the number of substrings.
-Returns
-The number of substrings('tokens') in the input string.*/
 	int	i;
 	int	tokens;
+	int	sub_len;
 
 	tokens = 0;
-	i = -1;
-	while (rl_copy[++i])
+	i = 0;
+	sub_len = 0;
+	while (rl_copy[i])
 	{
-		if (len_substr(rl_copy))
-			
+		while (rl_copy[i] && ft_isspace(rl_copy[i]))
+			i++;
+		if (!rl_copy[i])
+			break;
+		sub_len = len_substr(&rl_copy[i]);
+		if (sub_len > 0)
+		{
+			tokens++;
+			i+= sub_len;
+		}
+		else
+			i++;
 	}
+	return (tokens);
 }
 
 int find_token(char **input_arr, char **input, int index)
 {
-  /*Finds predefined tokens in the input string and adds it to the input_array.
 
-Finds tokens in the input string and adds them to the input_array. It calls is_token() and is_token2() to check for existing valid tokens. If a token is found, a substring is created and added to the input_array.
+/*Finds predefined tokens in the input string and adds it to the input_array.
+
+Finds tokens in the input string and adds them to the input_array.
+It calls is_token() and is_token2() to check for existing valid tokens.
+If a token is found, a substring is created and added to the input_array.
 
 Parameters
 input_array	Pointer to the array of strings.
@@ -62,6 +70,22 @@ input	Pointer to the input string.
 index	Current index in the input_array.
 Returns
 index The updated index after adding a substring/token to the array of strings.*/
+	int	i;
+	int	k;
+	int	tokens;
+
+	i = 0;
+	k = 0;
+	tokens = 0;
+	while (input[k])
+	{
+		while(input[k][i])
+		{
+			if (is_token(input[k][i]) || is_token2(input[k][i]))
+
+		}
+		
+	}	
 }
 
 
