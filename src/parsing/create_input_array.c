@@ -54,38 +54,38 @@ int	count_elements(char* rl_copy)
 	}
 	return (tokens);
 }
-
-int find_token(char **input_arr, char **input, int index)
+int	process_token_at_position(char **input_arr, char *input, int *i, int *index)
 {
+	if (input[*i + 1] && is_token2(input[*i + 1]))
+	{
+		input_arr[(*index)++] = ft_substr(input, *i, 2);
+		*i += 2;
+		return 1;
+	}
+	input_arr[(*index)++] = ft_substr(input, *i, 1);
+	(*i)++;
+	return 1;
+}
 
-/*Finds predefined tokens in the input string and adds it to the input_array.
+int	find_token(char **input_arr, char **input, int index)
+{
+	int		i;
+	int		k;
 
-Finds tokens in the input string and adds them to the input_array.
-It calls is_token() and is_token2() to check for existing valid tokens.
-If a token is found, a substring is created and added to the input_array.
-
-Parameters
-input_array	Pointer to the array of strings.
-input	Pointer to the input string.
-index	Current index in the input_array.
-Returns
-index The updated index after adding a substring/token to the array of strings.*/
-	int	i;
-	int	k;
-	int	tokens;
-
-	i = 0;
 	k = 0;
-	tokens = 0;
 	while (input[k])
 	{
-		while(input[k][i])
+		i = 0;
+		while (input[k][i])
 		{
 			if (is_token(input[k][i]) || is_token2(input[k][i]))
-
+				process_token_at_position(input_arr, input[k], i, index);
+			else
+				i++;
 		}
-		
-	}	
+		k++;
+	}
+	return (index);
 }
 
 
@@ -93,7 +93,9 @@ char  **fill_input_array(char **input_array,char* input)
 {
   /*Fills the array of strings with substrings('tokens') from the input string.
 
-Takes an input string, splits it into substrings('tokens') and fills the given array of strings with these substrings('tokens'). The function iterates over the input, calls find_token() to find predefined 'tokens' and adds them to the array. Also handles whitespace separated substrings and adds them to the array.
+Takes an input string, splits it into substrings('tokens') and fills the given array of strings with these substrings('tokens').
+The function iterates over the input, calls find_token() to find predefined 'tokens' and adds them to the array.
+Also handles whitespace separated substrings and adds them to the array.
 
 Parameters
 input_array	Pointer to the array of strings to fill.
