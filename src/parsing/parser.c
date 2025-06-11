@@ -6,7 +6,7 @@
 /*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 00:01:37 by duandrad          #+#    #+#             */
-/*   Updated: 2025/06/11 17:26:32 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/06/11 17:39:13 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,16 @@ static   void mark_pipes(char* line, char *new_line)
 
 	while (line[++i])
 	{
-		new_line[i] = line[i];
+		*new_line = line[i];
 		if ((line[i] == '"' || line[i] == '\'') && !c)
 			c = line[i];
 		else if (c == line[i])
 			c = 0;
 		else if (line[i] == '|' && !c)
-			new_line[i] = '2';
+			*new_line = '2';
+		else if (line[i] == ' ' && !c)
+			*new_line = '3';
+		new_line++;
 	}
 }
 
