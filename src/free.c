@@ -1,93 +1,93 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/19 15:46:46 by duandrad          #+#    #+#             */
-/*   Updated: 2025/05/19 15:47:19 by duandrad         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+// /* ************************************************************************** */
+// /*                                                                            */
+// /*                                                        :::      ::::::::   */
+// /*   free.c                                             :+:      :+:    :+:   */
+// /*                                                    +:+ +:+         +:+     */
+// /*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
+// /*                                                +#+#+#+#+#+   +#+           */
+// /*   Created: 2025/05/19 15:46:46 by duandrad          #+#    #+#             */
+// /*   Updated: 2025/06/11 15:08:13 by duandrad         ###   ########.fr       */
+// /*                                                                            */
+// /* ************************************************************************** */
 
-#include "../lib/minishell.h"
+// #include "../lib/minishell.h"
 
-char	**free_str_arr(char **arr)
-{
-	int	i;
+// char	**free_str_arr(char **arr)
+// {
+// 	int	i;
 
-	if (!arr)
-		return (NULL);
-	i = 0;
-	while (arr[i])
-		free(arr[i++]);
-	free(arr);
-	return (NULL);
-}
+// 	if (!arr)
+// 		return (NULL);
+// 	i = 0;
+// 	while (arr[i])
+// 		free(arr[i++]);
+// 	free(arr);
+// 	return (NULL);
+// }
 
-void	free_environ(t_environ_list *environ)
-{
-	t_environ_node	*tmp;
+// void	free_environ(t_environ_list *environ)
+// {
+// 	t_environ_node	*tmp;
 
-	if (!environ)
-		return ;
-	while (environ->head)
-	{
-		tmp = environ->head;
-		environ->head = environ->head->next;
-		free(tmp->key);
-		free(tmp->value);
-		free(tmp);
-	}
-	free(environ);
-}
+// 	if (!environ)
+// 		return ;
+// 	while (environ->head)
+// 	{
+// 		tmp = environ->head;
+// 		environ->head = environ->head->next;
+// 		free(tmp->key);
+// 		free(tmp->value);
+// 		free(tmp);
+// 	}
+// 	free(environ);
+// }
 
-t_lexer_list	*free_lex(t_lexer_list *lex_head)
-{
-	t_lexer_list	*tmp;
+// t_lexer_list	*free_lex(t_lexer_list *lex_head)
+// {
+// 	t_lexer_list	*tmp;
 
-	while (lex_head)
-	{
-		tmp = lex_head->next;
-		free(lex_head->str);
-		free(lex_head->index);
-		free(lex_head->type);
-		lex_head = tmp;
-	}
-	return (NULL);
-}
+// 	while (lex_head)
+// 	{
+// 		tmp = lex_head->next;
+// 		free(lex_head->str);
+// 		free(lex_head->index);
+// 		free(lex_head->type);
+// 		lex_head = tmp;
+// 	}
+// 	return (NULL);
+// }
 
-t_executor	*free_exec_list(t_executor *list)
-{/*
+// t_exec	*free_exec_list(t_exec *list)
+// {/*
 
-Frees the allocated memory of a linked list of t_executor elements.
+// Frees the allocated memory of a linked list of t_executor elements.
 
-Frees the memory of each node in the linked list, also frees the allocated members path and execs of each node. The entire linked list is freed. Its pointer is set to NULL.
+// Frees the memory of each node in the linked list, also frees the allocated members path and execs of each node. The entire linked list is freed. Its pointer is set to NULL.
 
-Parameters
-    list	A pointer to the head of the t_executor linked list.
+// Parameters
+//     list	A pointer to the head of the t_executor linked list.
 
-Returns
-    Always NULL. 
+// Returns
+//     Always NULL. 
 
-*/}
+// */}
 
-void  free_heap(t_shell *shell)
-{
-	/* Frees the memory used by the main data structure (shell environment).
+// void  free_heap(t_shell *shell)
+// {
+// 	/* Frees the memory used by the main data structure (shell environment).
 
-Releases the memory allocated for the main data structure and it's components, including the environment list, readline input, etc.
+// Releases the memory allocated for the main data structure and it's components, including the environment list, readline input, etc.
 
-Parameters
-    [in,out]	shell	A pointer to the shell structure to be freed.  */
-}
+// Parameters
+//     [in,out]	shell	A pointer to the shell structure to be freed.  */
+// }
 
-void  free_exp(t_expander *exp)
-{
-/*Frees resources associated with the expander struct.
+// void  free_exp(t_expander *exp)
+// {
+// /*Frees resources associated with the expander struct.
 
-This function deallocates memory used by the expander struct and its associated fields. It ensures that no memory leaks occur during variable expansion.
+// This function deallocates memory used by the expander struct and its associated fields. It ensures that no memory leaks occur during variable expansion.
 
-Parameters
-[in]	exp	A pointer to the expander struct to be freed.*/
-}
+// Parameters
+// [in]	exp	A pointer to the expander struct to be freed.*/
+// }

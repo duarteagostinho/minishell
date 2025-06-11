@@ -6,7 +6,7 @@
 /*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:50:34 by duandrad          #+#    #+#             */
-/*   Updated: 2025/06/03 18:47:11 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/06/11 16:47:23 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,24 @@ typedef struct s_exec
 	struct s_exec		*next;
 }	t_exec;
 
+typedef struct s_redirect
+{
+	char				args[2];
+	int					fd;
+	struct s_redirect	*next;
+}	t_redirect;
+
+
+typedef struct s_cmd
+{
+	char				**args;
+	struct s_cmd		*next;
+	t_redirect			*redirect;
+	int					redirect_in;
+	int					redirect_out;
+}	t_cmd;
+
+
 typedef struct s_expander
 {
 	char*				*beginning;
@@ -133,14 +151,6 @@ int		pwd(void);
 int		get_sizeof_args(char **args);
 
 /*PARSING FUNCTIONS*/
-int		ft_isspace(int c);
-char	*replace_with_clean(char* rl_copy, size_t start, size_t end);
-char	*clean_rl_copy(char* rl_copy);
-int		get_end_quote(const char* input, char c);
-bool	check_quote_syntax(const char **input);
-int		skip_quotes(char* str);
-bool	is_token(char to_check);
-void	no_delim_found(char* str, int *len);
-bool	is_token2(char to_check);
+t_cmd	*parser(char* line);
 
 #endif

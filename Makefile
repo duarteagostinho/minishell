@@ -1,10 +1,10 @@
 # Variables
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
-SRCS = main.c
+CFLAGS = -Wall -Wextra -Werror -Ilib
+SRCS = $(wildcard src/*.c)
 OBJS = $(SRCS:.c=.o)
 NAME = minishell
-
+LDFLAGS = -lft -L/usr/local/opt/readline/lib -lreadline
 # ft_printf variables
 FT_PRINTF_DIR = lib/ft_printf
 FT_PRINTF_SRCS = $(wildcard $(FT_PRINTF_DIR)/*.c)
@@ -13,7 +13,7 @@ FT_PRINTF_LIB = $(FT_PRINTF_DIR)/libftprintf.a
 
 # libft variables
 LIBFT_DIR = lib/libft
-LIBFT_SRCS = $(wildcard $(LIBFT_DIR)/*.c)
+LIBFT_SRCS = $(shell find src/ -type f -name '*.c')
 LIBFT_OBJS = $(LIBFT_SRCS:.c=.o)
 LIBFT_LIB = $(LIBFT_DIR)/libft.a
 
@@ -38,7 +38,7 @@ $(LIBFT_LIB):
 	$(MAKE) -C $(LIBFT_DIR)
 
 $(NAME): $(OBJS) $(FT_PRINTF_LIB) $(LIBFT_LIB)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L$(FT_PRINTF_DIR) -lftprintf -L$(LIBFT_DIR) -lft
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS)  $(LDFLAGS) -L$(FT_PRINTF_DIR) -lftprintf -L$(LIBFT_DIR) -lft
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -54,5 +54,8 @@ fclean: clean
 	$(MAKE) -C $(LIBFT_DIR) fclean
 
 re: fclean all
+
+r:
+	make re && clear && ./minishell
 
 .PHONY: all clean fclean re
