@@ -1,7 +1,7 @@
 # Variables
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -Ilib
-SRCS = $(wildcard src/*.c)
+SRCS =$(shell find src/ -type f -name '*.c')
 OBJS = $(SRCS:.c=.o)
 NAME = minishell
 LDFLAGS = -lft -L/usr/local/opt/readline/lib -lreadline
@@ -13,7 +13,7 @@ FT_PRINTF_LIB = $(FT_PRINTF_DIR)/libftprintf.a
 
 # libft variables
 LIBFT_DIR = lib/libft
-LIBFT_SRCS = $(shell find src/ -type f -name '*.c')
+LIBFT_SRCS =$(wildcard $(LIBFT_DIR)/*.c)
 LIBFT_OBJS = $(LIBFT_SRCS:.c=.o)
 LIBFT_LIB = $(LIBFT_DIR)/libft.a
 
