@@ -6,7 +6,7 @@
 /*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:50:34 by duandrad          #+#    #+#             */
-/*   Updated: 2025/06/18 14:52:54 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/06/18 18:32:15 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@
 
 typedef struct s_redirect
 {
-	char				args[2];
+	char				*args[2];
 	int					fd;
 	struct s_redirect	*next;
 }	t_redirect;
