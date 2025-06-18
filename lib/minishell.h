@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:50:34 by duandrad          #+#    #+#             */
-/*   Updated: 2025/06/11 17:48:25 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/06/18 14:52:54 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,6 @@
 # include <stdbool.h>
 # include <signal.h>
 # include "libft/libft.h"
-# include "ft_printf/ft_printf.h"
-# include "get_next_line/get_next_line.h"
-
 # define PARENT 1
 # define CHILD 2
 # define IGNORE 3
@@ -41,16 +38,6 @@
 # define FAIL_SYCALL_PARENT 1
 # define FAIL_SYCALL_CHILD 2
 # define MALLOC_ERROR 202
-
-typedef enum s_token
-{
-	NONE = 0,
-	PIPE = 1,
-	TRUNCATE = 2,
-	APPEND = 3,
-	REDIRECT_INPUT = 4,
-	HEREDOC = 5
-}	t_token;
 
 typedef struct s_redirect
 {
@@ -76,10 +63,6 @@ typedef struct s_shell
 	char	**env;
 }	t_shell;
 
-/*EXECUTION FUNCTIONS*/
-// int		get_sizeof_args(char **args);
-
-/*PARSING FUNCTIONS*/
 t_cmd	*parser(char* line);
 
 #endif
