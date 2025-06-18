@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 00:01:37 by duandrad          #+#    #+#             */
-/*   Updated: 2025/06/11 17:39:13 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/06/18 15:06:26 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static   void mark_pipes(char* line, char *new_line)
+static	void mark_pipes(char* line, char *new_line)
 {
 	int i;
 	int c;
@@ -31,14 +31,16 @@ static   void mark_pipes(char* line, char *new_line)
 			*new_line = '2';
 		else if (line[i] == ' ' && !c)
 			*new_line = '3';
+		else if (line[i] == '>' && !c)
+
 		new_line++;
 	}
 }
 
-t_cmd *parser(char* line)
+t_cmd	*parser(char* line)
 {
-	char *new_line = ft_calloc(ft_strlen(line) + 1, 3);
-	char **str_cmds;
+	char	*new_line = ft_calloc(ft_strlen(line) + 1, 3);
+	char	**str_cmds;
 	int		i;
 
 	mark_pipes(line, new_line);
@@ -48,7 +50,6 @@ t_cmd *parser(char* line)
 		printf("%i - cmd: %s\n", i, str_cmds[i]);
 	return (free(new_line), NULL);
 }
-// echo "hello"   "bye"
+// echo<<tes hello >g
 
-// > port.c
-// << echo
+//echo3<<3tes3hello33>3g
