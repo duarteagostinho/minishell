@@ -16,23 +16,21 @@ LIBFT_LIB = $(LIBFT_DIR)/libft.a
 all: $(NAME)
 
 $(LIBFT_LIB): $(LIBFT_OBJS)
-	ar rcs $(LIBFT_LIB) $(LIBFT_OBJS)
-$(LIBFT_LIB):
-	$(MAKE) -C $(LIBFT_DIR)
+	@ar rcs $(LIBFT_LIB) $(LIBFT_OBJS)
 
 $(NAME): $(OBJS) $(LIBFT_LIB)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS)  $(LDFLAGS) -L$(LIBFT_DIR) -lft
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS)  $(LDFLAGS) -L$(LIBFT_DIR) -lft
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJS)
-	$(MAKE) -C $(LIBFT_DIR) clean
+	@rm -f $(OBJS)
+	@$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean
-	rm -f $(NAME)
-	$(MAKE) -C $(LIBFT_DIR) fclean
+	@rm -f $(NAME)
+	@$(MAKE) -C $(LIBFT_DIR) fclean
 
 re: fclean all
 
