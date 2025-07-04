@@ -35,6 +35,6 @@ fclean: clean
 re: fclean all
 
 r:
-	make re && clear && ./minishell
+	make re && make clean && clear && ./minishell
 
 .PHONY: all clean fclean re
