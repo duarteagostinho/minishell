@@ -18,16 +18,20 @@
 # define ERR_SYN_RD "Syntax error: redirections\n"
 # define ERR_SYN_PIPE "Syntax error: pipes\n"
 
+typedef char*	t_str;
+typedef char**	t_vtr;
+typedef int*	t_arr;
+
 typedef struct s_redirect
 {
-	char				*args[2];
+	t_vtr				args[2];
 	int					fd;
 	struct s_redirect	*next;
 }	t_redirect;
 
 typedef struct s_cmd
 {
-	char				**args;
+	t_vtr				args;
 	struct s_cmd		*next;
 	t_redirect			*redirect;
 	int					redirect_in;
@@ -37,9 +41,33 @@ typedef struct s_cmd
 typedef struct s_shell
 {
 	t_cmd				*cmd;
-	char				**env;
+	t_vtr				env;
 }	t_shell;
 
 t_cmd	*parser(char *line);
+
+/*EXECUTION FUNCTIONS*/
+void		unset_arg(t_shell *shell, t_str arg, t_arr fails);
+void		update_old(t_shell *shell, t_str pos);
+void		exporting(t_shell *shell, t_str arg);
+void		del_var(t_shell *shell, t_str arg);
+void		handle_single(t_shell *shell);
+void		close_fds(t_exec *current);
+void		executor(t_shell *shell);
+void		init_shell(t_vtr envp);
+void		lvl_up(t_shell *shell);
+char		**split_var(t_str var);
+char		*readl_prompt(t_str prompt);
+int			pwd(void);
+int			check_flag(t_vtr args);
+int			get_sizeof_args(t_vtr args);
+int			cd_no_args(t_shell *shell);
+int			cd(t_shell *shell, t_vtr args);
+int			export_no_args(t_shell *shell);
+int			unset(t_shell *shell, t_vtr args);
+int			ft_export(t_shell *shell, t_vtr args);
+int			export_args(t_shell *shell, t_vtr args);
+int			env_var_update(t_shell *shell, t_str pre, t_str pos);
+t_shell		*shell(void);
 
 #endif

@@ -1,0 +1,28 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executor.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/26 14:49:12 by mrapp-he          #+#    #+#             */
+/*   Updated: 2025/06/26 14:59:34 by mrapp-he         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../lib/minishell.h"
+
+void  close_fds(t_exec *current)
+{
+	
+}
+
+void  handle_single(t_shell *shell)
+{
+
+}
+
+void  executor(t_shell *shell)
+{
+
+}
