@@ -6,12 +6,13 @@
 /*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 16:43:32 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/06/03 18:48:59 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/07/09 13:26:22 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../lib/minishell.h"
+#include "minishell.h"
 
+/* 
 void	del_var(t_shell *shell, t_str arg)
 {
 	t_env_node	*dummy;
@@ -54,4 +55,4 @@ int	unset(t_shell *shell, t_vtr args)
 	if (fails > 0)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
-}
+}*/

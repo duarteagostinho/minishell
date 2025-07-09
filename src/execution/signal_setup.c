@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   signal_setup.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:40:54 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/06/25 16:56:29 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/07/09 13:22:23 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../lib/minishell.h"
-
+#include "minishell.h"
+/* 
 static void	parent_sig_handler(int signal)
 {
 	(void)signal;
@@ -39,3 +39,4 @@ void  signal_setup(int process)
 		signal(SIGQUIT, SIG_IGN);
 	}
 }
+ */

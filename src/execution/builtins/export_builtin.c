@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   export_builtin.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 00:41:25 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/06/15 15:38:41 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/07/09 13:21:40 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../lib/minishell.h"
-
+#include "minishell.h"
+/* 
 int	ft_export(t_shell *shell, char **args)
 {
 	if (!shell->env->head)
@@ -70,4 +70,4 @@ void  exporting(t_shell *shell, char *arg)
 		shell->env->head->next = new_var;
 		shell->env->head->next->is_exported = 1;
 	}
-}
+} */

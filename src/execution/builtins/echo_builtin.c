@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   echo_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 20:19:32 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/06/09 20:46:14 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/07/09 13:18:04 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../lib/minishell.h"
+#include "minishell.h"
 
 int	echo(t_vtr args)
 {
@@ -27,7 +27,7 @@ int	echo(t_vtr args)
 		{
 			printf("%s", *current);
 			if (*(current + 1))
-				ft_printf(" ");
+				printf(" ");
 			current++;
 		}
 		if (flags == 0)

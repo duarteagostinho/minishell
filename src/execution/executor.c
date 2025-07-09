@@ -10,19 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../lib/minishell.h"
-
-void  close_fds(t_exec *current)
-{
-	
-}
-
-void  handle_single(t_shell *shell)
-{
-
-}
-
-void  executor(t_shell *shell)
-{
-
-}
+#include "minishell.h"
+/**/
+/*void  close_fds(t_exec *current)*/
+/*{*/
+/**/
+/*}*/
+/**/
+/*void  handle_single(t_shell *shell)*/
+/*{*/
+/**/
+/*}*/
+/**/
+/*void  executor(t_shell *shell)*/
+/*{*/
+/**/
+/*}*/

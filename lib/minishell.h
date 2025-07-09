@@ -17,6 +17,7 @@
 # define ERR_SYN_QUOTES "Syntax error: quotes unclosed\n"
 # define ERR_SYN_RD "Syntax error: redirections\n"
 # define ERR_SYN_PIPE "Syntax error: pipes\n"
+# define ERR_EMPTY_INP "Error: Empy input\n"
 # define GRN "\e[4;32m"
 # define PRP "\e[0;35m"
 # define WHT "\e[1;37m"
@@ -29,7 +30,7 @@ typedef char**	t_vtr;
 typedef int*	t_arr;
 typedef struct s_redirect
 {
-	t_vtr				args[2];
+	char				*args[2];
 	int					fd;
 	struct s_redirect	*next;
 }	t_redirect;
@@ -60,7 +61,7 @@ void		update_old(t_shell *shell, t_str pos);
 void		exporting(t_shell *shell, t_str arg);
 void		del_var(t_shell *shell, t_str arg);
 void		handle_single(t_shell *shell);
-void		close_fds(t_exec *current);
+/*void		close_fds(t_exec *current);*/
 void		executor(t_shell *shell);
 void		init_shell(t_vtr envp);
 void		lvl_up(t_shell *shell);

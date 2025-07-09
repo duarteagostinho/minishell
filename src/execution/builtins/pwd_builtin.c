@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pwd_builtin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 00:16:27 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/06/03 00:40:52 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/07/09 13:20:05 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../lib/minishell.h"
+#include "minishell.h"
 
 int	get_sizeof_args(t_vtr args)
 {

@@ -6,13 +6,13 @@
 /*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 16:35:35 by duandrad          #+#    #+#             */
-/*   Updated: 2025/06/15 15:50:07 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/07/09 13:26:37 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../lib/minishell.h"
+#include "minishell.h"
 
-void	update_old(t_shell *shell, t_str pos)
+/* void	update_old(t_shell *shell, t_str pos)
 {
 	t_env_node	*current;
 
@@ -87,4 +87,4 @@ int	cd(t_shell *shell, t_vtr args)
 		return (EXIT_SUCCESS);
 	}
 	return (EXIT_FAILURE);
-}
+}*/

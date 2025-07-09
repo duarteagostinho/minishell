@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   init_shell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 21:23:05 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/06/18 21:32:17 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/07/09 13:22:38 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../lib/minishell.h"
-
+#include "minishell.h"
+/* 
 t_env_list	*empty_env(t_env_list *env)
 {
 	env->head = create_env_node("PWD");
@@ -67,4 +67,4 @@ void  lvl_up(t_shell *shell)
 	}
 	else
 		add_back_env_node(shell->env, create_env_node("SHLVL=1"));
-}
+} */

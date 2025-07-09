@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 14:37:34 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/06/15 15:35:18 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/07/09 13:21:58 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../lib/minishell.h"
-
+#include "minishell.h"
+/* 
 t_str get_env_val(t_vtr env, const t_str key)
 {
 	int	  len;
@@ -85,3 +85,4 @@ void  rmv_env_var(t_shell *shell, const t_str key)
 			free
 	}
 }
+ */

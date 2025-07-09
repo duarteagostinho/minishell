@@ -133,55 +133,175 @@ int	get_last_quote(char *line)
 	return (0);
 }
 
-
-char	*valid_syntax(char *line)
+char	*check_redir(char *line)
 {
 	int		i;
-	char	quote;
-/* 	char	redir; */
+	char	redir;
 
 	i = 0;
-	if (line[i] == '|' || line[ft_strlen(line) - 1] == '|')
-		return (ERR_SYN_PIPE);
-	while (line[i])
+	if ((line[i] == '>' && line[i + 1] == '<') || (line[i] == '<' &&
+		line[i + 1] == '>') || (line[i] == '>' && line[i + 1] == '>' &&
+			line[i + 2] == '>') || (line[i] == '<' && line[i + 1] == '<' &&
+			line[i + 2] == '<'))
+			return (ERR_SYN_RD);
+	redir = line[i];
+	if (line[i + 1] == redir)
+		i += 2;
+	else
+		i++;
+	i = skip_whitespace(line, i);
+	if (!line[i] || line[i] == '|' || line[i] == '<' || line[i] == '>')
+		return (ERR_SYN_RD);
+	return (NULL);
+}
+char	*quotes_valid(char *line)
+{
+	int	i;
+	int	quote_end;
+
+	i = 0;
+	while (line[i] && line[i] != ' ' &&
+		line[i] != '|' && line[i] != '<' && line[i] != '>')
 	{
 		if (line[i] == '"' || line[i] == '\'')
 		{
-			quote = line[i++];
-			while (line[i] && line[i] != quote)
-				i++;
-			if (!line[i])
+			quote_end = get_last_quote(&line[i]);
+			if (quote_end < 0)
 				return (ERR_SYN_QUOTES);
-			i++;
+			i += quote_end + 1;
 		}
-		else if (line[i] == '|')
-		{
-			if (line[i + 1] == line[i])
-				return (ERR_SYN_PIPE);
-			i++;
-			i = skip_whitespace(line, i);
-			if (line[i] == '|' || !line[i])
-				return (ERR_SYN_PIPE);
-		}/* 
- 		else if (line[i] == '>' || line[i] == '<')
-		{
-			redir = line[i];
-			if (line[i + 1] == redir)
-				i += 2;
-			i++;
-			i = skip_whitespace(line, i);
-			if (!line[i] || line[i] == '|' || line[i] == '<' || line[i] == '>')
-				return (ERR_SYN_RD);
- 			while (line[i] && line[i] != ' ' &&
-				line[i] == '|' || line[i] == '<' || line[i] == '>')
-			{
-				if (line[i] == quote)
-
-			} */
 		else
 			i++;
 	}
 	return (NULL);
+}
+
+char	*handle_quotes(char *line, int *i)
+{
+	char	quote;
+
+	quote = line[*i];
+	(*i)++;
+	while (line[*i] && line[*i] != quote)
+		(*i)++;
+	if (!line[*i])
+		return (ERR_SYN_QUOTES);
+	(*i)++;
+	return (NULL);
+}
+
+char	*handle_pipes(char *line, int *i)
+{
+	if (line[*i + 1] == line[*i])
+		return (ERR_SYN_PIPE);
+	(*i)++;
+	*i = skip_whitespace(line, *i);
+	if (line[*i] == '|' || !line[*i])
+		return (ERR_SYN_PIPE);
+	return (NULL);
+}
+
+char	*handle_redirections(char *line, int *i)
+{
+	int	quote_end;
+
+	if (check_redir(&line[*i]))
+		return (ERR_SYN_RD);
+	if (line[*i + 1] == line[*i])
+		*i += 2;
+	else
+		(*i)++;
+	*i = skip_whitespace(line, *i);
+	if (quotes_valid(&line[*i]))
+		return (ERR_SYN_QUOTES);
+	while (line[*i] && line[*i] != ' ' && line[*i] != '|' && 
+		line[*i] != '<' && line[*i] != '>')
+	{
+		if (line[*i] == '"' || line[*i] == '\'')
+		{
+			quote_end = get_last_quote(&line[*i]);
+			if (quote_end < 0)
+				return (ERR_SYN_QUOTES);
+			*i += quote_end + 1;
+		}
+		else
+			(*i)++;
+	}
+	return (NULL);
+}
+char	*type_check(char *line)
+{
+	int		i;
+	char	*error;
+
+	i = 0;
+	if (line[i] == '"' || line[i] == '\'')
+	{
+		error = handle_quotes(line, &i);
+		if (error)
+			return (error);
+	}
+	else if (line[i] == '|')
+	{
+		error = handle_pipes(line, &i);
+		if (error)
+			return (error);
+	}
+	else if (line[i] == '>' || line[i] == '<')
+	{
+		error = handle_redirections(line, &i);
+		if (error)
+			return (error);
+	}
+	return (NULL);
+}
+
+char	*valid_syntax(char *line)
+{
+	int		i;
+	char	*error;
+
+	if (!line || !*line)
+		return (ERR_EMPTY_INP);
+	i = skip_whitespace(line, 0);
+	if (!line[i])
+		return (ERR_EMPTY_INP);
+	if (line[i] == '|' || line[ft_strlen(line) - 1] == '|')
+		return (ERR_SYN_PIPE);
+	while (line[i])
+	{
+		if (line[i] == '"' || line[i] == '\'' ||
+			line[i] == '|' || line[i] == '>' || line[i] == '<')
+			error = type_check(&line[i]);
+		if (error)
+			return (error);
+		else
+			i++;
+	}
+	return (NULL);
+}
+void	fill_commands(char *cmds)
+{
+	int	i;
+
+	i = 0;
+	while(cmds[i])
+	{
+		if (i > 0)
+		{
+			curr->next = malloc(sizeof(t_cmd));
+			if (!curr->next)
+				return (free(new_line), NULL);
+			curr = curr->next;
+			curr->next = NULL;
+			curr->redirect = NULL;
+			curr->redirect_in = STDIN_FILENO;
+			curr->redirect_out = STDOUT_FILENO;
+		}
+		curr->args = process_args(cmds[i]);
+		curr->redirect = extract_redirections(cmds[i]);
+		i++;
+	}
 }
 
 t_cmd	*parser(char *line)
@@ -192,7 +312,6 @@ t_cmd	*parser(char *line)
 	t_cmd	*curr;
 	char	*new_line;
 
-	printf("line = %s\n", line);
 	if (valid_syntax(line))
 	{
 		printf("%s\n", valid_syntax(line));
@@ -214,24 +333,7 @@ t_cmd	*parser(char *line)
 	commands->redirect_out = STDOUT_FILENO;
 	curr = commands;
 	i = 0;
-	while(cmds[i])
-	{
-		if (i > 0)
-		{
-			curr->next = malloc(sizeof(t_cmd));
-			if (!curr->next)
-				return (free(new_line), NULL);
-			curr = curr->next;
-			curr->next = NULL;
-			curr->redirect = NULL;
-			curr->redirect_in = STDIN_FILENO;
-			curr->redirect_out = STDOUT_FILENO;
-		}
-		curr->args = process_args(cmds[i]);
-		curr->redirect = extract_redirections(cmds[i]);
-		i++;
-	}
-	curr = commands;
+	fill_commands()
 	while (curr)
 	{
 		i = -1;

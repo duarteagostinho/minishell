@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   env_builtin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 21:17:40 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/06/09 21:22:38 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/07/09 13:20:38 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../lib/minishell.h"
+#include "minishell.h"
 
-int	env(t_shell *shell, t_vtr args)
+/* int	env(t_shell *shell, t_vtr args)
 {
 	t_env_node	*current;
 
@@ -28,4 +28,4 @@ int	env(t_shell *shell, t_vtr args)
 		}
 	}
 	return (EXIT_SUCCESS);
-}
+} */
