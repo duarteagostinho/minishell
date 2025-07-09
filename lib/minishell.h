@@ -17,11 +17,16 @@
 # define ERR_SYN_QUOTES "Syntax error: quotes unclosed\n"
 # define ERR_SYN_RD "Syntax error: redirections\n"
 # define ERR_SYN_PIPE "Syntax error: pipes\n"
+# define GRN "\e[4;32m"
+# define PRP "\e[0;35m"
+# define WHT "\e[1;37m"
+# define RED "\e[1;31m"
+# define LG_RED "\e[0;31m"
+# define COLOR_RESET "\e[0m"
 
 typedef char*	t_str;
 typedef char**	t_vtr;
 typedef int*	t_arr;
-
 typedef struct s_redirect
 {
 	t_vtr				args[2];
@@ -45,6 +50,9 @@ typedef struct s_shell
 }	t_shell;
 
 t_cmd	*parser(char *line);
+t_redirect	*handle_red(char *type, char *filename, int fd);
+t_redirect	*extract_redirections(char *cmd_str);
+char	*remove_quotes(char *str);
 
 /*EXECUTION FUNCTIONS*/
 void		unset_arg(t_shell *shell, t_str arg, t_arr fails);
@@ -69,5 +77,4 @@ int			ft_export(t_shell *shell, t_vtr args);
 int			export_args(t_shell *shell, t_vtr args);
 int			env_var_update(t_shell *shell, t_str pre, t_str pos);
 t_shell		*shell(void);
-
 #endif

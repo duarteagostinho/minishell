@@ -35,7 +35,7 @@ static void	mark_pipes(char *line, char *new_line)
 	}
 }
 
-static char	*remove_quotes(char *str)
+char	*remove_quotes(char *str)
 {
 	int		i;
 	int		j;
@@ -73,33 +73,6 @@ static void	free_args(char **array)
 		free(array[i++]);
 	free(array);
 }
-/* 
-static t_redirect	*handle_red(char *type, char *filename, int fd)
-{
-	t_redirect	*red;
-
-	if (!type || !filename)
-		return (NULL);
-	red = malloc(sizeof(t_redirect));
-	if (!red)
-		return (NULL);
-	red->args[0] = ft_strdup(type);
-	if (!red->args[0])
-	{
-		free(red);
-		return (NULL);
-	}
-	red->args[1] = ft_strdup(filename);
-	if (!red->args[1])
-	{
-		free(red->args[0]);
-		free(red);
-		return (NULL);
-	}
-	red->fd = fd;
-	red->next = NULL;
-	return (red);
-} */
 
 static char	**process_args(char *cmd_str)
 {
@@ -127,39 +100,138 @@ static char	**process_args(char *cmd_str)
 	return (args);
 }
 
-/* static t_redirect	*extract_redirections(char *cmd_str)
+int	skip_whitespace(char *line, int start)
 {
-	
-} */
+	int	i;
+
+	i = start;
+	while (line[i] && (line[i] == 32 || (line[i] >= 9 && line[i] <= 13)))
+		i++;
+	return (i);
+}
+
+int	get_last_quote(char *line)
+{
+	int		i;
+	char	quote;
+	i = -1;
+	while (line[++i])
+	{
+		if (line[i] == '"' || line[i] == '\'')
+		{
+			quote = line[i++];
+			while (line)
+		}
+	}
+}
+
+
+char	*valid_syntax(char *line)
+{
+	int		i;
+	char	quote;
+	char	redir;
+
+	i = 0;
+	if (line[i] == '|' || line[ft_strlen(line) - 1] == '|')
+		return (ERR_SYN_PIPE);
+	while (line[i])
+	{
+		if (line[i] == '"' || line[i] == '\'')
+		{
+			quote = line[i++];
+			while (line[i] && line[i] != quote)
+				i++;
+			if (!line[i])
+				return (ERR_SYN_QUOTES);
+			i++;
+		}
+		else if (line[i] == '|')
+		{
+			if (line[i + 1] == line[i])
+				return (ERR_SYN_PIPE);
+			i++;
+			i = skip_whitespace(line, i);
+			if (line[i] == '|' || !line[i])
+				return (ERR_SYN_PIPE);
+		}
+		else if (line[i] == '>' || line[i] == '<')
+		{
+			redir = line[i];
+			if (line[i + 1] == redir)
+				i += 2;
+			i++;
+			i = skip_whitespace(line, i);
+			if (!line[i] || line[i] == '|' || line[i] == '<' || line[i] == '>')
+				return (ERR_SYN_RD);
+			while (line[i] && line[i] != ' ' &&
+				line[i] == '|' || line[i] == '<' || line[i] == '>')
+			{
+				if (line[i] == quote)
+					
+			}
+		}
+		else
+			i++;
+	}
+	return (NULL);
+}
 
 t_cmd	*parser(char *line)
 {
 	int		i;
 	char	**cmds;
 	t_cmd	*commands;
+	t_cmd	*curr;
 	char	*new_line;
 
-/* 	if (!valid_syntax(line))
-		return (NULL); */
+	printf("line = %s\n", line);
+	if (valid_syntax(line))
+	{
+		printf("%s\n", valid_syntax(line));
+		return (NULL);
+	}
 	new_line = ft_calloc(ft_strlen(line) + 1, 3);
 	if (!new_line)
 		return (NULL);
+	mark_pipes(line, new_line);
+	cmds = ft_split(new_line, '2');
+	if (!cmds)
+		return (free(new_line), NULL);
 	commands = malloc(sizeof(t_cmd));
 	if (!commands)
 		return (free(new_line), NULL);
 	commands->next = NULL;
 	commands->redirect = NULL;
 	commands->redirect_in = STDIN_FILENO;
-	commands->redirect_in = STDOUT_FILENO;
-	mark_pipes(line, new_line);
-	cmds = ft_split(new_line, '2');
-	i = -1;
-	while(cmds[++i])
-		process_args(cmds[i]);
-	commands->args = cmds;
-	i = -1;
- 	while (commands->args && commands->args[++i])
-		printf("%i - cmd: %s\n", i, commands->args[i]);
-
+	commands->redirect_out = STDOUT_FILENO;
+	curr = commands;
+	i = 0;
+	while(cmds[i])
+	{
+		if (i > 0)
+		{
+			curr->next = malloc(sizeof(t_cmd));
+			if (!curr->next)
+				return (free(new_line), NULL);
+			curr = curr->next;
+			curr->next = NULL;
+			curr->redirect = NULL;
+			curr->redirect_in = STDIN_FILENO;
+			curr->redirect_out = STDOUT_FILENO;
+		}
+		curr->args = process_args(cmds[i]);
+		curr->redirect = extract_redirections(cmds[i]);
+		i++;
+	}
+	curr = commands;
+	while (curr)
+	{
+		i = -1;
+		while (curr->args && curr->args[++i])
+			printf("%i - cmd: %s\n", i, curr->args[i]);
+		curr = curr->next;
+	}
+	free_args(cmds);
 	return (free(new_line), commands);
 }
