@@ -114,15 +114,23 @@ int	get_last_quote(char *line)
 {
 	int		i;
 	char	quote;
+
 	i = -1;
 	while (line[++i])
 	{
 		if (line[i] == '"' || line[i] == '\'')
 		{
 			quote = line[i++];
-			while (line)
+			while (line[i] && line[i] != quote)
+				i++;
+			if (!line[i])
+				return (-1);
+			else
+				return (i);
 		}
+		i++;
 	}
+	return (0);
 }
 
 
@@ -130,7 +138,7 @@ char	*valid_syntax(char *line)
 {
 	int		i;
 	char	quote;
-	char	redir;
+/* 	char	redir; */
 
 	i = 0;
 	if (line[i] == '|' || line[ft_strlen(line) - 1] == '|')
@@ -154,8 +162,8 @@ char	*valid_syntax(char *line)
 			i = skip_whitespace(line, i);
 			if (line[i] == '|' || !line[i])
 				return (ERR_SYN_PIPE);
-		}
-		else if (line[i] == '>' || line[i] == '<')
+		}/* 
+ 		else if (line[i] == '>' || line[i] == '<')
 		{
 			redir = line[i];
 			if (line[i + 1] == redir)
@@ -164,13 +172,12 @@ char	*valid_syntax(char *line)
 			i = skip_whitespace(line, i);
 			if (!line[i] || line[i] == '|' || line[i] == '<' || line[i] == '>')
 				return (ERR_SYN_RD);
-			while (line[i] && line[i] != ' ' &&
+ 			while (line[i] && line[i] != ' ' &&
 				line[i] == '|' || line[i] == '<' || line[i] == '>')
 			{
 				if (line[i] == quote)
-					
-			}
-		}
+
+			} */
 		else
 			i++;
 	}
