@@ -114,14 +114,21 @@ int	get_last_quote(char *line)
 {
 	int		i;
 	char	quote;
+
 	i = -1;
 	while (line[++i])
 	{
 		if (line[i] == '"' || line[i] == '\'')
 		{
 			quote = line[i++];
-			while (line)
+			while (line[i] && line[i] != quote)
+				i++;
+			if (!line[i])
+				return (-1);
+			else
+				return (i);
 		}
+		i++;
 	}
 }
 
