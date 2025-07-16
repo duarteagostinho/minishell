@@ -6,7 +6,7 @@ OBJS = $(SRCS:.c=.o)
 NAME = minishell
 LDFLAGS = -lft -L/usr/local/opt/readline/lib -lreadline
 
-# libft variables
+# Libft variables
 LIBFT_DIR = lib/libft
 LIBFT_SRCS =$(shell find $(LIBFT_DIR) -type f -name '*.c')
 LIBFT_OBJS = $(LIBFT_SRCS:.c=.o)
@@ -19,7 +19,7 @@ $(LIBFT_LIB): $(LIBFT_OBJS)
 	@ar rcs $(LIBFT_LIB) $(LIBFT_OBJS)
 
 $(NAME): $(OBJS) $(LIBFT_LIB)
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS)  $(LDFLAGS) -L$(LIBFT_DIR) -lft
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS)  $(LDFLAGS) -L$(LIBFT_DIR)
 
 %.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@

@@ -48,12 +48,24 @@ typedef struct s_shell
 {
 	t_cmd				*cmd;
 	t_vtr				env;
+	int					exit_status;
 }	t_shell;
 
-t_cmd	*parser(char *line);
-t_redirect	*handle_red(char *type, char *filename, int fd);
+/* PARSING FUNCTIONS */
+t_cmd		*parser(char *line, char **env, t_shell *shell);
+char		*handle_quotes(char *line, int *i);
+char		*handle_pipes(char *line, int *i);
+char		*handle_redirections(char *line, int *i);
+int			skip_whitespace(char *line, int start);
+int			get_last_quote(char *line);
+char		**process_args(char *cmd_str);
+char		*remove_quotes(char *str);
+void		free_args(char **array);
 t_redirect	*extract_redirections(char *cmd_str);
-char	*remove_quotes(char *str);
+char		*prepare_line(char *line);
+
+
+
 
 /*EXECUTION FUNCTIONS*/
 void		unset_arg(t_shell *shell, t_str arg, t_arr fails);
@@ -61,6 +73,7 @@ void		update_old(t_shell *shell, t_str pos);
 void		exporting(t_shell *shell, t_str arg);
 void		del_var(t_shell *shell, t_str arg);
 void		handle_single(t_shell *shell);
+t_str		get_env_val(t_vtr env, const t_str key);
 /*void		close_fds(t_exec *current);*/
 void		executor(t_shell *shell);
 void		init_shell(t_vtr envp);

@@ -6,12 +6,12 @@
 /*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 14:37:34 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/07/09 13:21:58 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/07/15 15:50:01 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-/* 
+
 t_str get_env_val(t_vtr env, const t_str key)
 {
 	int	  len;
@@ -27,7 +27,7 @@ t_str get_env_val(t_vtr env, const t_str key)
 	}
 	return (NULL);
 }
-
+/*
 t_vtr realloc_env(t_vtr env, const t_str new_var, int act)
 {
 	int	  i;

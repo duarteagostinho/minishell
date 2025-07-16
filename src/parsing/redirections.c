@@ -55,7 +55,7 @@ static void	add_redir(t_redirect **head, t_redirect **curr, t_redirect *new)
 	(*curr) = new;
 }
 
-t_redirect	*handle_red(char *type, char *filename, int fd)
+static t_redirect	*handle_red(char *type, char *filename, int fd)
 {
 	t_redirect	*red;
 
