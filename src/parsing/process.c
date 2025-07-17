@@ -2,11 +2,11 @@
 
 static void	mark_redirection(char* line, char **new_line, int *i)
 {
-	*(*new_line)++ = '3';
+	*(*new_line)++ = '\x1F';
 	*(*new_line)++ = line[*i];
 	if (line[*i + 1] == line[*i])
 		*(*new_line)++ = line[++(*i)];
-	**new_line = '3';
+	*(*new_line)++ = '\x1F';
 }
 
 static void	mark_pipes(char *line, char *new_line)
@@ -18,17 +18,19 @@ static void	mark_pipes(char *line, char *new_line)
 	i = -1;
 	while (line[++i])
 	{
-		*new_line = line[i];
 		if ((line[i] == '"' || line[i] == '\'') && !c)
 			c = line[i];
 		else if (c == line[i])
 			c = 0;
 		else if (line[i] == '|' && !c)
-			*new_line = '2';
+			*new_line = '\x1E';
 		else if (line[i] == ' ' && !c)
-			*new_line = '3';
+			*new_line = '\x1F';
 		else if (line[i] == '>' || line[i] == '<')
+		{
 			mark_redirection(line, &new_line, &i);
+			continue;
+		}
 		else
 			*new_line = line[i];
 		new_line++;
@@ -80,36 +82,25 @@ static char	*remove_redirections(char *cmd_str)
 	char	*clean_cmd;
 	int		i;
 	int		j;
-	int		len;
 
-	if (!cmd_str)
-		return (NULL);
-	len = ft_strlen(cmd_str);
-	clean_cmd = ft_calloc(len + 1, sizeof(char));
-	if (!clean_cmd)
-		return (NULL);
+	clean_cmd = ft_calloc(ft_strlen(cmd_str) + 1, sizeof(char));
 	i = 0;
 	j = 0;
 	while (cmd_str[i])
 	{
 		if (cmd_str[i] == '>' || cmd_str[i] == '<')
 		{
-			// Skip redirection operator
 			if (cmd_str[i + 1] == cmd_str[i])
-				i += 2; // Skip '>>' or '<<'
+				i += 2;
 			else
-				i++; // Skip '>' or '<'
-			// Skip spaces after redirection
-			while (cmd_str[i] && cmd_str[i] == '3')
 				i++;
-			// Skip filename
-			while (cmd_str[i] && cmd_str[i] != '3')
+			while (cmd_str[i] && cmd_str[i] == '\x1F')
+				i++;
+			while (cmd_str[i] && cmd_str[i] != '\x1F')
 				i++;
 		}
 		else
-		{
 			clean_cmd[j++] = cmd_str[i++];
-		}
 	}
 	clean_cmd[j] = '\0';
 	return (clean_cmd);
@@ -122,12 +113,10 @@ char	**process_args(char *cmd_str)
 	char	**split;
 	char	*clean_cmd;
 
-	if (!cmd_str)
-		return (NULL);
 	clean_cmd = remove_redirections(cmd_str);
 	if (!clean_cmd)
 		return (NULL);
-	split = ft_split(clean_cmd, '3');
+	split = ft_split(clean_cmd, '\x1F');
 	free(clean_cmd);
 	i = 0;
 	while (split[i])

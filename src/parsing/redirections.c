@@ -33,12 +33,16 @@ static char	*extract_filename(char *cmd_str, int *i)
 	char	*filename;
 	int		start;
 
-	if (cmd_str[*i] == '3')
+	while (cmd_str[*i] && cmd_str[*i] == '\x1F')
 		(*i)++;
 	start = *i;
-	while (cmd_str[*i] && cmd_str[*i] != '3')
+	while (cmd_str[*i] && cmd_str[*i] != '\x1F')
 		(*i)++;
+	if (start == *i)
+		return (NULL);
 	temp = ft_substr(cmd_str, start, *i - start);
+	if (!temp)
+		return (NULL);
 	filename = remove_quotes(temp);
 	free(temp);
 	return (filename);
@@ -65,12 +69,15 @@ static t_redirect	*handle_red(char *type, char *filename, int fd)
 	if (!red)
 		return (NULL);
 	red->args[0] = ft_strdup(type);
+	printf("type = ;%s;\n", red->args[0]);
 	if (!red->args[0])
 	{
+		printf("here\n");
 		free(red);
 		return (NULL);
 	}
 	red->args[1] = ft_strdup(filename);
+	printf("filename = ;%s;\n", red->args[1]);
 	if (!red->args[1])
 	{
 		free(red->args[0]);

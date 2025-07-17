@@ -39,7 +39,6 @@ static char	*get_env_value(char *var_name, char **env)
 	i = 0;
 	while (env[i])
 	{
-		// Manual comparison since ft_strncmp is not available
 		j = 0;
 		while (j < var_len && env[i][j] && env[i][j] == var_name[j])
 			j++;
@@ -52,11 +51,11 @@ static char	*get_env_value(char *var_name, char **env)
 
 static int	get_special_var_length(char *str, int i, t_shell *shell)
 {
-	(void)shell; // Suppress unused parameter warning
+	(void)shell;
 	if (str[i + 1] == '$')
-		return (10); // PID max length estimate
+		return (10);
 	else if (str[i + 1] == '?')
-		return (3); // max exit code is 255
+		return (3);
 	return (0);
 }
 
@@ -142,16 +141,11 @@ static void	expand_special_var(char *str, int *i, char *expanded, int *pos, t_sh
 	int		j;
 	
 	if (str[*i + 1] == '$')
-	{
 		value = ft_itoa(getpid());
-	}
 	else if (str[*i + 1] == '?')
-	{
 		value = ft_itoa(shell->exit_status);
-	}
 	else
 		value = NULL;
-	
 	if (value)
 	{
 		j = 0;
@@ -190,9 +184,7 @@ static void	expand_env_var(char *str, int *i, char *expanded, int *pos, char **e
 		free(var_name);
 	}
 	else
-	{
 		expanded[(*pos)++] = str[(*i)++];
-	}
 }
 
 char	*expand_variables(char *str, char **env, t_shell *shell)

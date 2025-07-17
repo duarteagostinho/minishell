@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-// Helper function to print parsed commands for testing
 static void	print_commands(t_cmd *commands)
 {
 	t_cmd	*curr;
@@ -48,7 +47,6 @@ static void	run_prompt(char **env)
 	t_cmd	*commands;
 	t_shell	shell;
 
-	// Initialize shell structure
 	shell.env = env;
 	shell.exit_status = 0;
 	
@@ -61,14 +59,11 @@ static void	run_prompt(char **env)
 		if (ft_strlen(line) > 0)
 			add_history(line);
 		
-		// Test the parser
 		commands = parser(line, env, &shell);
 		if (commands)
 		{
-			printf("\n--- Parsing Result ---\n");
+			printf("\n--- Parsing ---\n");
 			print_commands(commands);
-			// Clean up the command list
-			// free_commands(commands); // You'll need to implement this
 		}
 		free(line);
 	}

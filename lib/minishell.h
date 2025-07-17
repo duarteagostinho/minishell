@@ -63,6 +63,7 @@ char		*remove_quotes(char *str);
 void		free_args(char **array);
 t_redirect	*extract_redirections(char *cmd_str);
 char		*prepare_line(char *line);
+char	*expand_variables(char *str, char **env, t_shell *shell);
 
 
 

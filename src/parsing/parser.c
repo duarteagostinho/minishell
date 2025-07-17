@@ -95,31 +95,32 @@ t_cmd	*parser(char *line, char **env, t_shell *shell)
 	char	**cmds;
 	t_cmd	*commands;
 	char	*new_line;
+	int k = 0;
+	(void)env;
+	(void)shell;
 
-	(void)env;    // Suppress unused parameter warning for now
-	(void)shell;  // Suppress unused parameter warning for now
-	
+	if (!line || !*line)
+		return (NULL);
 	if (valid_syntax(line))
 	{
 		printf("%s\n", valid_syntax(line));
 		return (NULL);
 	}
-	
 	new_line = prepare_line(line);
 	if (!new_line)
 		return (NULL);
-	cmds = ft_split(new_line, '2');
+	cmds = ft_split(new_line, '\x1E');
 	if (!cmds)
-	{
 		return (free(new_line), NULL);
+	while (cmds[k])
+	{
+		cmds[k] = expand_variables(cmds[k], env, shell);
+		k++;
 	}
 	commands = init_command_list();
 	if (!commands)
-	{
 		return (free(new_line), NULL);
-	}
 	fill_commands(cmds, commands);
-	
 	free_args(cmds);
 	free(new_line);
 	return (commands);

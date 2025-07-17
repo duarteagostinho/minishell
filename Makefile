@@ -1,6 +1,6 @@
 # Variables
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra -Ilib
+CFLAGS = -Wall -Werror -Wextra -Ilib -g
 SRCS =$(shell find src/ -type f -name '*.c')
 OBJS = $(SRCS:.c=.o)
 NAME = minishell
