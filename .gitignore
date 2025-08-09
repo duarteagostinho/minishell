@@ -1,1 +1,4 @@
 **/*.o
+lib/libft/libft.a
+
+minishell

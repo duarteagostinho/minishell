@@ -3,9 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_setup.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:40:54 by mrapp-he          #+#    #+#             */
+/*   Updated: 2025/07/09 13:22:23 by duandrad         ###   ########.fr       */
 /*   Updated: 2025/07/10 17:16:14 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -39,3 +40,4 @@ void  signal_setup(int process)
 		signal(SIGQUIT, SIG_IGN);
 	}
 }
+ */

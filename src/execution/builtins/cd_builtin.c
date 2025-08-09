@@ -6,13 +6,13 @@
 /*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 16:35:35 by duandrad          #+#    #+#             */
-/*   Updated: 2025/08/07 23:21:42 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/06/15 15:50:07 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../lib/minishell.h"
+#include "../../lib/minishell.h"
 
-int	update_pwd(t_shell *shell, t_str lwd, t_str cwd)
+void	update_old(t_shell *shell, t_str pos)
 {
 	t_vtr env;
 
@@ -48,4 +48,4 @@ int	cd(t_shell *shell)
 		return (update_pwd(shell, cwd, getcwd(NULL, 0)));
 	}
 	return (EXIT_FAILURE);
-}
+}*/

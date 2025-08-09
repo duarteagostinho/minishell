@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   env_builtin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 21:17:40 by mrapp-he          #+#    #+#             */
 /*   Updated: 2025/08/07 23:30:12 by mrapp-he         ###   ########.fr       */
@@ -28,4 +28,4 @@ int	env(t_shell *shell)
 		}
 	}
 	return (EXIT_SUCCESS);
-}
+} */

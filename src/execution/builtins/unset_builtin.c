@@ -26,4 +26,4 @@ int	unset(t_shell *shell)
 		free(var);
 	}
 	return (EXIT_SUCCESS);
-}
+}*/

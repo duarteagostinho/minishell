@@ -18,6 +18,7 @@
 # define ERR_SYN_QUOTES "Syntax error: quotes unclosed\n"
 # define ERR_SYN_RD "Syntax error: redirections\n"
 # define ERR_SYN_PIPE "Syntax error: pipes\n"
+# define ERR_EMPTY_INP "Error: Empy input\n"
 # define GRN "\e[4;32m"
 # define PRP "\e[0;35m"
 # define WHT "\e[1;37m"
@@ -31,7 +32,7 @@ typedef int*	t_arr;
 
 typedef struct s_rdir
 {
-	t_vtr				args[2];
+	char				*args[2];
 	int					fd;
 	struct s_rdir		*next;
 }	t_rdir;
@@ -58,18 +59,28 @@ typedef enum e_lst {
 }	t_lst;
 
 typedef int		(*t_func)(t_shell *);
+/* PARSING FUNCTIONS */
+t_cmd		*parser(char *line, char **env, t_shell *shell);
+char		*handle_quotes(char *line, int *i);
+char		*handle_pipes(char *line, int *i);
+char		*handle_redirections(char *line, int *i);
+int			skip_whitespace(char *line, int start);
+int			get_last_quote(char *line);
+char		**process_args(char *cmd_str);
+char		*remove_quotes(char *str);
+void		free_args(char **array);
+t_redirect	*extract_redirections(char *cmd_str);
+char		*prepare_line(char *line);
+char	*expand_variables(char *str, char **env, t_shell *shell);
 
-t_cmd	*parser(char *line);
-t_rdir	*handle_red(char *type, char *filename, int fd);
-t_rdir	*extract_redirections(char *cmd_str);
-char	*remove_quotes(char *str);
+
+
 
 /*EXECUTION FUNCTIONS*/
 void		unset_arg(t_shell *shell, t_str arg, t_arr fails);
 void		del_var(t_shell *shell, t_str arg);
 void		handle_single(t_shell *shell);
-void		free_shell(t_shell *shell);
-void		close_fds(t_rdir *current);
+void		close_fds(t_exec *current);
 void		executor(t_shell *shell);
 void		init_shell(t_vtr envp);
 void		lvl_up(t_shell *shell);
