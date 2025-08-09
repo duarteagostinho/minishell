@@ -6,52 +6,24 @@
 /*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 16:43:32 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/06/03 18:48:59 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/08/07 23:22:59 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../lib/minishell.h"
+#include "../../../lib/minishell.h"
 
-void	del_var(t_shell *shell, t_str arg)
+int	unset(t_shell *shell)
 {
-	t_env_node	*dummy;
-	t_env_node	*current;
-	t_env_node	*temp;
+	int	  i;
+	t_vtr var;
 
-	dummy = malloc(sizeof(t_env_node));
-	dummy->next = shell->env->head;
-	current = dummy;
-	while (current->next)
+	i = -1;
+	while (shell->cmd->args[++i])
 	{
-		if (!ft_strcmp(arg, current->next->key))
-		{
-			temp = current->next->next;
-			free(current->next);
-			current->next = temp;
-			break ;
-		}
-		current = current->next;
+		var = ft_split(shell->cmd->args[i], '=');
+		if (!var || !rmv_env_var(shell->env, var[0]))
+			return (EXIT_FAILURE);
+		free(var);
 	}
-	shell->env->head = dummy->next;
-	free(dummy);
-}
-
-void	unset_arg(t_shell *shell, t_str arg, t_arr fails)
-{
-	if (arg && (ft_isalpha(*arg) || *arg == '_'))
-		del_var(shell, arg);
-	else
-		fails++;
-}
-
-int	unset(t_shell *shell, t_vtr args)
-{
-	int	fails;
-
-	fails = 0;
-	while (++args)
-		unset_arg(shell, *args, &fails);
-	if (fails > 0)
-		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

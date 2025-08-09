@@ -14,6 +14,7 @@
 # define PARENT 1
 # define CHILD 2
 # define IGNORE 3
+# define ERR_EXIT "numeric argument required\n"
 # define ERR_SYN_QUOTES "Syntax error: quotes unclosed\n"
 # define ERR_SYN_RD "Syntax error: redirections\n"
 # define ERR_SYN_PIPE "Syntax error: pipes\n"
@@ -27,18 +28,19 @@
 typedef char*	t_str;
 typedef char**	t_vtr;
 typedef int*	t_arr;
-typedef struct s_redirect
+
+typedef struct s_rdir
 {
 	t_vtr				args[2];
 	int					fd;
-	struct s_redirect	*next;
-}	t_redirect;
+	struct s_rdir		*next;
+}	t_rdir;
 
 typedef struct s_cmd
 {
 	t_vtr				args;
 	struct s_cmd		*next;
-	t_redirect			*redirect;
+	t_rdir				*redirect;
 	int					redirect_in;
 	int					redirect_out;
 }	t_cmd;
@@ -47,34 +49,51 @@ typedef struct s_shell
 {
 	t_cmd				*cmd;
 	t_vtr				env;
+	t_vtr				exports;
 }	t_shell;
 
+typedef enum e_lst {
+	REDIRECT,
+	COMMAND
+}	t_lst;
+
+typedef int		(*t_func)(t_shell *);
+
 t_cmd	*parser(char *line);
-t_redirect	*handle_red(char *type, char *filename, int fd);
-t_redirect	*extract_redirections(char *cmd_str);
+t_rdir	*handle_red(char *type, char *filename, int fd);
+t_rdir	*extract_redirections(char *cmd_str);
 char	*remove_quotes(char *str);
 
 /*EXECUTION FUNCTIONS*/
 void		unset_arg(t_shell *shell, t_str arg, t_arr fails);
-void		update_old(t_shell *shell, t_str pos);
-void		exporting(t_shell *shell, t_str arg);
 void		del_var(t_shell *shell, t_str arg);
 void		handle_single(t_shell *shell);
-void		close_fds(t_exec *current);
+void		free_shell(t_shell *shell);
+void		close_fds(t_rdir *current);
 void		executor(t_shell *shell);
 void		init_shell(t_vtr envp);
 void		lvl_up(t_shell *shell);
-char		**split_var(t_str var);
-char		*readl_prompt(t_str prompt);
-int			pwd(void);
+void		free_vtr(t_vtr args);
+int			cd(t_shell *shell);
+int			pwd(t_shell *shell);
+int			env(t_shell *shell);
+int			echo(t_shell *shell);
+int			unset(t_shell *shell);
 int			check_flag(t_vtr args);
-int			get_sizeof_args(t_vtr args);
+int			ft_exit(t_shell *shell);
+int			ft_export(t_shell *shell);
 int			cd_no_args(t_shell *shell);
-int			cd(t_shell *shell, t_vtr args);
+int			get_sizeof_args(t_vtr args);
+int			is_valid_id(const t_str key);
 int			export_no_args(t_shell *shell);
-int			unset(t_shell *shell, t_vtr args);
-int			ft_export(t_shell *shell, t_vtr args);
+int			count_commands(t_cmd *commands);
+int			exporting(t_shell *shell, t_str arg);
 int			export_args(t_shell *shell, t_vtr args);
-int			env_var_update(t_shell *shell, t_str pre, t_str pos);
+int			rmv_env_var(t_vtr env, const t_str key);
+int			update_pwd(t_shell *shell, t_str lwd, t_str cwd);
+int			realloc_env(t_vtr *env, const t_str new_var, int act);
+int			add_env_var(t_vtr env, const t_str key, const t_str val);
+t_str		get_env_val(t_vtr env, const t_str key);
 t_shell		*shell(void);
+
 #endif

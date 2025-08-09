@@ -6,11 +6,11 @@
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:40:54 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/06/25 16:56:29 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/07/10 17:16:14 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../lib/minishell.h"
+#include "../../lib/minishell.h"
 
 static void	parent_sig_handler(int signal)
 {

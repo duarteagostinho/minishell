@@ -6,31 +6,33 @@
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 00:41:25 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/06/15 15:38:41 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/08/07 23:29:47 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../lib/minishell.h"
 
-int	ft_export(t_shell *shell, char **args)
+int	ft_export(t_shell *shell)
 {
-	if (!shell->env->head)
+	if (!shell->env || !*shell->env)
 		return (EXIT_FAILURE);
-	if (get_sizeof_args(args) == 1)
+	if (get_sizeof_args(shell->cmd->args) == 1)
 		return (export_no_args(shell));
-	else if (get_sizeof_args(args) > 1)
-		return (export_args(shell, args));
+	else if (get_sizeof_args(shell->cmd->args) > 1)
+		return (export_args(shell, shell->cmd->args));
 	return (EXIT_FAILURE);
 }
 
-int	export_args(t_shell *shell, char **args)
+int	export_args(t_shell *shell, t_vtr args)
 {
-	if (!shell->env->head)
+	int	i;
+
+	i = -1;
+	if (!shell->env || !*shell->env)
 		return (EXIT_FAILURE);
-	while (*args)
+	while (args[++i])
 	{
-		exporting(shell, *args++);
-		if (shell->exit_status == 1)
+		if (!exporting(shell, args[i]))
 			return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
@@ -38,36 +40,31 @@ int	export_args(t_shell *shell, char **args)
 
 int	export_no_args(t_shell *shell)
 {
-	char  *data[2];
+	int	  i;
+	t_vtr var;
 
-	if (!shell->env->head)
+	i = -1;
+	if (!shell->exports || !*shell->exports)
 		return (EXIT_FAILURE);
-	data[0] = shell->env->head->key;
-	data[1] = shell->env->head->value;
-	while (shell->env->head)
+	while (shell->exports[++i])
 	{
-		if (shell->env->head->is_exported == 1)
-			printf("declare -x %s=\"%s\"\n", data[0], data[1]);
-		shell->env->head = shell->env->head->next;
+		var = ft_split(shell->exports[i], '=');
+		if (!var)
+			return (EXIT_FAILURE);
+		printf("declare -x %s=\"%s\"\n", var[0], var[1]);
+		free(var);
 	}
 	return (EXIT_SUCCESS);
 }
 
-void  exporting(t_shell *shell, char *arg)
+int  exporting(t_shell *shell, t_str arg)
 {
-	t_env_node	*new_var;
+	t_vtr var;
 
-	if (!shell->env->head || !arg || !split_var(arg))
-		shell->exit_status = 1;
-	if (!get_node(shell->env, *(split_var(arg))))
-	{
-		new_var = create_env_node(arg);
-		if (!new_var)
-		{
-			shell->exit_status = 1;
-			return ;
-		}
-		shell->env->head->next = new_var;
-		shell->env->head->next->is_exported = 1;
-	}
+	var = ft_split(arg, '=');
+	if (!shell->env || !*shell->env || !arg || !*arg || !var || !is_valid_id(var[0]))
+		return (EXIT_FAILURE);
+	if (!add_env_var(shell->env, var[0], var[1]) || !add_env_var(shell->exports, var[0], var[1]))
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }

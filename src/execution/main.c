@@ -1,34 +1,26 @@
-#include "minishell.h"
-
-char	*_get_cwd()
-{
-	char	*path;
-
-	path = getcwd(NULL, 0);
-	if (!path)
-		return (NULL);
-	return (path);
-}
+#include "../../lib/minishell.h"
 
 static void	run_prompt(void)
 {
-	char	*line;
+	t_str prompt;
 
 	while (1)
 	{
-		printf(COLOR_RESET GRN"%s"COLOR_RESET, _get_cwd());
-		line = readline(PRP" $> "WHT);
-		if (!line)
+		printf(COLOR_RESET GRN"%s"COLOR_RESET, getcwd(NULL, 0));
+		prompt = readline(PRP" $> "WHT);
+		if (!prompt)
 			return ;
-		parser(line);
+		parser(prompt);
 	}
 }
 
-int	main(int ac, char **av, char **env)
+int	main(int ac, t_vtr av, t_vtr env)
 {
-	(void) ac;
 	(void) av;
 	(void) env;
-	run_prompt();
+	if (ac == 1)
+		run_prompt();
+	else
+		return (write(2, "Too many arguments!\n", 20));
 	return (0);
 }
