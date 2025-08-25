@@ -6,7 +6,7 @@
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 18:50:41 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/08/08 02:47:31 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/08/24 10:00:47 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,37 +20,42 @@ void free_vtr(t_vtr args)
 	if (!args)
 		return ;
 	while (args[++i])
-		free(args[i]);
+	{
+		if (args[i])
+			free(args[i]);
+	}
 	free(args);
 }
 
-void  free_list(void *list, t_lst type)
+void  free_cmds(t_cmd *commands)
 {
-	if (list && type == REDIRECT)
-	{
-		t_rdir	*current;
-		t_rdir	*next;
+	t_cmd	*current;
+	t_cmd	*next;
 
-		current = (t_rdir *)list;
-		while (current)
-		{
-			next = current->next;
-			free(current);
-			current = next;
-		}
+	current = commands;
+	while (current)
+	{
+		next = current->next;
+		if (current->args)
+			free_vtr(current->args);
+		if (current->redirect)
+			free_rdirs(current->redirect);
+		free(current);
+		current = next;
 	}
-	else if (list && type == COMMAND)
-	{
-		t_cmd	*current;
-		t_cmd	*next;
+}
 
-		current = (t_cmd *)list;
-		while (current)
-		{
-			next = current->next;
-			free(current);
-			current = next;
-		}
+void	free_rdirs(t_rdir *redirects)
+{
+	t_rdir	*current;
+	t_rdir	*next;
+
+	current = redirects;
+	while (current)
+	{
+		next = current->next;
+		free(current);
+		current = next;
 	}
 }
 
@@ -58,16 +63,9 @@ void  free_shell(t_shell *shell)
 {
 	if (shell)
 	{
-		if (shell->cmd->args)
-			free_vtr(shell->cmd->args);
-		if (shell->cmd->redirect)
-			free_list(shell->cmd->redirect, REDIRECT);
 		if (shell->cmd)
-			free_list(shell->cmd, COMMAND);
+			free_cmds(shell->cmd);
 		if (shell->env)
 			free_vtr(shell->env);
-		if (shell->exports)
-			free_vtr(shell->exports);
-		free(shell);
 	}
 }

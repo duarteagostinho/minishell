@@ -1,10 +1,10 @@
-#include "minishell.h"
+#include "../../lib/minishell.h"
 
-char	*extract_var_name(char *str, int start)
+t_str	extract_var_name(t_str str, int start)
 {
 	int		i;
 	int		len;
-	char	*name;
+	t_str	name;
 
 	if (!str || start < 0)
 		return (NULL);
@@ -27,29 +27,7 @@ char	*extract_var_name(char *str, int start)
 	return (name);
 }
 
-static char	*get_env_value(char *var_name, char **env)
-{
-	int		i;
-	int		var_len;
-	int		j;
-
-	if (!var_name || !env)
-		return (NULL);
-	var_len = ft_strlen(var_name);
-	i = 0;
-	while (env[i])
-	{
-		j = 0;
-		while (j < var_len && env[i][j] && env[i][j] == var_name[j])
-			j++;
-		if (j == var_len && env[i][j] == '=')
-			return (&env[i][j + 1]);
-		i++;
-	}
-	return (NULL);
-}
-
-static int	get_special_var_length(char *str, int i, t_shell *shell)
+static int	get_special_var_length(t_str str, int i, t_shell *shell)
 {
 	(void)shell;
 	if (str[i + 1] == '$')
@@ -59,16 +37,16 @@ static int	get_special_var_length(char *str, int i, t_shell *shell)
 	return (0);
 }
 
-static int	get_env_var_length(char *str, int i, char **env)
+static int	get_env_var_length(t_str str, int i, t_vtr env)
 {
-	char	*var_name;
-	char	*var_value;
+	t_str	var_name;
+	t_str	var_value;
 	int		len;
 
 	var_name = extract_var_name(str, i + 1);
 	if (!var_name)
 		return (0);
-	var_value = get_env_value(var_name, env);
+	var_value = get_env_val(env, var_name);
 	if (var_value)
 		len = ft_strlen(var_value);
 	else
@@ -77,9 +55,9 @@ static int	get_env_var_length(char *str, int i, char **env)
 	return (len);
 }
 
-static int	skip_var_name(char *str, int i)
+static int	skip_var_name(t_str str, int i)
 {
-	char	*var_name;
+	t_str	var_name;
 	int		new_i;
 
 	var_name = extract_var_name(str, i + 1);
@@ -92,7 +70,7 @@ static int	skip_var_name(char *str, int i)
 	return (i + 1);
 }
 
-static int	process_dollar_sign(char *str, int i, char **env, t_shell *shell)
+static int	process_dollar_sign(t_str str, int i, t_vtr env, t_shell *shell)
 {
 	int	len_added;
 
@@ -107,7 +85,7 @@ static int	process_dollar_sign(char *str, int i, char **env, t_shell *shell)
 }
 
 
-static int	calculate_expansion_length(char *str, char **env, t_shell *shell)
+static int	calculate_expansion_length(t_str str, t_vtr env, t_shell *shell)
 {
 	int		i;
 	int		final_len;
@@ -135,9 +113,9 @@ static int	calculate_expansion_length(char *str, char **env, t_shell *shell)
 	return (final_len);
 }
 
-static void	expand_special_var(char *str, int *i, char *expanded, int *pos, t_shell *shell)
+static void	expand_special_var(t_str str, t_arr i, t_str expanded, t_arr pos, t_shell *shell)
 {
-	char	*value;
+	t_str	value;
 	int		j;
 	
 	if (str[*i + 1] == '$')
@@ -160,16 +138,16 @@ static void	expand_special_var(char *str, int *i, char *expanded, int *pos, t_sh
 	*i += 2;
 }
 
-static void	expand_env_var(char *str, int *i, char *expanded, int *pos, char **env)
+static void	expand_env_var(t_str str, t_arr i, t_str expanded, t_arr pos, t_vtr env)
 {
-	char	*var_name;
-	char	*var_value;
+	t_str	var_name;
+	t_str	var_value;
 	int		j;
 
 	var_name = extract_var_name(str, *i + 1);
 	if (var_name)
 	{
-		var_value = get_env_value(var_name, env);
+		var_value = get_env_val(env, var_name);
 		if (var_value)
 		{
 			j = 0;
@@ -187,9 +165,9 @@ static void	expand_env_var(char *str, int *i, char *expanded, int *pos, char **e
 		expanded[(*pos)++] = str[(*i)++];
 }
 
-char	*expand_variables(char *str, char **env, t_shell *shell)
+t_str	expand_variables(t_str str, t_vtr env, t_shell *shell)
 {
-	char	*expanded;
+	t_str	expanded;
 	int		final_len;
 	int		i;
 	int		pos;

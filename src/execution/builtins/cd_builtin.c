@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../lib/minishell.h"
+#include "../../../lib/minishell.h"
 
-void	update_old(t_shell *shell, t_str pos)
+int	update_pwd(t_shell *shell, t_str lwd, t_str cwd)
 {
 	t_vtr env;
 
@@ -28,10 +28,10 @@ int	cd_no_args(t_shell *shell)
 	t_str		home;
 
 	cwd = getcwd(NULL, 0);
-	home = get_env_val(shell->env, "$HOME");
+	home = get_env_val(shell->env, "HOME");
 	if (!home || chdir(home) == -1)
 		return (EXIT_FAILURE);
-	return (update_pwd(shell, cwd, getcwd(NULL, 0)));
+	return (free(home), update_pwd(shell, cwd, getcwd(NULL, 0)));
 }
 
 int	cd(t_shell *shell)
@@ -48,4 +48,4 @@ int	cd(t_shell *shell)
 		return (update_pwd(shell, cwd, getcwd(NULL, 0)));
 	}
 	return (EXIT_FAILURE);
-}*/
+}

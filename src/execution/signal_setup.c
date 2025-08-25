@@ -40,4 +40,3 @@ void  signal_setup(int process)
 		signal(SIGQUIT, SIG_IGN);
 	}
 }
- */

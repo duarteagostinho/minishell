@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 14:37:34 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/07/10 17:16:43 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/08/25 16:39:40 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../../lib/minishell.h"
 
 t_str get_env_val(t_vtr env, const t_str key)
 {
@@ -21,45 +21,40 @@ t_str get_env_val(t_vtr env, const t_str key)
 	len = ft_strlen(key);
 	while (env[++i])
 	{
-		if (ft_strnstr(key, env[i], len)
-			&& env[i][len + 1] == '=')
-			return (env[i] + len + 1);
+		if (!ft_strncmp(env[i], key, len))
+			return (ft_strchr(env[i], '=') + 1);
 	}
 	return (NULL);
 }
 
-int realloc_env(t_vtr *env, const t_str new_var, int act)
+t_vtr	realloc_env(t_vtr env, const t_str new_var, int size)
 {
 	int	  i;
-	int	  new_size;
 	t_vtr new_env;
 
-	i = 0;
-	while ((*env)[i])
-		i++;
-	new_size = i + act;
-	if (new_size < 0)
-		new_size = 0;
-	new_env = ft_calloc(new_size + 1, sizeof(t_str));
+	if (size < 0)
+		size = 0;
+	new_env = ft_calloc(size + 1, sizeof(t_str));
 	if (!new_env)
-		return (EXIT_FAILURE);
+		return (NULL);
 	i = -1;
-	while ((*env)[++i] && i < new_size)
-		new_env[i] = (*env)[i];
-	if (act > 0 && new_var)
+	while (env[++i])
+		new_env[i] = env[i];
+	if (new_var)
 		new_env[i] = new_var;
-	free(*env);
-	*env = new_env;
-	return (EXIT_SUCCESS);
+	free(env);
+	return (new_env);
 }
 
 int  add_env_var(t_vtr env, const t_str key, const t_str val)
 {
-	int	  i;
-	t_str tmp;
-	t_str new_var;
+	int		i;
+	size_t	len;
+	t_str	tmp;
+	t_str	new_var;
 
 	i = -1;
+	len = ft_strlen(key);
 	tmp = ft_strjoin(key, "=");
 	if (!tmp)
 		return (EXIT_FAILURE);
@@ -69,15 +64,15 @@ int  add_env_var(t_vtr env, const t_str key, const t_str val)
 		return (EXIT_FAILURE);
 	while (env[++i])
 	{
-		if (ft_strnstr(key, env[i], ft_strlen(key))
-		&& env[i][ft_strlen(key) + 1] == '=')
+		if (!ft_strncmp(env[i], key, len))
 		{
 			free(env[i]);
 			env[i] = new_var;
 			return (EXIT_SUCCESS);
 		}
 	}
-	return (realloc_env(&env, new_var, 1));
+	env = realloc_env(env, new_var, get_sizeof_args(env) + 1);
+	return (EXIT_SUCCESS);
 }
 
 int  rmv_env_var(t_vtr env, const t_str key)
@@ -87,20 +82,21 @@ int  rmv_env_var(t_vtr env, const t_str key)
 
 	i = -1;
 	len = ft_strlen(key);
+	printf("a\n");
 	while (env[++i])
 	{
-		if (ft_strnstr(key, env[i], len)
-		&& env[i][len + 1] == '=')
+		if (!ft_strncmp(env[i], key, len))
 		{
+			printf("b\n");
 			free(env[i]);
 			while (env[i + 1])
 			{
 				env[i] = env[i + 1];
 				i++;
 			}
-			return (realloc_env(&env, NULL, -1));
+			env = realloc_env(env, NULL, get_sizeof_args(env) - 1);
+			return (EXIT_SUCCESS);
 		}
 	}
 	return (EXIT_FAILURE);
 }
- */

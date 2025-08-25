@@ -3,34 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   echo_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 20:19:32 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/08/07 23:31:16 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/08/20 19:11:31 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../lib/minishell.h"
 
+
+
 int	echo(t_shell *shell)
 {
-	t_vtr current;
-	int	  flags;
+	int	  i;
+	t_vtr args;
 
-	flags = check_flag(shell->cmd->args);
-	current = shell->cmd->args + flags;
-	if (get_sizeof_args(shell->cmd->args) == 1)
-		write(1, "\n", 1);
-	else if (get_sizeof_args(shell->cmd->args) > 1)
+	i = 1;
+	args = shell->cmd->args;
+	if (get_sizeof_args(args) == 1)
 	{
-		while (*current)
+		write(1, "\n", 1);
+		return (EXIT_SUCCESS);
+	}
+	else if (get_sizeof_args(args) > 1)
+	{
+		while (args[i][0] == '-' && args[i][1] == 'n')
+			i++;
+		while (args[i])
 		{
-			printf("%s", *current);
-			if (*(current + 1))
+			printf("%s", args[i]);
+			if (args[i + 1])
 				printf(" ");
-			current++;
+			i++;
 		}
-		if (flags == 0)
+		if (args[1][0] != '-' && args[1][1] != 'n')
 			printf("\n");
 	}
 	return (EXIT_SUCCESS);

@@ -30,7 +30,7 @@ int	pwd(t_shell *shell)
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 		return (EXIT_FAILURE);
-	ft_putstr_fd(pwd, 1);
+	printf("%s\n", pwd);
 	free(pwd);
 	return (EXIT_SUCCESS);
 }

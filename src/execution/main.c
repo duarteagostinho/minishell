@@ -1,17 +1,65 @@
 #include "../../lib/minishell.h"
 
-static void	run_prompt(void)
+static void	print_commands(t_cmd *commands)
+{
+	t_cmd	*curr;
+	int		cmd_num;
+	int		i;
+
+	curr = commands;
+	cmd_num = 0;
+	while (curr)
+	{
+		printf("Command %d:\n", cmd_num);
+		if (curr->args)
+		{
+			printf("  Args: ");
+			i = 0;
+			while (curr->args[i])
+			{
+				printf("[%s] ", curr->args[i]);
+				i++;
+			}
+			printf("\n");
+		}
+		printf("  Redirect in: %d, out: %d\n", curr->redirect_in, curr->redirect_out);
+		if (curr->redirect)
+			printf("  Has redirections\n");
+		printf("\n");
+		curr = curr->next;
+		cmd_num++;
+	}
+}
+
+static void	run_prompt(t_vtr env)
 {
 	t_str prompt;
 
+	init_shell(env);
 	while (1)
 	{
 		printf(COLOR_RESET GRN"%s"COLOR_RESET, getcwd(NULL, 0));
 		prompt = readline(PRP" $> "WHT);
 		if (!prompt)
 			return ;
-		parser(prompt);
+		if (ft_strlen(prompt))
+			add_history(prompt);
+		shell()->cmd = parser(prompt, shell()->env, shell());
+		if (shell()->cmd)
+		{
+			printf("\n--- Parsing ---\n");
+			print_commands(shell()->cmd);
+		}
+		executor(shell());
+		free(prompt);
 	}
+}
+
+t_shell	*shell(void)
+{
+	static t_shell	shell;
+
+	return (&shell);
 }
 
 int	main(int ac, t_vtr av, t_vtr env)
@@ -19,7 +67,7 @@ int	main(int ac, t_vtr av, t_vtr env)
 	(void) av;
 	(void) env;
 	if (ac == 1)
-		run_prompt();
+		run_prompt(env);
 	else
 		return (write(2, "Too many arguments!\n", 20));
 	return (0);

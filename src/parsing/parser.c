@@ -1,8 +1,8 @@
-#include "minishell.h"
+#include "../../lib/minishell.h"
 
-static char	*type_check(char *full_line, int *i)
+static t_str	type_check(t_str full_line, t_arr i)
 {
-	char	*error;
+	t_str	error;
 
 	if (full_line[*i] == '"' || full_line[*i] == '\'')
 	{
@@ -25,10 +25,10 @@ static char	*type_check(char *full_line, int *i)
 	return (NULL);
 }
 
-static char	*valid_syntax(char *line)
+static t_str	valid_syntax(t_str line)
 {
 	int		i;
-	char	*error;
+	t_str	error;
 
 	if (!line || !*line)
 		return (NULL);
@@ -51,6 +51,7 @@ static char	*valid_syntax(char *line)
 	}
 	return (NULL);
 }
+
 static t_cmd	*init_command_list(void)
 {
 	t_cmd	*commands;
@@ -65,7 +66,7 @@ static t_cmd	*init_command_list(void)
 	return (commands);
 }
 
-static void	fill_commands(char **cmds, t_cmd *curr)
+static void	fill_commands(t_vtr cmds, t_cmd *curr)
 {
 	int	i;
 
@@ -90,11 +91,11 @@ static void	fill_commands(char **cmds, t_cmd *curr)
 }
 
 
-t_cmd	*parser(char *line, char **env, t_shell *shell)
+t_cmd	*parser(t_str line, t_vtr env, t_shell *shell)
 {
-	char	**cmds;
+	t_vtr	cmds;
 	t_cmd	*commands;
-	char	*new_line;
+	t_str	new_line;
 	int k = 0;
 	(void)env;
 	(void)shell;
@@ -121,7 +122,7 @@ t_cmd	*parser(char *line, char **env, t_shell *shell)
 	if (!commands)
 		return (free(new_line), NULL);
 	fill_commands(cmds, commands);
-	free_args(cmds);
+	free_vtr(cmds);
 	free(new_line);
 	return (commands);
 }

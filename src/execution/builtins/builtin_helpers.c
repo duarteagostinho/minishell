@@ -3,77 +3,56 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_helpers.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 10:59:57 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/08/08 02:00:12 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/08/25 16:27:59 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../../lib/minishell.h"
+
+void	ft_swap(void **a, void **b)
+{
+	void *tmp;
+
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
+}
 
 int	is_valid_id(const t_str key)
 {
 	int	i;
 
 	i = 0;
-	if (!key || !key[i] || !ft_isalpha(key[i]) || key[i] != '_')
-		return (0);
+	if (!key || !key[i] || (!ft_isalpha(key[i]) && key[i] != '_'))
+		return (EXIT_FAILURE);
 	while (key[i] && (ft_isalnum(key[i]) || key[i] == '_'))
 		i++;
 	if (key[i] != '\0' && key[i] != '=')
-		return (0);
-	return (1);
-}
-
-int	check_flag(t_vtr args)
-{
-	int	flags;
-
-	flags = 0;
-	while (*args)
-	{
-		while (**args)
-		{
-			if (**args++ == '-' && **args == 'n')
-				flags++;
-			(*args)++;
-		}
-		args++;
-	}
-	return (flags);
-}
-
-int	count_commands(t_cmd *commands)
-{
-	int	  count;
-	t_cmd *current;
-
-	count = 0;
-	current = commands;
-	while (current)
-	{
-		count++;
-		current = current->next;
-	}
-	return (count);
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
 
 t_func  is_builtin(t_str command)
 {
-	if (!ft_strcmp("env", command))
+	size_t	size;
+
+	size = ft_strlen(command);
+	if (!ft_strncmp("env", command, size))
 		return (env);
-	else if (!ft_strcmp("export", command))
+	else if (!ft_strncmp("export", command, size))
 		return (ft_export);
-	else if (!ft_strcmp("exit", command))
+	else if (!ft_strncmp("exit", command, size))
 		return (ft_exit);
-	else if (!ft_strcmp("echo", command))
+	else if (!ft_strncmp("echo", command, size))
 		return (echo);
-	else if (!ft_strcmp("pwd", command))
+	else if (!ft_strncmp("pwd", command, size))
 		return (pwd);
-	else if (!ft_strcmp("cd", command))
+	else if (!ft_strncmp("cd", command, size))
 		return (cd);
-	else if (!ft_strcmp("unset", command))
+	else if (!ft_strncmp("unset", command, size))
 		return (unset);
 	return (NULL);
 }
@@ -93,13 +72,8 @@ t_str is_external(t_shell *shell)
 	{
 		tmp = ft_strjoin(paths[i], "/");
 		path = ft_strjoin(tmp, shell->cmd->args[0]);
-		if (access(path, X_OK))
-		{
-			free_vtr(paths);
-			return (free(tmp), path);
-		}
-		free(tmp);
-		free(path);
+		if (access(path, X_OK) == 0)
+			return (free_vtr(paths), free(tmp), path);
 	}
-	return (NULL);
+	return (free_vtr(paths), free(tmp),	free(path), NULL);
 }

@@ -3,31 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   init_shell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 21:23:05 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/07/10 17:16:25 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/08/21 18:05:45 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../lib/minishell.h"
 
-t_vtr empty_env(t_vtr env)
+static void  lvl_up(t_shell *shell)
 {
+	int	  sh_lvl;
+	t_str new_lvl;
 
+	sh_lvl = ft_atoi(get_env_val(shell->env, "SHLVL"));
+	new_lvl = ft_itoa(++sh_lvl);
+	add_env_var(shell->env, "SHLVL", new_lvl);
+	free(new_lvl);
 }
 
-t_vtr init_env(t_vtr envp)
+static void empty_env(t_vtr env)
 {
-
+	add_env_var(env, "PWD", getcwd(NULL, 0));
+	add_env_var(env, "SHLVL", "1");
 }
 
-void  init_shell(t_vtr envp)
+void  init_shell(t_vtr env)
 {
+	int	  i;
 
-}
-
-void  lvl_up(t_shell *shell)
-{
-
+	i = -1;
+	if (env && *env)
+	{
+		shell()->env = ft_calloc(get_sizeof_args(env) + 1, sizeof(t_str));
+		while (env[++i])
+			shell()->env[i] = ft_strdup(env[i]);
+	}
+	else
+		empty_env(shell()->env);
+	lvl_up(shell());
 }
