@@ -11,7 +11,7 @@
 #  include <stdbool.h>
 #  include <signal.h>
 #  include <sys/wait.h>
-#  include "Libft/libft.h"
+#  include "libft/libft.h"
 
 #  define PARENT 1
 #  define CHILD 2
