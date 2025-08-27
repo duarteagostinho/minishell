@@ -1,32 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unset_builtin.c                                    :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/28 16:43:32 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/08/25 16:32:36 by mrapp-he         ###   ########.fr       */
+/*   Created: 2024/10/29 23:43:38 by mrapp-he          #+#    #+#             */
+/*   Updated: 2024/11/22 21:27:58 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../lib/minishell.h"
+#include "libft.h"
 
-int	unset(t_shell *shell)
+char	*ft_strdup(const char *str)
 {
-	int	  	i;
-	t_vtr	vars;
+	int		i;
+	char	*dup;
 
-	i = 0;
-	vars = shell->cmd->args;
-	printf("%i\n", get_sizeof_args(shell->env));
-	while (vars[++i])
-	{
-		printf("1\n");
-		if (is_valid_id(vars[i])
-		|| rmv_env_var(shell->env, vars[i]))
-			return (EXIT_FAILURE);
-	}
-	printf("%i\n", get_sizeof_args(shell->env));
-	return (EXIT_SUCCESS);
+	i = -1;
+	dup = malloc((ft_strlen(str) + 1) * sizeof(char));
+	if (!dup)
+		return (NULL);
+	while (str[++i])
+		dup[i] = str[i];
+	dup[i] = '\0';
+	return (dup);
 }

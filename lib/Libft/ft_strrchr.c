@@ -1,32 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unset_builtin.c                                    :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/28 16:43:32 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/08/25 16:32:36 by mrapp-he         ###   ########.fr       */
+/*   Created: 2024/10/30 19:10:54 by mrapp-he          #+#    #+#             */
+/*   Updated: 2024/11/22 21:26:40 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../lib/minishell.h"
+#include "libft.h"
 
-int	unset(t_shell *shell)
+char	*ft_strrchr(const char *str, int c)
 {
-	int	  	i;
-	t_vtr	vars;
+	char	*occ;
 
-	i = 0;
-	vars = shell->cmd->args;
-	printf("%i\n", get_sizeof_args(shell->env));
-	while (vars[++i])
+	occ = NULL;
+	while (*str)
 	{
-		printf("1\n");
-		if (is_valid_id(vars[i])
-		|| rmv_env_var(shell->env, vars[i]))
-			return (EXIT_FAILURE);
+		if ((unsigned char)*str == (unsigned char)c)
+			occ = (char *)str;
+		str++;
 	}
-	printf("%i\n", get_sizeof_args(shell->env));
-	return (EXIT_SUCCESS);
+	if ((unsigned char)c == '\0')
+		return ((char *)str);
+	return (occ);
 }

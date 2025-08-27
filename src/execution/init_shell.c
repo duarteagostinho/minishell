@@ -3,68 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   init_shell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 21:23:05 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/07/09 13:22:38 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/08/21 18:05:45 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-/* 
-t_env_list	*empty_env(t_env_list *env)
+#include "../../lib/minishell.h"
+
+static void  lvl_up(t_shell *shell)
 {
-	env->head = create_env_node("PWD");
-	env->head->value = getcwd(NULL, 0);
-	if (!env->head->value)
-		return (NULL);
-	add_back_env_node(env, create_env_node("SHLVL=1"));
-	return (env);
+	int	  sh_lvl;
+	t_str new_lvl;
+
+	sh_lvl = ft_atoi(get_env_val(shell->env, "SHLVL"));
+	new_lvl = ft_itoa(++sh_lvl);
+	add_env_var(shell->env, "SHLVL", new_lvl);
+	free(new_lvl);
 }
 
-t_env_list	*init_env(t_vtr envp)
+static void empty_env(t_vtr env)
 {
-	t_env_list	*env;
-
-	env = ft_calloc(1, sizeof(t_env_list));
-	if (!envp || !*envp)
-		return (empty_env(env));
-	while (envp)
-	{
-		if (!add_back_env_node(env, create_env_node(*envp++)))
-			return (NULL);
-	}
-	return (env);
+	add_env_var(env, "PWD", getcwd(NULL, 0));
+	add_env_var(env, "SHLVL", "1");
 }
 
-void  init_shell(t_vtr envp)
+void  init_shell(t_vtr env)
 {
-	ft_bzero(shell(), sizeof(t_shell));
-	shell()->env = init_env(envp);
-	lvl_up(shell());
-}
+	int	  i;
 
-void  lvl_up(t_shell *shell)
-{
-	int			lvl;
-	t_str		new_lvl;
-	t_env_node	*current;
-
-	current = shell->env->head;
-	while (current)
+	i = -1;
+	if (env && *env)
 	{
-		if (!ft_strcmp("SHLVL", current->key))
-		{
-			lvl = ft_atoi(current->value);
-			break ;
-		}
-		current = current->next;
-	}
-	if (current)
-	{
-		free(current->value);
-		current->value = ft_itoa(++lvl);
+		shell()->env = ft_calloc(get_sizeof_args(env) + 1, sizeof(t_str));
+		while (env[++i])
+			shell()->env[i] = ft_strdup(env[i]);
 	}
 	else
-		add_back_env_node(shell->env, create_env_node("SHLVL=1"));
-} */
+		empty_env(shell()->env);
+	lvl_up(shell());
+}

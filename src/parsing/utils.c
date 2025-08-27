@@ -1,16 +1,6 @@
-#include "minishell.h"
+#include "../../lib/minishell.h"
 
-void	free_args(char **array)
-{
-	int	i;
-
-	i = 0;
-	while (array[i])
-		free(array[i++]);
-	free(array);
-}
-
-int	skip_whitespace(char *line, int start)
+int	skip_whitespace(t_str line, int start)
 {
 	int	i;
 
@@ -20,7 +10,7 @@ int	skip_whitespace(char *line, int start)
 	return (i);
 }
 
-int	get_last_quote(char *line)
+int	get_last_quote(t_str line)
 {
 	int		i;
 	char	quote;

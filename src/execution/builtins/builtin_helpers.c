@@ -3,45 +3,77 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_helpers.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 10:59:57 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/07/09 13:21:04 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/08/25 16:27:59 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../../lib/minishell.h"
+
+void	ft_swap(void **a, void **b)
+{
+	void *tmp;
+
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
+}
 
 int	is_valid_id(const t_str key)
 {
-	t_str copy;
+	int	i;
 
-	copy = key;
-	if (!*copy || !ft_isalpha(*copy) || *copy != '_')
-		return (1);
-	while (*copy && (ft_isalnum(*copy) || *copy == '_'))
-		copy++;
-	if (*copy == '=')
-		copy++;
-	if (*copy != '\0')
-		return (1);
-	return (0);
+	i = 0;
+	if (!key || !key[i] || (!ft_isalpha(key[i]) && key[i] != '_'))
+		return (EXIT_FAILURE);
+	while (key[i] && (ft_isalnum(key[i]) || key[i] == '_'))
+		i++;
+	if (key[i] != '\0' && key[i] != '=')
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
 
-int	check_flag(t_vtr args)
+t_func  is_builtin(t_str command)
 {
-	int	flags;
+	size_t	size;
 
-	flags = 0;
-	while (*args)
+	size = ft_strlen(command);
+	if (!ft_strncmp("env", command, size))
+		return (env);
+	else if (!ft_strncmp("export", command, size))
+		return (ft_export);
+	else if (!ft_strncmp("exit", command, size))
+		return (ft_exit);
+	else if (!ft_strncmp("echo", command, size))
+		return (echo);
+	else if (!ft_strncmp("pwd", command, size))
+		return (pwd);
+	else if (!ft_strncmp("cd", command, size))
+		return (cd);
+	else if (!ft_strncmp("unset", command, size))
+		return (unset);
+	return (NULL);
+}
+
+t_str is_external(t_shell *shell)
+{
+	int	  i;
+	t_str tmp;
+	t_str path;
+	t_vtr paths;
+
+	i = -1;
+	paths = ft_split(get_env_val(shell->env, "PATH"), ':');
+	if (!paths)
+		return (NULL);
+	while (paths[++i])
 	{
-		while (**args)
-		{
-			if (**args++ == '-' && **args == 'n')
-				flags++;
-			(*args)++;
-		}
-		args++;
+		tmp = ft_strjoin(paths[i], "/");
+		path = ft_strjoin(tmp, shell->cmd->args[0]);
+		if (access(path, X_OK) == 0)
+			return (free_vtr(paths), free(tmp), path);
 	}
-	return (flags);
+	return (free_vtr(paths), free(tmp),	free(path), NULL);
 }

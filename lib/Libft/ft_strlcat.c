@@ -1,32 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unset_builtin.c                                    :+:      :+:    :+:   */
+/*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/28 16:43:32 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/08/25 16:32:36 by mrapp-he         ###   ########.fr       */
+/*   Created: 2024/10/30 02:28:14 by mrapp-he          #+#    #+#             */
+/*   Updated: 2024/11/22 21:22:55 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../lib/minishell.h"
+#include "libft.h"
 
-int	unset(t_shell *shell)
+size_t	ft_strlcat(char *dest, const char *src, size_t dsz)
 {
-	int	  	i;
-	t_vtr	vars;
+	size_t	dln;
+	size_t	sln;
 
-	i = 0;
-	vars = shell->cmd->args;
-	printf("%i\n", get_sizeof_args(shell->env));
-	while (vars[++i])
+	sln = ft_strlen(src);
+	if (!dsz)
+		return (sln);
+	dln = ft_strlen(dest);
+	if (dln >= dsz)
+		return (dsz + sln);
+	if (sln < dsz - dln)
+		ft_memcpy(dest + dln, src, sln + 1);
+	else
 	{
-		printf("1\n");
-		if (is_valid_id(vars[i])
-		|| rmv_env_var(shell->env, vars[i]))
-			return (EXIT_FAILURE);
+		ft_memcpy(dest + dln, src, dsz - dln - 1);
+		dest[dsz - 1] = 0;
 	}
-	printf("%i\n", get_sizeof_args(shell->env));
-	return (EXIT_SUCCESS);
+	return (dln + sln);
 }

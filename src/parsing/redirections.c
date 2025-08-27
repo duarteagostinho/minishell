@@ -1,6 +1,6 @@
-#include "minishell.h"
+#include "../../lib/minishell.h"
 
-static char	*get_redir_type(char *cmd_str, int *i, int *fd)
+static t_str	get_redir_type(t_str cmd_str, t_arr i, t_arr fd)
 {
 	if (cmd_str[*i] == '>')
 	{
@@ -27,10 +27,10 @@ static char	*get_redir_type(char *cmd_str, int *i, int *fd)
 	return (NULL);
 }
 
-static char	*extract_filename(char *cmd_str, int *i)
+static t_str	extract_filename(t_str cmd_str, t_arr i)
 {
-	char	*temp;
-	char	*filename;
+	t_str	temp;
+	t_str	filename;
 	int		start;
 
 	while (cmd_str[*i] && cmd_str[*i] == '\x1F')
@@ -48,7 +48,7 @@ static char	*extract_filename(char *cmd_str, int *i)
 	return (filename);
 }
 
-static void	add_redir(t_redirect **head, t_redirect **curr, t_redirect *new)
+static void	add_redir(t_rdir **head, t_rdir **curr, t_rdir *new)
 {
 	if (!new)
 		return ;
@@ -59,13 +59,13 @@ static void	add_redir(t_redirect **head, t_redirect **curr, t_redirect *new)
 	(*curr) = new;
 }
 
-static t_redirect	*handle_red(char *type, char *filename, int fd)
+static t_rdir	*handle_red(t_str type, t_str filename, int fd)
 {
-	t_redirect	*red;
+	t_rdir	*red;
 
 	if (!type || !filename)
 		return (NULL);
-	red = malloc(sizeof(t_redirect));
+	red = malloc(sizeof(t_rdir));
 	if (!red)
 		return (NULL);
 	red->args[0] = ft_strdup(type);
@@ -89,14 +89,14 @@ static t_redirect	*handle_red(char *type, char *filename, int fd)
 	return (red);
 }
 
-t_redirect	*extract_redirections(char *cmd_str)
+t_rdir	*extract_redirections(t_str cmd_str)
 {
-	t_redirect	*head;
-	t_redirect	*curr;
-	int			i;
-	char		*type;
-	int			fd;
-	char		*filename;
+	t_rdir	*head;
+	t_rdir	*curr;
+	int		i;
+	t_str	type;
+	int		fd;
+	t_str	filename;
 
 	i = 0;
 	head = NULL;

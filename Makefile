@@ -1,18 +1,15 @@
-# Variables
-CC = gcc
+CC = cc
 CFLAGS = -Wall -Werror -Wextra -Ilib -g
-SRCS =$(shell find src/ -type f -name '*.c')
+SRCS = $(shell find src/ -type f -name '*.c')
 OBJS = $(SRCS:.c=.o)
 NAME = minishell
 LDFLAGS = -lft -L/usr/local/opt/readline/lib -lreadline
 
-# Libft variables
 LIBFT_DIR = lib/libft
 LIBFT_SRCS =$(shell find $(LIBFT_DIR) -type f -name '*.c')
 LIBFT_OBJS = $(LIBFT_SRCS:.c=.o)
 LIBFT_LIB = $(LIBFT_DIR)/libft.a
 
-# Rules
 all: $(NAME)
 
 $(LIBFT_LIB): $(LIBFT_OBJS)

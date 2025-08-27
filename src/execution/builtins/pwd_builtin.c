@@ -6,11 +6,11 @@
 /*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 00:16:27 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/07/09 13:20:05 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/08/07 23:23:37 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../../lib/minishell.h"
 
 int	get_sizeof_args(t_vtr args)
 {
@@ -22,14 +22,15 @@ int	get_sizeof_args(t_vtr args)
 	return (size);
 }
 
-int	pwd(void)
+int	pwd(t_shell *shell)
 {
 	t_str pwd;
 
+	(void)shell;
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 		return (EXIT_FAILURE);
-	ft_putstr_fd(pwd, 1);
+	printf("%s\n", pwd);
 	free(pwd);
 	return (EXIT_SUCCESS);
 }

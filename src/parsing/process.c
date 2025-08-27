@@ -1,47 +1,56 @@
-#include "minishell.h"
+#include "../../lib/minishell.h"
 
-static void	mark_redirection(char* line, char **new_line, int *i)
+static void	mark_redirection(t_str line, t_str new_line, t_arr i, t_arr k)
 {
-	*(*new_line)++ = '\x1F';
-	*(*new_line)++ = line[*i];
+	new_line[(*k)++] = '\x1F';
+	new_line[(*k)++] = line[*i];
 	if (line[*i + 1] == line[*i])
-		*(*new_line)++ = line[++(*i)];
-	*(*new_line)++ = '\x1F';
+	{
+		(*i)++;
+		new_line[(*k)++] = line[*i];
+	}
+	new_line[(*k)++] = '\x1F';
 }
 
-static void	mark_pipes(char *line, char *new_line)
+static t_str	marker(t_str line)
 {
-	int	i;
-	int	c;
+	int		i;
+	int		k;
+	int		quote;
+	t_str	new_line;
 
-	c = 0;
 	i = -1;
+	k = 0;
+	quote = 0;
+	new_line = ft_calloc(ft_strlen(line) * 3 + 1, sizeof(char));
 	while (line[++i])
 	{
-		if ((line[i] == '"' || line[i] == '\'') && !c)
-			c = line[i];
-		else if (c == line[i])
-			c = 0;
-		else if (line[i] == '|' && !c)
-			*new_line = '\x1E';
-		else if (line[i] == ' ' && !c)
-			*new_line = '\x1F';
-		else if (line[i] == '>' || line[i] == '<')
+		if ((line[i] == '\'' || line[i] == '"') && !quote)
+			quote = line[i];
+		else if (line[i] == quote)
+			quote = 0;
+		
+		if (line[i] == '|' && !quote)
+			new_line[k] = '\x1E';
+		else if (line[i] == ' ' && !quote)
+			new_line[k] = '\x1F';
+		else if ((line[i] == '>' || line[i] == '<') && !quote)
 		{
-			mark_redirection(line, &new_line, &i);
+			mark_redirection(line, new_line, &i, &k);
 			continue;
 		}
 		else
-			*new_line = line[i];
-		new_line++;
+			new_line[k] = line[i];
+		k++;
 	}
+	return new_line;
 }
 
-char	*remove_quotes(char *str)
+t_str	remove_quotes(t_str str)
 {
 	int		i;
 	int		j;
-	char	*clean;
+	t_str	clean;
 	char	quote;
 
 	if (!str)
@@ -66,20 +75,20 @@ char	*remove_quotes(char *str)
 	return (clean);
 }
 
-char	*prepare_line(char *line)
+t_str	prepare_line(t_str line)
 {
-	char	*new_line;
+	t_str	new_line;
 
-	new_line = ft_calloc(ft_strlen(line) + 1, 3);
+	new_line = ft_calloc(ft_strlen(line) * 3 + 1, sizeof(char));
 	if (!new_line)
 		return (NULL);
-	mark_pipes(line, new_line);
+	new_line = marker(line);
 	return (new_line);
 }
 
-static char	*remove_redirections(char *cmd_str)
+static t_str	remove_redirections(t_str cmd_str)
 {
-	char	*clean_cmd;
+	t_str	clean_cmd;
 	int		i;
 	int		j;
 
@@ -106,31 +115,50 @@ static char	*remove_redirections(char *cmd_str)
 	return (clean_cmd);
 }
 
-char	**process_args(char *cmd_str)
+t_vtr	process_args(t_str cmd_str)
 {
 	int		i;
-	char	**args;
-	char	**split;
-	char	*clean_cmd;
-
+	t_vtr	args;
+	t_vtr	split;
+	t_str	clean_cmd;
+	
 	clean_cmd = remove_redirections(cmd_str);
 	if (!clean_cmd)
 		return (NULL);
+	
 	split = ft_split(clean_cmd, '\x1F');
 	free(clean_cmd);
+	
 	i = 0;
 	while (split[i])
+	{
+		printf("[%s] ", split[i]);
 		i++;
+	}
+	printf("\n");
+	
 	args = ft_calloc(sizeof(char *), i + 1);
 	if (!args)
 	{
-		free_args(split);
+		free_vtr(split);
 		return (NULL);
 	}
+	
 	i = -1;
 	while (split[++i])
+	{
 		args[i] = remove_quotes(split[i]);
+	}
 	args[i] = NULL;
-	free_args(split);
+	
+	i = 0;
+	while (args[i])
+	{
+		printf("[%s] ", args[i]);
+		i++;
+	}
+	printf("\n");
+	
+	free_vtr(split);
 	return (args);
 }

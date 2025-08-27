@@ -1,6 +1,6 @@
-#include "minishell.h"
+#include "../../lib/minishell.h"
 
-char	*check_redir(char *line)
+t_str	check_redir(t_str line)
 {
 	int		i;
 	char	redir;
@@ -22,7 +22,7 @@ char	*check_redir(char *line)
 		return (ERR_SYN_RD);
 	return (NULL);
 }
-char	*quotes_valid(char *line)
+t_str	quotes_valid(t_str line)
 {
 	int	i;
 	int	quote_end;
@@ -44,7 +44,7 @@ char	*quotes_valid(char *line)
 	return (NULL);
 }
 
-char	*handle_quotes(char *line, int *i)
+t_str	handle_quotes(t_str line, t_arr i)
 {
 	char	quote;
 
@@ -58,7 +58,7 @@ char	*handle_quotes(char *line, int *i)
 	return (NULL);
 }
 
-char	*handle_pipes(char *line, int *i)
+t_str	handle_pipes(t_str line, t_arr i)
 {
 	if (line[*i + 1] == line[*i])
 		return (ERR_SYN_PIPE);
@@ -69,7 +69,7 @@ char	*handle_pipes(char *line, int *i)
 	return (NULL);
 }
 
-char	*handle_redirections(char *line, int *i)
+t_str	handle_redirections(t_str line, t_arr i)
 {
 	int	quote_end;
 
