@@ -1,4 +1,4 @@
-#include "../../lib/minishell.h"
+#include "minishell.h"
 
 static t_str	get_redir_type(t_str cmd_str, t_arr i, t_arr fd)
 {
@@ -72,7 +72,6 @@ static t_rdir	*handle_red(t_str type, t_str filename, int fd)
 	printf("type = ;%s;\n", red->args[0]);
 	if (!red->args[0])
 	{
-		printf("here\n");
 		free(red);
 		return (NULL);
 	}

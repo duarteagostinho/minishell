@@ -1,4 +1,4 @@
-#include "../../lib/minishell.h"
+#include "minishell.h"
 
 t_str	extract_var_name(t_str str, int start)
 {

@@ -1,4 +1,4 @@
-#include "../../lib/minishell.h"
+#include "minishell.h"
 
 static t_str	type_check(t_str full_line, t_arr i)
 {

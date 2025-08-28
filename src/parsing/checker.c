@@ -1,4 +1,4 @@
-#include "../../lib/minishell.h"
+#include "minishell.h"
 
 t_str	check_redir(t_str line)
 {

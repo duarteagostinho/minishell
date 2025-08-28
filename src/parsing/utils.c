@@ -1,4 +1,4 @@
-#include "../../lib/minishell.h"
+#include "minishell.h"
 
 int	skip_whitespace(t_str line, int start)
 {

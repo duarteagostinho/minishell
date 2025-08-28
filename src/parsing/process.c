@@ -1,4 +1,4 @@
-#include "../../lib/minishell.h"
+#include "minishell.h"
 
 static void	mark_redirection(t_str line, t_vtr new_line, t_arr i)
 {

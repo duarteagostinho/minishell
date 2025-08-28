@@ -1,23 +1,9 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   echo_builtin.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/09 20:19:32 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/08/20 19:11:31 by mrapp-he         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "../../../lib/minishell.h"
-
-
+#include "minishell.h"
 
 int	echo(t_shell *shell)
 {
-	int	  i;
-	t_vtr args;
+	int		i;
+	t_vtr	args;
 
 	i = 1;
 	args = shell->cmd->args;
@@ -28,6 +14,7 @@ int	echo(t_shell *shell)
 	}
 	else if (get_sizeof_args(args) > 1)
 	{
+		printf("i = %d\n", i);
 		while (args[i][0] == '-' && args[i][1] == 'n')
 			i++;
 		while (args[i])
