@@ -3,20 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 14:49:12 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/08/27 11:56:30 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/08/28 17:13:27 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// void  close_redirects(t_rdir *redirect)
-// {
-//
-// }
+void  close_redirects(t_rdir *redirect)
+{
+	if (!redirect)
+		return ;
+	if (redirect && !redirect->next)
+		close(redirect->fd);
+	while (redirect->next)
+	{
+		close(redirect->fd);
+		redirect = redirect->next;
+	}	
+}
 
+void exec_redirections(t_rdir *redir)
+{
+	if (!redir)
+		return;
+	while (redir && !redir->next)
+	{
+		if (ft_strncmp(redir->args[0], "<", 1))
+			open(redir->args[1], O_RDONLY);
+		else if (ft_strncmp(redir->args[0], ">", 1))
+
+	}
+}
 void  handle_single(t_shell *shell)
 {
 	t_func	builtin;
