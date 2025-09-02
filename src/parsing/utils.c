@@ -32,3 +32,32 @@ int	get_last_quote(t_str line)
 	}
 	return (0);
 }
+
+t_str	remove_quotes(t_str str)
+{
+	int		i;
+	int		j;
+	t_str	clean;
+	char	quote;
+
+	if (!str)
+		return (NULL);
+	clean = ft_calloc(1, ft_strlen(str) + 1);
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		if (str[i] == '\'' || str[i] == '"')
+		{
+			quote = str[i++];
+			while (str[i] && str[i] != quote)
+				clean[j++] = str[i++];
+			if (str[i])
+				i++;
+		}
+		else
+			clean[j++] = str[i++];
+	}
+	clean[j] = '\0';
+	return (clean);
+}

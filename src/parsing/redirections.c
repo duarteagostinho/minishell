@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirections.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/01 13:20:54 by duandrad          #+#    #+#             */
+/*   Updated: 2025/09/01 13:33:39 by duandrad         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../lib/minishell.h"
 
 static t_str	get_redir_type(t_str cmd_str, t_arr i, t_arr fd)
@@ -48,15 +60,21 @@ static t_str	extract_filename(t_str cmd_str, t_arr i)
 	return (filename);
 }
 
-static void	add_redir(t_rdir **head, t_rdir **curr, t_rdir *new)
+static void	add_redir(t_rdir **head, t_rdir *new)
 {
+	t_rdir	*last;
+
 	if (!new)
 		return ;
 	if (!*head)
+	{
 		*head = new;
-	else
-		(*curr)->next = new;
-	(*curr) = new;
+		return ;
+	}
+	last = *head;
+	while (last->next)
+		last = last->next;
+	last->next = new;
 }
 
 static t_rdir	*handle_red(t_str type, t_str filename, int fd)
@@ -69,15 +87,12 @@ static t_rdir	*handle_red(t_str type, t_str filename, int fd)
 	if (!red)
 		return (NULL);
 	red->args[0] = ft_strdup(type);
-	printf("type = ;%s;\n", red->args[0]);
 	if (!red->args[0])
 	{
-		printf("here\n");
 		free(red);
 		return (NULL);
 	}
 	red->args[1] = ft_strdup(filename);
-	printf("filename = ;%s;\n", red->args[1]);
 	if (!red->args[1])
 	{
 		free(red->args[0]);
@@ -92,7 +107,6 @@ static t_rdir	*handle_red(t_str type, t_str filename, int fd)
 t_rdir	*extract_redirections(t_str cmd_str)
 {
 	t_rdir	*head;
-	t_rdir	*curr;
 	int		i;
 	t_str	type;
 	int		fd;
@@ -100,13 +114,13 @@ t_rdir	*extract_redirections(t_str cmd_str)
 
 	i = 0;
 	head = NULL;
-	curr = NULL;
 	while (cmd_str[i])
 	{
-		if ((type = get_redir_type(cmd_str, &i, &fd)) && 
-			(filename = extract_filename(cmd_str, &i)))
+		type = get_redir_type(cmd_str, &i, &fd);
+		filename = extract_filename(cmd_str, &i);
+		if (type && filename)
 		{
-			add_redir(&head, &curr, handle_red(type, filename, fd));
+			add_redir(&head, handle_red(type, filename, fd));
 			free(filename);
 		}
 		else

@@ -97,8 +97,6 @@ t_cmd	*parser(t_str line, t_vtr env, t_shell *shell)
 	t_cmd	*commands;
 	t_str	new_line;
 	int k = 0;
-	(void)env;
-	(void)shell;
 
 	if (!line || !*line)
 		return (NULL);

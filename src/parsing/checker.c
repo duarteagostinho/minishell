@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   checker.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/01 13:01:38 by duandrad          #+#    #+#             */
+/*   Updated: 2025/09/01 13:03:50 by duandrad         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../lib/minishell.h"
 
 t_str	check_redir(t_str line)
@@ -6,12 +18,12 @@ t_str	check_redir(t_str line)
 	char	redir;
 
 	i = 0;
-	if ((line[i] == '>' && line[i + 1] == '<') || (line[i] == '<' &&
-		line[i + 1] == '>'))
+	if ((line[i] == '>' && line[i + 1] == '<') || (line[i] == '<'
+			&& line[i + 1] == '>'))
 		return (ERR_SYN_RD);
-	else if ((line[i] == '>' && line[i + 1] == '>' && line[i + 2] == '>') ||
-		(line[i] == '<' && line[i + 1] == '<' && line[i + 2] == '<'))
-			return (ERR_SYN_RD);
+	else if ((line[i] == '>' && line[i + 1] == '>' && line[i + 2] == '>')
+		|| (line[i] == '<' && line[i + 1] == '<' && line[i + 2] == '<'))
+		return (ERR_SYN_RD);
 	redir = line[i];
 	if (line[i + 1] == redir)
 		i += 2;
@@ -22,14 +34,15 @@ t_str	check_redir(t_str line)
 		return (ERR_SYN_RD);
 	return (NULL);
 }
+
 t_str	quotes_valid(t_str line)
 {
 	int	i;
 	int	quote_end;
 
 	i = 0;
-	while (line[i] && line[i] != ' ' &&
-		line[i] != '|' && line[i] != '<' && line[i] != '>')
+	while (line[i] && line[i] != ' '
+		&& line[i] != '|' && line[i] != '<' && line[i] != '>')
 	{
 		if (line[i] == '"' || line[i] == '\'')
 		{
@@ -82,8 +95,8 @@ t_str	handle_redirections(t_str line, t_arr i)
 	*i = skip_whitespace(line, *i);
 	if (quotes_valid(&line[*i]))
 		return (ERR_SYN_QUOTES);
-	while (line[*i] && line[*i] != ' ' && line[*i] != '|' && 
-		line[*i] != '<' && line[*i] != '>')
+	while (line[*i] && line[*i] != ' ' && line[*i] != '|'
+		&& line[*i] != '<' && line[*i] != '>')
 	{
 		if (line[*i] == '"' || line[*i] == '\'')
 		{

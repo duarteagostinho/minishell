@@ -3,60 +3,58 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 14:49:12 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/08/28 17:13:27 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/09/01 10:58:05 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void  close_redirects(t_rdir *redirect)
+void	exec_external(t_shell *shell)
 {
-	if (!redirect)
-		return ;
-	if (redirect && !redirect->next)
-		close(redirect->fd);
-	while (redirect->next)
-	{
-		close(redirect->fd);
-		redirect = redirect->next;
-	}	
-}
+	pid_t	pid;
+	t_str	ext_path;
 
-void exec_redirections(t_rdir *redir)
-{
-	if (!redir)
-		return;
-	while (redir && !redir->next)
+	pid = fork();
+	ext_path = is_external(shell);
+	if (pid == 0)
 	{
-		if (ft_strncmp(redir->args[0], "<", 1))
-			open(redir->args[1], O_RDONLY);
-		else if (ft_strncmp(redir->args[0], ">", 1))
-
+		execve(ext_path, shell->cmd->args, shell->env);
+		exit(EXIT_FAILURE);
+	}
+	else if (pid > 0)
+	{
+		wait(NULL);
+		restore_redirections(shell);
 	}
 }
-void  handle_single(t_shell *shell)
+
+void  execute_cmd(t_shell *shell)
 {
 	t_func	builtin;
 	t_str	ext_path;
-	pid_t	pid;
 
+	setup_redirection(shell);
+	if (shell->cmd->redirect)
+		exec_redirections(shell);
 	builtin = is_builtin(shell->cmd->args[0]);
-	if (builtin && builtin(shell) == EXIT_SUCCESS)
-		return ;
-	ext_path = is_external(shell);
-	if (ext_path)
-		pid = fork();
-	if (pid == 0)
-		execve(ext_path, shell->cmd->args, shell->env);
-	else if (pid > 0)
-		wait(NULL);
+	if (builtin)
+	{
+		builtin(shell);
+		restore_redirections(shell);
+	}
+	else
+	{
+		ext_path = is_external(shell);
+		if (ext_path)
+			exec_external(shell);
+	}
 }
 
 void  executor(t_shell *shell)
 {
-	if (shell->cmd && !shell->cmd->next)
-		handle_single(shell);
+	if (shell->cmd)
+		execute_cmd(shell);
 }
