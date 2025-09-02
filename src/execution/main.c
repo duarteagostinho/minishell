@@ -1,6 +1,6 @@
 #include "../../lib/minishell.h"
 
-/* static void	print_commands(t_cmd *commands)
+static void	print_commands(t_cmd *commands)
 {
 	t_cmd	*curr;
 	int		cmd_num;
@@ -29,7 +29,7 @@
 		curr = curr->next;
 		cmd_num++;
 	}
-} */
+}
 
 static void	run_prompt(t_vtr env)
 {
@@ -45,11 +45,11 @@ static void	run_prompt(t_vtr env)
 		if (ft_strlen(prompt))
 			add_history(prompt);
 		shell()->cmd = parser(prompt, shell()->env, shell());
-/* 		if (shell()->cmd)
+		if (shell()->cmd)
 		{
 			printf("\n--- Parsing ---\n");
 			print_commands(shell()->cmd);
-		} */
+		}
 		executor(shell());
 		free(prompt);
 	}
@@ -65,6 +65,11 @@ t_shell	*shell(void)
 int	main(int ac, t_vtr av, t_vtr env)
 {
 	(void) av;
+	if(!*env)
+	{
+		printf("NO ENVIRONMENT!!!\n");
+		//TODO
+	}
 	if (ac == 1)
 		run_prompt(env);
 	else

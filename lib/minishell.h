@@ -65,19 +65,13 @@ t_str		remove_quotes(t_str str);
 t_str		handle_quotes(t_str line, t_arr i);
 t_str		prepare_line(t_str line);
 t_str		handle_pipes(t_str line, t_arr i);
-void		add_redir(t_rdir **head, t_rdir **curr, t_rdir *new);
 t_rdir		*extract_redirections(t_str cmd_str);
+t_str	extract_var_name(t_str str, int start);
+
 t_str		handle_redirections(t_str line, t_arr i);
 int			get_special_var_length(t_str str, int i, t_shell *shell);
 int			get_env_var_length(t_str str, int i, t_vtr env);
-int			get_var_name_length(t_str str, int start);
 int			calculate_expansion_length(t_str str, t_vtr env, t_shell *shell);
-void		process_variable(t_str str, int *i, t_str expanded, 
-				int *pos, t_vtr env, t_shell *shell);
-void		copy_value_to_expansion(t_str value, t_str exp, t_arr k);
-void		expand_special_var(t_str str, t_arr i, t_str exp, t_shell *shell);
-void		handle_var_expansion(t_str var_value, t_str expanded, t_arr pos);
-void		expand_env_var(t_str str, t_arr i, t_str expanded, t_vtr env);
 t_str		expand_variables(t_str str, t_vtr env, t_shell *shell);
 t_cmd		*parser(t_str line, t_vtr env, t_shell *shell);
 t_vtr		process_args(t_str cmd_str);

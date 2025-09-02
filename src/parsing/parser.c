@@ -90,7 +90,6 @@ static void	fill_commands(t_vtr cmds, t_cmd *curr)
 	}
 }
 
-
 t_cmd	*parser(t_str line, t_vtr env, t_shell *shell)
 {
 	t_vtr	cmds;

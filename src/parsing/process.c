@@ -6,7 +6,7 @@
 /*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 13:04:04 by duandrad          #+#    #+#             */
-/*   Updated: 2025/09/01 13:20:27 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/09/02 15:15:51 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ static t_str	marker(t_str line, int *i, int *k)
 
 t_str	prepare_line(t_str line)
 {
-	int		i;
-	int		k;
+	int	i;
+	int	k;
 	t_str	new_line;
 
 	i = -1;
@@ -100,7 +100,7 @@ t_vtr	process_args(t_str cmd_str)
 	t_vtr	args;
 	t_vtr	split;
 	t_str	clean_cmd;
-
+	
 	clean_cmd = remove_redirections(cmd_str);
 	if (!clean_cmd)
 		return (NULL);

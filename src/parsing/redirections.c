@@ -6,7 +6,7 @@
 /*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 13:20:54 by duandrad          #+#    #+#             */
-/*   Updated: 2025/09/01 13:33:39 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/09/02 15:06:00 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,21 +60,15 @@ static t_str	extract_filename(t_str cmd_str, t_arr i)
 	return (filename);
 }
 
-static void	add_redir(t_rdir **head, t_rdir *new)
+static void	add_redir(t_rdir **head, t_rdir **curr, t_rdir *new)
 {
-	t_rdir	*last;
-
 	if (!new)
 		return ;
 	if (!*head)
-	{
 		*head = new;
-		return ;
-	}
-	last = *head;
-	while (last->next)
-		last = last->next;
-	last->next = new;
+	else
+		(*curr)->next = new;
+	(*curr) = new;
 }
 
 static t_rdir	*handle_red(t_str type, t_str filename, int fd)
@@ -107,6 +101,7 @@ static t_rdir	*handle_red(t_str type, t_str filename, int fd)
 t_rdir	*extract_redirections(t_str cmd_str)
 {
 	t_rdir	*head;
+	t_rdir	*curr;
 	int		i;
 	t_str	type;
 	int		fd;
@@ -114,13 +109,13 @@ t_rdir	*extract_redirections(t_str cmd_str)
 
 	i = 0;
 	head = NULL;
+	curr = NULL;
 	while (cmd_str[i])
 	{
-		type = get_redir_type(cmd_str, &i, &fd);
-		filename = extract_filename(cmd_str, &i);
-		if (type && filename)
+		if ((type = get_redir_type(cmd_str, &i, &fd)) && 
+			(filename = extract_filename(cmd_str, &i)))
 		{
-			add_redir(&head, handle_red(type, filename, fd));
+			add_redir(&head, &curr, handle_red(type, filename, fd));
 			free(filename);
 		}
 		else

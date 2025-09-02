@@ -6,7 +6,7 @@
 /*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 14:45:43 by duandrad          #+#    #+#             */
-/*   Updated: 2025/09/02 12:13:13 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/09/02 15:06:30 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_str	extract_var_name(t_str str, int start)
 		len++;
 	if (len == 0)
 		return (NULL);
-	name = ft_calloc(len + 1, 1);
+	name = malloc(len + 1);
 	if (!name)
 		return (NULL);
 	i = 0;
@@ -39,26 +39,11 @@ t_str	extract_var_name(t_str str, int start)
 	return (name);
 }
 
-static void	copy_value_to_expansion(t_str value, t_str exp, t_arr k)
-{
-	int	j;
-
-	j = 0;
-	while (value[j])
-	{
-		exp[*k + j] = value[j];
-		j++;
-	}
-	*k += j;
-	free(value);
-}
-
-static void	expand_special_var(t_str str, t_arr i, t_str exp, t_shell *shell)
+static void	expand_special_var(t_str str, t_arr i, t_str exp, t_arr k, t_shell *shell)
 {
 	t_str	value;
-	int		k;
+	int		j;
 	
-	k = *i;
 	if (str[*i + 1] == '$')
 		value = ft_itoa(getpid());
 	else if (str[*i + 1] == '?')
@@ -66,42 +51,44 @@ static void	expand_special_var(t_str str, t_arr i, t_str exp, t_shell *shell)
 	else
 		value = NULL;
 	if (value)
-		copy_value_to_expansion(value, exp, &k);
-	*i = k + 2;
-}
-
-static void	handle_var_expansion(t_str var_value, t_str expanded, t_arr pos)
-{
-	int	j;
-
-	j = 0;
-	while (var_value[j])
 	{
-		expanded[*pos + j] = var_value[j];
-		j++;
+		j = 0;
+		while (value[j])
+		{
+			exp[*k + j] = value[j];
+			j++;
+		}
+		*k += j;
+		free(value);
 	}
-	*pos += j;
+	*i += 2;
 }
 
-static void	expand_env_var(t_str str, t_arr i, t_str expanded, t_vtr env)
+static void	expand_env_var(t_str str, t_arr i, t_str expanded, t_arr pos, t_vtr env)
 {
 	t_str	var_name;
 	t_str	var_value;
-	int		pos;
+	int		j;
 
-	pos = *i;
 	var_name = extract_var_name(str, *i + 1);
 	if (var_name)
 	{
 		var_value = get_env_val(env, var_name);
 		if (var_value)
-			handle_var_expansion(var_value, expanded, &pos);
+		{
+			j = 0;
+			while (var_value[j])
+			{
+				expanded[*pos + j] = var_value[j];
+				j++;
+			}
+			*pos += j;
+		}
 		*i += ft_strlen(var_name) + 1;
 		free(var_name);
 	}
 	else
-		expanded[pos++] = str[(*i)++];
-	*i = pos;
+		expanded[(*pos)++] = str[(*i)++];
 }
 
 t_str	expand_variables(t_str str, t_vtr env, t_shell *shell)
@@ -118,7 +105,14 @@ t_str	expand_variables(t_str str, t_vtr env, t_shell *shell)
 	while (str[i])
 	{
 		if (str[i] == '$' && str[i + 1])
-			process_variable(str, &i, expanded, &pos, env, shell);
+		{
+			if (str[i + 1] == '$' || str[i + 1] == '?')
+				expand_special_var(str, &i, expanded, &pos, shell);
+			else if (ft_isalnum(str[i + 1]) || str[i + 1] == '_')
+				expand_env_var(str, &i, expanded, &pos, env);
+			else
+				expanded[pos++] = str[i++];
+		}
 		else
 			expanded[pos++] = str[i++];
 	}
