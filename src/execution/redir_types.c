@@ -51,7 +51,7 @@ void	handle_heredoc(t_rdir *redir)
 	line = readline(">");
 	while (line)
 	{
-		if (ft_strcmp(line, redir->args[1]) == 0)
+		if (ft_strncmp(line, redir->args[1], 2) == 0)
 		{
 			close(fd);
 			fd = open("tmp_heredoc.txt", O_RDONLY);

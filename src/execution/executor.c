@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 14:49:12 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/09/02 15:10:54 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/09/02 17:00:00 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	exec_external(t_shell *shell)
 	ext_path = is_external(shell);
 	if (pid == 0)
 	{
+		
 		execve(ext_path, shell->cmd->args, shell->env);
 		exit(EXIT_FAILURE);
 	}

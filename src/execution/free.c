@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 18:50:41 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/08/24 10:00:47 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/09/02 18:03:05 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,7 @@ void free_vtr(t_vtr args)
 	if (!args)
 		return ;
 	while (args[++i])
-	{
-		if (args[i])
-			free(args[i]);
-	}
+		free(args[i]);
 	free(args);
 }
 

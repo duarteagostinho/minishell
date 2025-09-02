@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_helpers.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 10:59:57 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/08/25 16:27:59 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/09/02 18:29:00 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,9 @@ t_str is_external(t_shell *shell)
 	t_str path;
 	t_vtr paths;
 
+	path = shell->cmd->args[0];
+	if (access(path, X_OK) == 0)
+		return (path);
 	i = -1;
 	paths = ft_split(get_env_val(shell->env, "PATH"), ':');
 	if (!paths)
@@ -73,7 +76,7 @@ t_str is_external(t_shell *shell)
 		tmp = ft_strjoin(paths[i], "/");
 		path = ft_strjoin(tmp, shell->cmd->args[0]);
 		if (access(path, X_OK) == 0)
-			return (free_vtr(paths), free(tmp), path);
+			return ( free_vtr(paths), free(tmp), path);
 	}
-	return (free_vtr(paths), free(tmp),	free(path), NULL);
+	return (printf("Command not found %s\n", path), free_vtr(paths), free(tmp),	free(path), NULL);
 }
