@@ -45,7 +45,7 @@ int	ft_exit(t_shell *shell)
 	int	code;
 
 	printf("exit\n");
-	if (shell->cmd->args[2])
+	if (shell->cmd->args[1] && shell->cmd->args[2])
 	{
 		printf("minishell: exit: too many arguments\n");
 		return (EXIT_FAILURE);

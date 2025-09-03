@@ -22,13 +22,13 @@ void	exec_redirections(t_shell *shell)
 		return;
 	while(redir)
 	{
-		if (ft_strncmp(redir->args[0], ">>", 3) == 0)
+		if (ft_strcmp(redir->args[0], ">>") == 0)
 			append_redir(redir);
-		else if (ft_strncmp(redir->args[0], "<<", 3) == 0)
+		else if (ft_strcmp(redir->args[0], "<<") == 0)
 			handle_heredoc(redir);
-		else if (ft_strncmp(redir->args[0], "<", 3) == 0)
+		else if (ft_strcmp(redir->args[0], "<") == 0)
 			input_redir(redir);
-		else if (ft_strncmp(redir->args[0], ">", 3) == 0)
+		else if (ft_strcmp(redir->args[0], ">") == 0)
 			output_redir(redir);
 		
 		redir = redir->next;

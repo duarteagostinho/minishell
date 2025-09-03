@@ -38,7 +38,9 @@ static void	run_prompt(t_vtr env)
 	init_shell(env);
 	while (1)
 	{
-		printf(COLOR_RESET GRN"%s"COLOR_RESET, getcwd(NULL, 0));
+		t_str cwd = getcwd(NULL, 0);
+		printf(COLOR_RESET GRN"%s"COLOR_RESET, cwd);
+		free(cwd);
 		prompt = readline(PRP" $> "WHT);
 		if (!prompt)
 			return ;

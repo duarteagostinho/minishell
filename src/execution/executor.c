@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 14:49:12 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/09/02 17:00:00 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/09/03 03:39:38 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,20 @@ void	exec_external(t_shell *shell)
 	pid_t	pid;
 	t_str	ext_path;
 
-	pid = fork();
 	ext_path = is_external(shell);
+	if (!ext_path)
+		return ;
+	pid = fork();
 	if (pid == 0)
 	{
-		
 		execve(ext_path, shell->cmd->args, shell->env);
+		free(ext_path);
 		exit(EXIT_FAILURE);
 	}
 	else if (pid > 0)
 	{
 		wait(NULL);
+		free(ext_path);
 		restore_redirections(shell);
 	}
 }
@@ -35,7 +38,6 @@ void	exec_external(t_shell *shell)
 void  execute_cmd(t_shell *shell)
 {
 	t_func	builtin;
-	t_str	ext_path;
 
 	setup_redirection(shell);
 	if (shell->cmd->redirect)
@@ -47,15 +49,14 @@ void  execute_cmd(t_shell *shell)
 		restore_redirections(shell);
 	}
 	else
-	{
-		ext_path = is_external(shell);
-		if (ext_path)
-			exec_external(shell);
-	}
+		exec_external(shell);
 }
 
 void  executor(t_shell *shell)
 {
 	if (shell->cmd)
+	{
 		execute_cmd(shell);
+		free_cmds(shell->cmd);
+	}
 }

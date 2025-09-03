@@ -51,6 +51,10 @@ void	free_rdirs(t_rdir *redirects)
 	while (current)
 	{
 		next = current->next;
+		if (current->args[0])
+			free(current->args[0]);
+		if (current->args[1])
+			free(current->args[1]);
 		free(current);
 		current = next;
 	}

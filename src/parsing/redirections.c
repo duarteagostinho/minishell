@@ -6,7 +6,7 @@
 /*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 13:20:54 by duandrad          #+#    #+#             */
-/*   Updated: 2025/09/02 15:06:00 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/09/03 03:35:28 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,20 +106,27 @@ t_rdir	*extract_redirections(t_str cmd_str)
 	t_str	type;
 	int		fd;
 	t_str	filename;
+	char	quote;
 
 	i = 0;
+	quote = 0;
 	head = NULL;
 	curr = NULL;
 	while (cmd_str[i])
 	{
-		if ((type = get_redir_type(cmd_str, &i, &fd)) && 
-			(filename = extract_filename(cmd_str, &i)))
+		if (!quote && (cmd_str[i] == '\'' || cmd_str[i] == '"'))
+			quote = cmd_str[i];
+		else if (cmd_str[i] == quote)
+			quote = 0;
+		else if (!quote && (type = get_redir_type(cmd_str, &i, &fd))
+			&& (filename = extract_filename(cmd_str, &i)))
 		{
 			add_redir(&head, &curr, handle_red(type, filename, fd));
 			free(filename);
+			continue;
 		}
-		else
-			i++;
+		i++;
 	}
+	
 	return (head);
 }

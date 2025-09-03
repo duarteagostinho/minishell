@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 13:04:04 by duandrad          #+#    #+#             */
-/*   Updated: 2025/09/02 18:26:26 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/09/03 02:31:45 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,23 @@ static t_str	remove_redirections(t_str cmd_str)
 	t_str	clean_cmd;
 	int		i;
 	int		j;
+	char	quote;
 
 	clean_cmd = ft_calloc(ft_strlen(cmd_str) + 1, sizeof(char));
 	i = 0;
 	j = 0;
+	quote = 0;
 	while (cmd_str[i])
 	{
-		if (cmd_str[i] == '>' || cmd_str[i] == '<')
+		if (cmd_str[i] == '"' || cmd_str[i] == '\'')
+		{
+			quote = cmd_str[i++];
+			while (cmd_str[i] && cmd_str[i] != quote)
+				clean_cmd[j++] = cmd_str[i++];
+			if (cmd_str[i])
+				i++;
+		}
+		else if (cmd_str[i] == '>' || cmd_str[i] == '<')
 		{
 			if (cmd_str[i + 1] == cmd_str[i])
 				i += 2;
@@ -97,6 +107,7 @@ static t_str	remove_redirections(t_str cmd_str)
 t_vtr	process_args(t_str cmd_str)
 {
 	int		i;
+	int		count;
 	t_vtr	args;
 	t_vtr	split;
 	t_str	clean_cmd;
@@ -105,18 +116,26 @@ t_vtr	process_args(t_str cmd_str)
 	if (!clean_cmd)
 		return (NULL);
 	split = ft_split(clean_cmd, '\x1F');
-	i = 0;
-	args = ft_calloc(sizeof(char *), i + 1);
+	count = 0;
+	while (split[count])
+		count++;
+	args = ft_calloc(sizeof(char *), count + 1);
 	if (!args)
 	{
 		free_vtr(split);
 		return (NULL);
 	}
-	i = -1;
-	while (split[++i])
+	i = 0;
+	while (split[i])
+	{
 		args[i] = remove_quotes(split[i]);
+		i++;
+	}
 	args[i] = NULL;
-	free_vtr(split);
+/*	i = -1;
+ 	while (args[++i])
+		printf("curr->args[%d] = %s\n", i , args[i]);
+ */	free_vtr(split);
 	free(clean_cmd);
 	return (args);
 }

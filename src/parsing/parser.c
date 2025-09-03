@@ -90,6 +90,7 @@ static void	fill_commands(t_vtr cmds, t_cmd *curr)
 	}
 }
 
+
 t_cmd	*parser(t_str line, t_vtr env, t_shell *shell)
 {
 	t_vtr	cmds;
@@ -112,7 +113,9 @@ t_cmd	*parser(t_str line, t_vtr env, t_shell *shell)
 		return (free(new_line), NULL);
 	while (cmds[k])
 	{
-		cmds[k] = expand_variables(cmds[k], env, shell);
+		t_str temp = cmds[k];
+		cmds[k] = expand_variables(temp, env, shell);
+		free(temp);
 		k++;
 	}
 	commands = init_command_list();
