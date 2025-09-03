@@ -80,11 +80,12 @@ static t_str	remove_redirections(t_str cmd_str)
 	{
 		if (cmd_str[i] == '"' || cmd_str[i] == '\'')
 		{
-			quote = cmd_str[i++];
+			quote = cmd_str[i];
+			clean_cmd[j++] = cmd_str[i++];  // Keep the opening quote
 			while (cmd_str[i] && cmd_str[i] != quote)
 				clean_cmd[j++] = cmd_str[i++];
 			if (cmd_str[i])
-				i++;
+				clean_cmd[j++] = cmd_str[i++];  // Keep the closing quote
 		}
 		else if (cmd_str[i] == '>' || cmd_str[i] == '<')
 		{

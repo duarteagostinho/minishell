@@ -117,6 +117,9 @@ t_cmd	*parser(t_str line, t_vtr env, t_shell *shell)
 		cmds[k] = expand_variables(temp, env, shell);
 		free(temp);
 		
+		// Word splitting should only happen for unquoted spaces from variable expansion
+		// For now, disable this logic as it's breaking quoted arguments
+		/*
 		// If the expanded result contains spaces and is not quoted, we need word splitting
 		if (ft_strchr(cmds[k], ' ') || ft_strchr(cmds[k], '\t'))
 		{
@@ -132,6 +135,7 @@ t_cmd	*parser(t_str line, t_vtr env, t_shell *shell)
 			}
 			free_vtr(words);
 		}
+		*/
 		k++;
 	}
 	commands = init_command_list();
