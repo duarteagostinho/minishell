@@ -116,6 +116,22 @@ t_cmd	*parser(t_str line, t_vtr env, t_shell *shell)
 		t_str temp = cmds[k];
 		cmds[k] = expand_variables(temp, env, shell);
 		free(temp);
+		
+		// If the expanded result contains spaces and is not quoted, we need word splitting
+		if (ft_strchr(cmds[k], ' ') || ft_strchr(cmds[k], '\t'))
+		{
+			// For now, we'll treat the first word as the command
+			// This is a simplified approach - full implementation would require
+			// restructuring the command parsing logic
+			t_vtr words = word_split(cmds[k]);
+			if (words && words[0])
+			{
+				free(cmds[k]);
+				cmds[k] = ft_strdup(words[0]);  // Use only the first word as command
+				// TODO: Handle remaining words as arguments
+			}
+			free_vtr(words);
+		}
 		k++;
 	}
 	commands = init_command_list();

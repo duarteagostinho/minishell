@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 16:35:35 by duandrad          #+#    #+#             */
-/*   Updated: 2025/06/15 15:50:07 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/09/03 15:03:12 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,7 @@
 
 int	update_pwd(t_shell *shell, t_str lwd, t_str cwd)
 {
-	t_vtr env;
-
-	env = shell->env;
-	if (!add_env_var(env, "PWD", cwd) || !add_env_var(env, "OLDPWD", lwd))
+	if (!add_env_var(&shell->env, "PWD", cwd) || !add_env_var(&shell->env, "OLDPWD", lwd))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);	
 }

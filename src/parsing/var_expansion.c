@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   var_expansion.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 14:45:43 by duandrad          #+#    #+#             */
-/*   Updated: 2025/09/02 15:06:30 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/09/03 15:03:12 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,10 @@ static void	expand_env_var(t_str str, t_arr i, t_str expanded, t_arr pos, t_vtr 
 		free(var_name);
 	}
 	else
+	{
+		// If variable name extraction failed, just copy the '$' character
 		expanded[(*pos)++] = str[(*i)++];
+	}
 }
 
 t_str	expand_variables(t_str str, t_vtr env, t_shell *shell)
@@ -98,11 +101,20 @@ t_str	expand_variables(t_str str, t_vtr env, t_shell *shell)
 	int		i;
 	int		pos;
 
+	if (!str)
+		return (NULL);
+	
 	final_len = calculate_expansion_length(str, env, shell);
+	if (final_len <= 0)
+		return (ft_strdup(""));
+	
 	expanded = malloc(final_len + 1);
+	if (!expanded)
+		return (NULL);
+	
 	i = 0;
 	pos = 0;
-	while (str[i])
+	while (str[i] && pos < final_len)
 	{
 		if (str[i] == '$' && str[i + 1])
 		{

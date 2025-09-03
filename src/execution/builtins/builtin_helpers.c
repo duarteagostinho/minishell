@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_helpers.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 10:59:57 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/09/03 01:12:23 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/09/03 15:03:12 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,16 @@ t_str is_external(t_shell *shell)
 	t_str path;
 	t_vtr paths;
 
+	// Safety checks
+	if (!shell || !shell->cmd || !shell->cmd->args || !shell->cmd->args[0])
+		return (NULL);
+	
 	path = shell->cmd->args[0];
+	if (!path || !ft_strlen(path))
+		return (NULL);
+	
 	if (access(path, X_OK) == 0)
-		return (path);
+		return (ft_strdup(path));
 	i = -1;
 	paths = ft_split(get_env_val(shell->env, "PATH"), ':');
 	if (!paths)
@@ -73,9 +80,15 @@ t_str is_external(t_shell *shell)
 		tmp = ft_strjoin(paths[i], "/");
 		path = ft_strjoin(tmp, shell->cmd->args[0]);
 		if (access(path, X_OK) == 0)
-			return ( free_vtr(paths), free(tmp), path);
+		{
+			free_vtr(paths);
+			free(tmp);
+			return (path);
+		}
 		free(tmp);
 		free(path);
 	}
-	return (printf("Command not found %s\n", path), free_vtr(paths), free(tmp),	free(path), NULL);
+	printf("Command not found %s\n", shell->cmd->args[0]);
+	free_vtr(paths);
+	return (NULL);
 }

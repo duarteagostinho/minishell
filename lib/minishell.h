@@ -75,6 +75,7 @@ int			calculate_expansion_length(t_str str, t_vtr env, t_shell *shell);
 t_str		expand_variables(t_str str, t_vtr env, t_shell *shell);
 t_cmd		*parser(t_str line, t_vtr env, t_shell *shell);
 t_vtr		process_args(t_str cmd_str);
+t_vtr		word_split(t_str str);
 
 /*EXECUTION FUNCTIONS*/
 void		input_redir(t_rdir *redir);
@@ -109,7 +110,7 @@ int			exporting(t_shell *shell, t_str arg);
 int			export_args(t_shell *shell, t_vtr args);
 int			rmv_env_var(t_vtr env, const t_str key);
 int			update_pwd(t_shell *shell, t_str lwd, t_str cwd);
-int			add_env_var(t_vtr env, const t_str key, const t_str val);
+int			add_env_var(t_vtr *env, const t_str key, const t_str val);
 t_vtr		realloc_env(t_vtr env, const t_str new_var, int size);
 t_str		get_env_val(t_vtr env, const t_str key);
 t_str		is_external(t_shell *shell);
