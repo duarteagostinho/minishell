@@ -34,26 +34,26 @@ typedef int*	t_arr;
 
 typedef struct s_rdir
 {
-	char				*args[2];
-	int					fd;
+	char			*args[2];
+	int				fd;
 	struct s_rdir		*next;
 }	t_rdir;
 
 typedef struct s_cmd
 {
-	t_vtr				args;
-	t_rdir				*redirect;
-	int					redirect_in;
-	int					redirect_out;
-	int					pipe_fd[2];
+	t_vtr			args;
+	t_rdir			*redirect;
+	int				redirect_in;
+	int				redirect_out;
+	int				pipe_fd[2];
 	struct s_cmd		*next;
 }	t_cmd;
 
 typedef struct s_shell
 {
-	t_cmd				*cmd;
-	t_vtr				env;
-	int					exit_status;
+	t_cmd			*cmd;
+	t_vtr			env;
+	int				exit_status;
 }	t_shell;
 
 typedef int		(*t_func)(t_shell *);
@@ -73,6 +73,8 @@ int			get_special_var_length(t_str str, int i, t_shell *shell);
 int			get_env_var_length(t_str str, int i, t_vtr env);
 int			calculate_expansion_length(t_str str, t_vtr env, t_shell *shell);
 t_str		expand_variables(t_str str, t_vtr env, t_shell *shell);
+// After variable expansion, convert unquoted whitespace to internal separators for word splitting
+t_str		mark_unquoted_whitespace(t_str str);
 t_cmd		*parser(t_str line, t_vtr env, t_shell *shell);
 t_vtr		process_args(t_str cmd_str);
 t_vtr		word_split(t_str str);
