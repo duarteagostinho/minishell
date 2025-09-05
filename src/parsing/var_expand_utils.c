@@ -1,7 +1,5 @@
 #include "../../lib/minishell.h"
 
-// Replace unquoted spaces and tabs with the internal field separator marker (0x1F)
-// This is used after variable expansion to perform word splitting on unquoted expansions.
 t_str	mark_unquoted_whitespace(t_str str)
 {
 	int	 i;

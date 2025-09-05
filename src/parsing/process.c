@@ -6,7 +6,7 @@
 /*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 13:04:04 by duandrad          #+#    #+#             */
-/*   Updated: 2025/09/03 15:22:26 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/09/03 16:07:00 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,11 @@ static t_str	remove_redirections(t_str cmd_str)
 		if (cmd_str[i] == '"' || cmd_str[i] == '\'')
 		{
 			quote = cmd_str[i];
-			clean_cmd[j++] = cmd_str[i++];  // Keep the opening quote
+			clean_cmd[j++] = cmd_str[i++];
 			while (cmd_str[i] && cmd_str[i] != quote)
 				clean_cmd[j++] = cmd_str[i++];
 			if (cmd_str[i])
-				clean_cmd[j++] = cmd_str[i++];  // Keep the closing quote
+				clean_cmd[j++] = cmd_str[i++];
 		}
 		else if (cmd_str[i] == '>' || cmd_str[i] == '<')
 		{

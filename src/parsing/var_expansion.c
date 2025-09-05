@@ -6,7 +6,7 @@
 /*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 14:45:43 by duandrad          #+#    #+#             */
-/*   Updated: 2025/09/03 15:03:12 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/09/03 16:06:20 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,7 @@ static void	expand_env_var(t_str str, t_arr i, t_str expanded, t_arr pos, t_vtr 
 		free(var_name);
 	}
 	else
-	{
-		// If variable name extraction failed, just copy the '$' character
 		expanded[(*pos)++] = str[(*i)++];
-	}
 }
 
 t_str	expand_variables(t_str str, t_vtr env, t_shell *shell)

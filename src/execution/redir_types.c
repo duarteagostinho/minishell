@@ -42,6 +42,8 @@ void	append_redir(t_rdir *redir)
 	close(fd);
 }
 
+
+
 void	handle_heredoc(t_rdir *redir)
 {
 	char	*line;
@@ -50,8 +52,8 @@ void	handle_heredoc(t_rdir *redir)
 	fd = open("tmp_heredoc.txt", O_CREAT | O_RDWR | O_TRUNC, 0644);
 	line = readline(">");
 	while (line)
-	{
-		if (ft_strncmp(line, redir->args[1], 2) == 0)
+	{	
+		if (ft_strcmp(line, redir->args[1]) == 0)
 		{
 			close(fd);
 			fd = open("tmp_heredoc.txt", O_RDONLY);

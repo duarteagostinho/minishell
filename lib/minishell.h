@@ -66,14 +66,13 @@ t_str		handle_quotes(t_str line, t_arr i);
 t_str		prepare_line(t_str line);
 t_str		handle_pipes(t_str line, t_arr i);
 t_rdir		*extract_redirections(t_str cmd_str);
-t_str	extract_var_name(t_str str, int start);
-
+t_str		extract_var_name(t_str str, int start);
+int			ft_strcmp(char *s1, char *s2);
 t_str		handle_redirections(t_str line, t_arr i);
 int			get_special_var_length(t_str str, int i, t_shell *shell);
 int			get_env_var_length(t_str str, int i, t_vtr env);
 int			calculate_expansion_length(t_str str, t_vtr env, t_shell *shell);
 t_str		expand_variables(t_str str, t_vtr env, t_shell *shell);
-// After variable expansion, convert unquoted whitespace to internal separators for word splitting
 t_str		mark_unquoted_whitespace(t_str str);
 t_cmd		*parser(t_str line, t_vtr env, t_shell *shell);
 t_vtr		process_args(t_str cmd_str);

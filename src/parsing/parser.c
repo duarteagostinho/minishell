@@ -116,7 +116,6 @@ t_cmd	*parser(t_str line, t_vtr env, t_shell *shell)
 		t_str temp = cmds[k];
 		cmds[k] = expand_variables(temp, env, shell);
 		free(temp);
-		// convert unquoted whitespace to field separators so process_args splits tokens
 		mark_unquoted_whitespace(cmds[k]);
 		k++;
 	}
