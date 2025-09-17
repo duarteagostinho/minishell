@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -Ilib -g 
+CFLAGS = -Wall -Werror -Wextra -Ilib -g
 SRCS = $(shell find src/ -type f -name '*.c')
 OBJS = $(SRCS:.c=.o)
 NAME = minishell

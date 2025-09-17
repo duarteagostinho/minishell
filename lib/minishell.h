@@ -82,7 +82,7 @@ t_vtr		word_split(t_str str);
 void		input_redir(t_rdir *redir);
 void		output_redir(t_rdir *redir);
 void		append_redir(t_rdir *redir);
-void		handle_heredoc(t_rdir *redir);
+void		handle_heredoc(t_rdir *redir, t_shell *shell, t_vtr env);
 void		setup_redirection(t_shell *shell);
 void		restore_redirections(t_shell *shell);
 void		exec_redirections(t_shell *shell);

@@ -44,7 +44,7 @@ void	append_redir(t_rdir *redir)
 
 
 
-void	handle_heredoc(t_rdir *redir)
+void	handle_heredoc(t_rdir *redir, t_shell *shell, char **env)
 {
 	char	*line;
 	int		fd;
@@ -52,7 +52,8 @@ void	handle_heredoc(t_rdir *redir)
 	fd = open("tmp_heredoc.txt", O_CREAT | O_RDWR | O_TRUNC, 0644);
 	line = readline(">");
 	while (line)
-	{	
+	{
+		line = expand_variables(line ,env, shell);
 		if (ft_strcmp(line, redir->args[1]) == 0)
 		{
 			close(fd);
