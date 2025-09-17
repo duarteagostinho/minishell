@@ -1,4 +1,16 @@
-#include "../../lib/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/17 16:50:41 by duandrad          #+#    #+#             */
+/*   Updated: 2025/09/17 16:59:48 by duandrad         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
 
 static t_str	type_check(t_str full_line, t_arr i)
 {
@@ -39,8 +51,9 @@ static t_str	valid_syntax(t_str line)
 		return (ERR_SYN_PIPE);
 	while (line[i])
 	{
-		if (line[i] == '"' || line[i] == '\'' ||
-			line[i] == '|' || line[i] == '>' || line[i] == '<')
+		if (line[i] == '"' || line[i] == '\''
+			|| line[i] == '|' || line[i] == '>'
+			|| line[i] == '<')
 		{
 			error = type_check(line, &i);
 			if (error)
@@ -52,74 +65,24 @@ static t_str	valid_syntax(t_str line)
 	return (NULL);
 }
 
-static t_cmd	*init_command_list(void)
-{
-	t_cmd	*commands;
-
-	commands = malloc(sizeof(t_cmd));
-	if (!commands)
-		return (NULL);
-	commands->next = NULL;
-	commands->redirect = NULL;
-	commands->redirect_in = STDIN_FILENO;
-	commands->redirect_out = STDOUT_FILENO;
-	return (commands);
-}
-
-static void	fill_commands(t_vtr cmds, t_cmd *curr)
-{
-	int	i;
-
-	i = 0;
-	while(cmds[i])
-	{
-		if (i > 0)
-		{
-			curr->next = malloc(sizeof(t_cmd));
-			if (!curr->next)
-				return ;
-			curr = curr->next;
-			curr->next = NULL;
-			curr->redirect = NULL;
-			curr->redirect_in = STDIN_FILENO;
-			curr->redirect_out = STDOUT_FILENO;
-		}
-		curr->args = process_args(cmds[i]);
-		curr->redirect = extract_redirections(cmds[i]);
-		i++;
-	}
-}
-
-
 t_cmd	*parser(t_str line, t_vtr env, t_shell *shell)
 {
 	t_vtr	cmds;
+	t_str	temp;
 	t_cmd	*commands;
 	t_str	new_line;
-	int k = 0;
+	int		k;
 
+	k = 0;
 	if (!line || !*line)
 		return (NULL);
-	if (valid_syntax(line))
-	{
-		printf("%s\n", valid_syntax(line));
-		return (NULL);
-	}
 	new_line = prepare_line(line);
 	if (!new_line)
 		return (NULL);
 	cmds = ft_split(new_line, '\x1E');
 	if (!cmds)
 		return (free(new_line), NULL);
-	while (cmds[k])
-	{
-		t_str temp = cmds[k];
-		cmds[k] = expand_variables(temp, env, shell);
-		free(temp);
-		mark_unquoted_whitespace(cmds[k]);
-		k++;
-	}
-	commands = init_command_list();
+	cmds_config(cmds, &k, &temp, commands);
 	if (!commands)
 		return (free(new_line), NULL);
 	fill_commands(cmds, commands);

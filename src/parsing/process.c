@@ -6,7 +6,7 @@
 /*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 13:04:04 by duandrad          #+#    #+#             */
-/*   Updated: 2025/09/03 16:07:00 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/09/17 18:09:20 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ static t_str	marker(t_str line, int *i, int *k)
 
 t_str	prepare_line(t_str line)
 {
-	int	i;
-	int	k;
+	int		i;
+	int		k;
 	t_str	new_line;
 
 	i = -1;
@@ -64,40 +64,57 @@ t_str	prepare_line(t_str line)
 	new_line = marker(line, &i, &k);
 	return (new_line);
 }
+typedef struct s_process_quo
+{
+	t_str	clean_cmd;
+	t_str	cmd_str;
+	int		*i;
+	int		*j;
+	char	*quote;
+}
+t_process_quo;
+
+void  process_quo(t_process_quo pq)
+{
+	if (pq.cmd_str[*pq.i] == '"' || pq.cmd_str[*pq.i] == '\'')
+	{
+		pq.quote = pq.cmd_str[*pq.i];
+		pq.clean_cmd[*pq.j++] = pq.cmd_str[*pq.i++];
+		while (pq.cmd_str[*pq.i] && pq.cmd_str[*pq.i] != pq.quote)
+			pq.clean_cmd[*pq.j++] = pq.cmd_str[*pq.i++];
+		if (pq.cmd_str[*pq.i])
+			pq.clean_cmd[*pq.j++] = pq.cmd_str[*pq.i++];
+	}
+	else if (cmd_str[*i] == '>' || cmd_str[*i] == '<')
+	{
+		if (cmd_str[*i + 1] == cmd_str[*i])
+			*i += 2;
+		else
+			*(i++);
+		while (cmd_str[*i] && cmd_str[*i] == '\x1F')
+			*(i++);
+		while (cmd_str[*i] && cmd_str[*i] != '\x1F')
+			*(i++);
+	}
+}
 
 static t_str	remove_redirections(t_str cmd_str)
 {
-	t_str	clean_cmd;
-	int		i;
-	int		j;
-	char	quote;
+	t_process_quo	pq;
+	int				i;
+	t_str			clean_cmd;
 
-	clean_cmd = ft_calloc(ft_strlen(cmd_str) + 1, sizeof(char));
 	i = 0;
-	j = 0;
-	quote = 0;
+	clean_cmd = ft_calloc(ft_strlen(cmd_str) + 1, sizeof(char));
 	while (cmd_str[i])
 	{
-		if (cmd_str[i] == '"' || cmd_str[i] == '\'')
-		{
-			quote = cmd_str[i];
-			clean_cmd[j++] = cmd_str[i++];
-			while (cmd_str[i] && cmd_str[i] != quote)
-				clean_cmd[j++] = cmd_str[i++];
-			if (cmd_str[i])
-				clean_cmd[j++] = cmd_str[i++];
-		}
-		else if (cmd_str[i] == '>' || cmd_str[i] == '<')
-		{
-			if (cmd_str[i + 1] == cmd_str[i])
-				i += 2;
-			else
-				i++;
-			while (cmd_str[i] && cmd_str[i] == '\x1F')
-				i++;
-			while (cmd_str[i] && cmd_str[i] != '\x1F')
-				i++;
-		}
+		process_quo((t_process_quo){
+			.cmd_str=cmd_str,
+			.quote=0,
+			.i=0,
+			.j=0,
+			.clean_cmd=
+		})
 		else
 			clean_cmd[j++] = cmd_str[i++];
 	}
@@ -133,10 +150,7 @@ t_vtr	process_args(t_str cmd_str)
 		i++;
 	}
 	args[i] = NULL;
-/*	i = -1;
- 	while (args[++i])
-		printf("curr->args[%d] = %s\n", i , args[i]);
- */	free_vtr(split);
+	free_vtr(split);
 	free(clean_cmd);
 	return (args);
 }

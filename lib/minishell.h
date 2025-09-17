@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/17 16:45:51 by duandrad          #+#    #+#             */
+/*   Updated: 2025/09/17 17:01:17 by duandrad         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -36,7 +48,7 @@ typedef struct s_rdir
 {
 	char			*args[2];
 	int				fd;
-	struct s_rdir		*next;
+	struct s_rdir	*next;
 }	t_rdir;
 
 typedef struct s_cmd
@@ -46,7 +58,7 @@ typedef struct s_cmd
 	int				redirect_in;
 	int				redirect_out;
 	int				pipe_fd[2];
-	struct s_cmd		*next;
+	struct s_cmd	*next;
 }	t_cmd;
 
 typedef struct s_shell
@@ -74,6 +86,9 @@ int			get_env_var_length(t_str str, int i, t_vtr env);
 int			calculate_expansion_length(t_str str, t_vtr env, t_shell *shell);
 t_str		expand_variables(t_str str, t_vtr env, t_shell *shell);
 t_str		mark_unquoted_whitespace(t_str str);
+t_cmd		*init_command_list(void);
+void		fill_commands(t_vtr cmds, t_cmd *curr);
+void		cmds_config(t_vtr cmds, int *k, t_str *temp, t_cmd *commands);
 t_cmd		*parser(t_str line, t_vtr env, t_shell *shell);
 t_vtr		process_args(t_str cmd_str);
 t_vtr		word_split(t_str str);
