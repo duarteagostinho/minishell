@@ -1,4 +1,4 @@
-#include "../../lib/minishell.h"
+#include "minishell.h"
 
 static void	print_commands(t_cmd *commands)
 {
@@ -38,7 +38,9 @@ static void	run_prompt(t_vtr env)
 	init_shell(env);
 	while (1)
 	{
-		printf(COLOR_RESET GRN"%s"COLOR_RESET, getcwd(NULL, 0));
+		t_str cwd = getcwd(NULL, 0);
+		printf(COLOR_RESET GRN"%s"COLOR_RESET, cwd);
+		free(cwd);
 		prompt = readline(PRP" $> "WHT);
 		if (!prompt)
 			return ;
@@ -66,7 +68,11 @@ t_shell	*shell(void)
 int	main(int ac, t_vtr av, t_vtr env)
 {
 	(void) av;
-	(void) env;
+	if(!*env)
+	{
+		printf("NO ENVIRONMENT!!!\n");
+		//TODO
+	}
 	if (ac == 1)
 		run_prompt(env);
 	else

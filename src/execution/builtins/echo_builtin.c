@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   echo_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 20:19:32 by mrapp-he          #+#    #+#             */
 /*   Updated: 2025/08/26 22:57:56 by mrapp-he         ###   ########.fr       */
@@ -12,12 +12,10 @@
 
 #include "../../../lib/minishell.h"
 
-
-
 int	echo(t_shell *shell)
 {
-	int	  i;
-	t_vtr args;
+	int		i;
+	t_vtr	args;
 
 	i = 1;
 	args = shell->cmd->args;

@@ -3,14 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 14:37:34 by mrapp-he          #+#    #+#             */
 /*   Updated: 2025/08/28 17:22:45 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "../../../lib/minishell.h"
 
 t_str get_env_val(t_vtr env, const t_str key)
 {
@@ -64,7 +62,7 @@ t_vtr  add_env_var(t_vtr env, const t_str key, const t_str val)
 		return (NULL);
 	while (env[++i])
 	{
-		if (!ft_strncmp(env[i], key, len))
+		if (!ft_strncmp((*env)[i], key, len) && (*env)[i][len] == '=')
 		{
 			free(env[i]);
 			env[i] = ft_strdup(new_var);

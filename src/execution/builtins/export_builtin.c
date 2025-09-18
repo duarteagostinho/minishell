@@ -3,14 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   export_builtin.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 00:41:25 by mrapp-he          #+#    #+#             */
 /*   Updated: 2025/08/28 17:21:46 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "../../../lib/minishell.h"
 
 static int		is_sorted(t_vtr env)
 {

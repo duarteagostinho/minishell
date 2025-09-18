@@ -10,14 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../lib/minishell.h"
-
 int	update_pwd(t_shell *shell, t_str lwd, t_str cwd)
 {
-	t_vtr env;
-
-	env = shell->env;
-	if (!add_env_var(env, "PWD", cwd) || !add_env_var(env, "OLDPWD", lwd))
+	if (!add_env_var(&shell->env, "PWD", cwd) || !add_env_var(&shell->env, "OLDPWD", lwd))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);	
 }

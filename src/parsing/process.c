@@ -1,109 +1,78 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   process.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/01 13:04:04 by duandrad          #+#    #+#             */
+/*   Updated: 2025/09/18 16:04:12 by duandrad         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../lib/minishell.h"
 
-static void	mark_redirection(t_str line, t_vtr new_line, t_arr i)
+static void	mark_redirection(t_str line, t_str new_line, t_arr i, t_arr k)
 {
-	*(*new_line)++ = '\x1F';
-	*(*new_line)++ = line[*i];
+	new_line[(*k)++] = '\x1F';
+	new_line[(*k)++] = line[*i];
 	if (line[*i + 1] == line[*i])
-		*(*new_line)++ = line[++(*i)];
-	*(*new_line)++ = '\x1F';
+	{
+		(*i)++;
+		new_line[(*k)++] = line[*i];
+	}
+	new_line[(*k)++] = '\x1F';
 }
 
-static void	mark_pipes(t_str line, t_str new_line)
+static t_str	marker(t_str line, int *i, int *k)
 {
-	int	i;
-	int	c;
+	int		quote;
+	t_str	new_line;
 
-	c = 0;
-	i = -1;
-	while (line[++i])
+	quote = 0;
+	new_line = ft_calloc(ft_strlen(line) * 3 + 1, sizeof(char));
+	while (line[++(*i)])
 	{
-		if ((line[i] == '"' || line[i] == '\'') && !c)
-			c = line[i];
-		else if (c == line[i])
-			c = 0;
-		else if (line[i] == '|' && !c)
-			*new_line = '\x1E';
-		else if (line[i] == ' ' && !c)
-			*new_line = '\x1F';
-		else if (line[i] == '>' || line[i] == '<')
+		if ((line[*i] == '\'' || line[*i] == '"') && !quote)
+			quote = line[*i];
+		else if (line[*i] == quote)
+			quote = 0;
+		if (line[*i] == '|' && !quote)
+			new_line[*k] = '\x1E';
+		else if (line[*i] == ' ' && !quote)
+			new_line[*k] = '\x1F';
+		else if ((line[*i] == '>' || line[*i] == '<') && !quote)
 		{
-			mark_redirection(line, &new_line, &i);
-			continue;
+			mark_redirection(line, new_line, i, k);
+			continue ;
 		}
 		else
-			*new_line = line[i];
-		new_line++;
+			new_line[*k] = line[*i];
+		(*k)++;
 	}
-}
-
-t_str	remove_quotes(t_str str)
-{
-	int		i;
-	int		j;
-	t_str	clean;
-	char	quote;
-
-	if (!str)
-		return (NULL);
-	clean = ft_calloc(1, ft_strlen(str) + 1);
-	i = 0;
-	j = 0;
-	while (str[i])
-	{
-		if (str[i] == '\'' || str[i] == '"')
-		{
-			quote = str[i++];
-			while (str[i] && str[i] != quote)
-				clean[j++] = str[i++];
-			if (str[i])
-				i++;
-		}
-		else
-			clean[j++] = str[i++];
-	}
-	clean[j] = '\0';
-	return (clean);
+	return (new_line);
 }
 
 t_str	prepare_line(t_str line)
 {
+	int		i;
+	int		k;
 	t_str	new_line;
 
-	new_line = ft_calloc(ft_strlen(line) + 1, 3);
-	if (!new_line)
-		return (NULL);
-	mark_pipes(line, new_line);
+	i = -1;
+	k = 0;
+	new_line = marker(line, &i, &k);
 	return (new_line);
 }
 
-static t_str	remove_redirections(t_str cmd_str)
+static int	count_vtr(t_vtr vtr)
 {
-	t_str	clean_cmd;
-	int		i;
-	int		j;
+	int	i;
 
-	clean_cmd = ft_calloc(ft_strlen(cmd_str) + 1, sizeof(char));
 	i = 0;
-	j = 0;
-	while (cmd_str[i])
-	{
-		if (cmd_str[i] == '>' || cmd_str[i] == '<')
-		{
-			if (cmd_str[i + 1] == cmd_str[i])
-				i += 2;
-			else
-				i++;
-			while (cmd_str[i] && cmd_str[i] == '\x1F')
-				i++;
-			while (cmd_str[i] && cmd_str[i] != '\x1F')
-				i++;
-		}
-		else
-			clean_cmd[j++] = cmd_str[i++];
-	}
-	clean_cmd[j] = '\0';
-	return (clean_cmd);
+	while (vtr[i])
+		i++;
+	return (i);
 }
 
 t_vtr	process_args(t_str cmd_str)
@@ -117,20 +86,17 @@ t_vtr	process_args(t_str cmd_str)
 	if (!clean_cmd)
 		return (NULL);
 	split = ft_split(clean_cmd, '\x1F');
-	free(clean_cmd);
+	args = ft_calloc(sizeof(char *), count_vtr(split) + 1);
+	if (!args)
+		return (free_vtr(split), NULL);
 	i = 0;
 	while (split[i])
-		i++;
-	args = ft_calloc(sizeof(char *), i + 1);
-	if (!args)
 	{
-		free_vtr(split);
-		return (NULL);
-	}
-	i = -1;
-	while (split[++i])
 		args[i] = remove_quotes(split[i]);
+		i++;
+	}
 	args[i] = NULL;
 	free_vtr(split);
+	free(clean_cmd);
 	return (args);
 }

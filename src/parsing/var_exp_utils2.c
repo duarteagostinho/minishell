@@ -1,20 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_tolower.c                                       :+:      :+:    :+:   */
+/*   var_exp_utils2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/30 18:10:53 by mrapp-he          #+#    #+#             */
-/*   Updated: 2024/11/15 19:36:27 by mrapp-he         ###   ########.fr       */
+/*   Created: 2025/09/18 15:09:10 by duandrad          #+#    #+#             */
+/*   Updated: 2025/09/18 15:13:10 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-int	ft_tolower(int ascii)
+void	copy_value_to_expanded(t_str value, t_str expanded, int *pos)
 {
-	if (ascii >= 'A' && ascii <= 'Z')
-		return (ascii + 32);
-	return (ascii);
+	int	j;
+
+	if (!value)
+		return ;
+	j = 0;
+	while (value[j])
+		expanded[(*pos)++] = value[j++];
 }
