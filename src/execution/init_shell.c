@@ -10,8 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../lib/minishell.h"
-
 static void  lvl_up(t_shell *shell)
 {
 	int	  sh_lvl;

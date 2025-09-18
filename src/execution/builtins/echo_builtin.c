@@ -14,8 +14,8 @@
 
 int	echo(t_shell *shell)
 {
-	int	  i;
-	t_vtr args;
+	int		i;
+	t_vtr	args;
 
 	i = 1;
 	args = shell->cmd->args;

@@ -10,8 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../lib/minishell.h"
-
 t_str get_env_val(t_vtr env, const t_str key)
 {
 	int	  i;

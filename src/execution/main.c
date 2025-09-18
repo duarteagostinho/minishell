@@ -1,4 +1,4 @@
-#include "../../lib/minishell.h"
+#include "minishell.h"
 
 static void	print_commands(t_cmd *commands)
 {

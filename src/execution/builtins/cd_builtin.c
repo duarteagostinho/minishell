@@ -10,8 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../lib/minishell.h"
-
 int	update_pwd(t_shell *shell, t_str lwd, t_str cwd)
 {
 	if (!add_env_var(&shell->env, "PWD", cwd) || !add_env_var(&shell->env, "OLDPWD", lwd))
