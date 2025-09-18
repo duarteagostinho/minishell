@@ -6,11 +6,23 @@
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 10:59:57 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/08/25 16:27:59 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/09/03 17:04:40 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../lib/minishell.h"
+
+int	commands_size(t_cmd *cmd)
+{
+	t_cmd	*curr;
+	int		size;
+
+	curr = cmd;
+	size = 0;
+	while (curr && ++size)
+		curr = curr->next;
+	return (size);
+}
 
 void	ft_swap(void **a, void **b)
 {
@@ -35,45 +47,24 @@ int	is_valid_id(const t_str key)
 	return (EXIT_SUCCESS);
 }
 
-t_func  is_builtin(t_str command)
+int	exec_command(t_shell *shell, t_cmd *cmd)
 {
 	size_t	size;
 
-	size = ft_strlen(command);
-	if (!ft_strncmp("env", command, size))
-		return (env);
-	else if (!ft_strncmp("export", command, size))
-		return (ft_export);
-	else if (!ft_strncmp("exit", command, size))
-		return (ft_exit);
-	else if (!ft_strncmp("echo", command, size))
-		return (echo);
-	else if (!ft_strncmp("pwd", command, size))
-		return (pwd);
-	else if (!ft_strncmp("cd", command, size))
-		return (cd);
-	else if (!ft_strncmp("unset", command, size))
-		return (unset);
-	return (NULL);
-}
-
-t_str is_external(t_shell *shell)
-{
-	int	  i;
-	t_str tmp;
-	t_str path;
-	t_vtr paths;
-
-	i = -1;
-	paths = ft_split(get_env_val(shell->env, "PATH"), ':');
-	if (!paths)
-		return (NULL);
-	while (paths[++i])
-	{
-		tmp = ft_strjoin(paths[i], "/");
-		path = ft_strjoin(tmp, shell->cmd->args[0]);
-		if (access(path, X_OK) == 0)
-			return (free_vtr(paths), free(tmp), path);
-	}
-	return (free_vtr(paths), free(tmp),	free(path), NULL);
+	size = ft_strlen(cmd->args[0]) + 1;
+	if (!ft_strncmp("env", cmd->args[0], size))
+		return (env(shell));
+	else if (!ft_strncmp("export", cmd->args[0], size))
+		return (ft_export(shell));
+	else if (!ft_strncmp("exit", cmd->args[0], size))
+		return (ft_exit(shell));
+	else if (!ft_strncmp("echo", cmd->args[0], size))
+		return (echo(shell));
+	else if (!ft_strncmp("pwd", cmd->args[0], size))
+		return (pwd(shell));
+	else if (!ft_strncmp("cd", cmd->args[0], size))
+		return (cd(shell));
+	else if (!ft_strncmp("unset", cmd->args[0], size))
+		return (unset(shell));
+	return (-1);
 }

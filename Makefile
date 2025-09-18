@@ -1,6 +1,7 @@
 # Variables
-CC = gcc
+CC = cc
 CFLAGS = -Wall -Werror -Wextra -Ilib -g
+#-fsanitize=address -fsanitize=leak
 SRCS =$(shell find src/ -type f -name '*.c')
 OBJS = $(SRCS:.c=.o)
 NAME = minishell

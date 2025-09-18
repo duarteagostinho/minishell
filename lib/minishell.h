@@ -1,6 +1,21 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+#  define PARENT 1
+#  define CHILD 2
+#  define IGNORE 3
+#  define ERR_SYN_QUOTES "Syntax error: quotes unclosed\n"
+#  define ERR_SYN_RD "Syntax error: redirections\n"
+#  define ERR_SYN_PIPE "Syntax error: pipes\n"
+#  define ERR_EMPTY_INP "Error: Empy input\n"
+#  define GRN "\e[4;32m"
+#  define PRP "\e[0;35m"
+#  define WHT "\e[1;37m"
+#  define RED "\e[1;31m"
+#  define LG_RED "\e[0;31m"
+#  define COLOR_RESET "\e[0m"
+#  define _GNU_SOURCE 
+
 #  include <stdio.h>
 #  include <unistd.h>
 #  include <fcntl.h>
@@ -12,21 +27,6 @@
 #  include <signal.h>
 #  include <sys/wait.h>
 #  include "Libft/libft.h"
-
-#  define PARENT 1
-#  define CHILD 2
-#  define IGNORE 3
-#  define ERR_EXIT "numeric argument required\n"
-#  define ERR_SYN_QUOTES "Syntax error: quotes unclosed\n"
-#  define ERR_SYN_RD "Syntax error: redirections\n"
-#  define ERR_SYN_PIPE "Syntax error: pipes\n"
-#  define ERR_EMPTY_INP "Error: Empy input\n"
-#  define GRN "\e[4;32m"
-#  define PRP "\e[0;35m"
-#  define WHT "\e[1;37m"
-#  define RED "\e[1;31m"
-#  define LG_RED "\e[0;31m"
-#  define COLOR_RESET "\e[0m"
 
 typedef char*	t_str;
 typedef char**	t_vtr;
@@ -43,6 +43,8 @@ typedef struct s_cmd
 {
 	t_vtr				args;
 	struct s_cmd		*next;
+	int					pipes[2];
+	pid_t				pid;
 	t_rdir				*redirect;
 	int					redirect_in;
 	int					redirect_out;
@@ -53,9 +55,9 @@ typedef struct s_shell
 	t_cmd				*cmd;
 	t_vtr				env;
 	int					exit_status;
+	int					in_child;
+	struct sigaction	sig;
 }	t_shell;
-
-typedef int		(*t_func)(t_shell *);
 
 /* PARSING FUNCTIONS */
 int			skip_whitespace(t_str line, int start);
@@ -71,8 +73,8 @@ t_rdir		*extract_redirections(t_str cmd_str);
 t_vtr		process_args(t_str cmd_str);
 
 /*EXECUTION FUNCTIONS*/
+void  		signal_setup(t_shell *shell, int process);
 void		close_redirects(t_rdir *current);
-void		handle_single(t_shell *shell);
 void		free_rdirs(t_rdir *redirects);
 void		ft_swap(void **a, void **b);
 void		free_shell(t_shell *shell);
@@ -87,19 +89,18 @@ int			echo(t_shell *shell);
 int			unset(t_shell *shell);
 int			ft_exit(t_shell *shell);
 int			ft_export(t_shell *shell);
-int			cd_no_args(t_shell *shell);
+int			commands_size(t_cmd *cmd);
 int			get_sizeof_args(t_vtr args);
 int			is_valid_id(const t_str key);
 int			export_no_args(t_shell *shell);
-int			exporting(t_shell *shell, t_str arg);
 int			export_args(t_shell *shell, t_vtr args);
-int			rmv_env_var(t_vtr env, const t_str key);
+int			exec_command(t_shell *shell, t_cmd *cmd);
+int			exec_external(t_shell *shell, t_cmd *cmd);
 int			update_pwd(t_shell *shell, t_str lwd, t_str cwd);
-int			add_env_var(t_vtr env, const t_str key, const t_str val);
+t_vtr		add_env_var(t_vtr env, const t_str key, const t_str val);
 t_vtr		realloc_env(t_vtr env, const t_str new_var, int size);
+t_vtr		rmv_env_var(t_vtr env, const t_str key);
 t_str		get_env_val(t_vtr env, const t_str key);
-t_str		is_external(t_shell *shell);
-t_func		is_builtin(t_str command);
 t_shell		*shell(void);
 
 #endif

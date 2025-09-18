@@ -42,6 +42,7 @@ static void	run_prompt(t_vtr env)
 		prompt = readline(PRP" $> "WHT);
 		if (!prompt)
 			return ;
+		signal_setup(shell(), PARENT);
 		if (ft_strlen(prompt))
 			add_history(prompt);
 		shell()->cmd = parser(prompt, shell()->env, shell());

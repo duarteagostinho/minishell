@@ -6,7 +6,7 @@
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 20:19:32 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/08/20 19:11:31 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/08/26 22:57:56 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,11 @@ int	echo(t_shell *shell)
 	i = 1;
 	args = shell->cmd->args;
 	if (get_sizeof_args(args) == 1)
-	{
-		write(1, "\n", 1);
-		return (EXIT_SUCCESS);
-	}
+		printf("\n");
 	else if (get_sizeof_args(args) > 1)
 	{
-		while (args[i][0] == '-' && args[i][1] == 'n')
+		while (args[i] && args[i][0] == '-'
+		&& args[i][1] == 'n')
 			i++;
 		while (args[i])
 		{
