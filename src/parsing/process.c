@@ -6,7 +6,7 @@
 /*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 13:04:04 by duandrad          #+#    #+#             */
-/*   Updated: 2025/09/17 18:09:20 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/09/18 16:04:12 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,68 +64,20 @@ t_str	prepare_line(t_str line)
 	new_line = marker(line, &i, &k);
 	return (new_line);
 }
-typedef struct s_process_quo
-{
-	t_str	clean_cmd;
-	t_str	cmd_str;
-	int		*i;
-	int		*j;
-	char	*quote;
-}
-t_process_quo;
 
-void  process_quo(t_process_quo pq)
+static int	count_vtr(t_vtr vtr)
 {
-	if (pq.cmd_str[*pq.i] == '"' || pq.cmd_str[*pq.i] == '\'')
-	{
-		pq.quote = pq.cmd_str[*pq.i];
-		pq.clean_cmd[*pq.j++] = pq.cmd_str[*pq.i++];
-		while (pq.cmd_str[*pq.i] && pq.cmd_str[*pq.i] != pq.quote)
-			pq.clean_cmd[*pq.j++] = pq.cmd_str[*pq.i++];
-		if (pq.cmd_str[*pq.i])
-			pq.clean_cmd[*pq.j++] = pq.cmd_str[*pq.i++];
-	}
-	else if (cmd_str[*i] == '>' || cmd_str[*i] == '<')
-	{
-		if (cmd_str[*i + 1] == cmd_str[*i])
-			*i += 2;
-		else
-			*(i++);
-		while (cmd_str[*i] && cmd_str[*i] == '\x1F')
-			*(i++);
-		while (cmd_str[*i] && cmd_str[*i] != '\x1F')
-			*(i++);
-	}
-}
-
-static t_str	remove_redirections(t_str cmd_str)
-{
-	t_process_quo	pq;
-	int				i;
-	t_str			clean_cmd;
+	int	i;
 
 	i = 0;
-	clean_cmd = ft_calloc(ft_strlen(cmd_str) + 1, sizeof(char));
-	while (cmd_str[i])
-	{
-		process_quo((t_process_quo){
-			.cmd_str=cmd_str,
-			.quote=0,
-			.i=0,
-			.j=0,
-			.clean_cmd=
-		})
-		else
-			clean_cmd[j++] = cmd_str[i++];
-	}
-	clean_cmd[j] = '\0';
-	return (clean_cmd);
+	while (vtr[i])
+		i++;
+	return (i);
 }
 
 t_vtr	process_args(t_str cmd_str)
 {
 	int		i;
-	int		count;
 	t_vtr	args;
 	t_vtr	split;
 	t_str	clean_cmd;
@@ -134,15 +86,9 @@ t_vtr	process_args(t_str cmd_str)
 	if (!clean_cmd)
 		return (NULL);
 	split = ft_split(clean_cmd, '\x1F');
-	count = 0;
-	while (split[count])
-		count++;
-	args = ft_calloc(sizeof(char *), count + 1);
+	args = ft_calloc(sizeof(char *), count_vtr(split) + 1);
 	if (!args)
-	{
-		free_vtr(split);
-		return (NULL);
-	}
+		return (free_vtr(split), NULL);
 	i = 0;
 	while (split[i])
 	{

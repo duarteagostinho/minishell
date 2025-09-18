@@ -6,7 +6,7 @@
 /*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:45:51 by duandrad          #+#    #+#             */
-/*   Updated: 2025/09/17 17:01:17 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/09/18 16:30:29 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,45 @@ typedef struct s_shell
 	int				exit_status;
 }	t_shell;
 
+typedef struct s_expand_ctx
+{
+	t_str	str;
+	int		*i;
+	t_str	expanded;
+	int		*pos;
+	t_vtr	env;
+	t_shell	*shell;
+}	t_expand_ctx;
+
+typedef struct s_config_ctx
+{
+	t_vtr	cmds;
+	int		*k;
+	t_cmd	**commands;
+	t_vtr	env;
+	t_shell	*shell;
+}	t_config_ctx;
+
 typedef int		(*t_func)(t_shell *);
 
+/* PARSING UTILS */
+void		copy_quote_block(t_str clean_cmd, int *j, t_str cmd_str, int *i);
+void		skip_redirection(t_str cmd_str, int *i);
+t_str		remove_redirections(t_str cmd_str);
+void		add_redir(t_rdir **head, t_rdir **curr, t_rdir *new);
+t_str		extract_filename(t_str cmd_str, t_arr i);
+void		handle_special_expansion(t_expand_ctx *ctx);
+void		handle_env_expansion(t_expand_ctx *ctx);
+void		handle_dollar_expansion(t_expand_ctx *ctx);
+void		expand_loop(t_str str, t_str expanded, int final_len, t_vtr env);
+t_str		mark_unquoted_whitespace(t_str str);
+void		copy_value_to_expanded(t_str value, t_str expanded, int *pos);
+t_str		get_special_value(t_str str, int *i, t_shell *shell);
+t_str		get_env_value(t_str str, int *i, t_vtr env);
+int			handle_expansion(t_str str, int *i, t_vtr env, t_shell *shell);
+void		update_quote_state(char c, char *quote);
+int			skip_var_name(t_str str, int i);
+int			process_dollar_sign(t_str str, int i, t_vtr env, t_shell *shell);
 /* PARSING FUNCTIONS */
 int			skip_whitespace(t_str line, int start);
 int			get_last_quote(t_str line);
@@ -85,10 +122,9 @@ int			get_special_var_length(t_str str, int i, t_shell *shell);
 int			get_env_var_length(t_str str, int i, t_vtr env);
 int			calculate_expansion_length(t_str str, t_vtr env, t_shell *shell);
 t_str		expand_variables(t_str str, t_vtr env, t_shell *shell);
-t_str		mark_unquoted_whitespace(t_str str);
 t_cmd		*init_command_list(void);
 void		fill_commands(t_vtr cmds, t_cmd *curr);
-void		cmds_config(t_vtr cmds, int *k, t_str *temp, t_cmd *commands);
+void		cmds_config(t_config_ctx *ctx);
 t_cmd		*parser(t_str line, t_vtr env, t_shell *shell);
 t_vtr		process_args(t_str cmd_str);
 t_vtr		word_split(t_str str);

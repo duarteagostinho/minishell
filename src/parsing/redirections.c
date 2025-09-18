@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 13:20:54 by duandrad          #+#    #+#             */
-/*   Updated: 2025/09/03 03:35:28 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/09/18 14:38:57 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../lib/minishell.h"
+#include "minishell.h"
 
 static t_str	get_redir_type(t_str cmd_str, t_arr i, t_arr fd)
 {
@@ -37,38 +37,6 @@ static t_str	get_redir_type(t_str cmd_str, t_arr i, t_arr fd)
 		return ("<");
 	}
 	return (NULL);
-}
-
-static t_str	extract_filename(t_str cmd_str, t_arr i)
-{
-	t_str	temp;
-	t_str	filename;
-	int		start;
-
-	while (cmd_str[*i] && cmd_str[*i] == '\x1F')
-		(*i)++;
-	start = *i;
-	while (cmd_str[*i] && cmd_str[*i] != '\x1F')
-		(*i)++;
-	if (start == *i)
-		return (NULL);
-	temp = ft_substr(cmd_str, start, *i - start);
-	if (!temp)
-		return (NULL);
-	filename = remove_quotes(temp);
-	free(temp);
-	return (filename);
-}
-
-static void	add_redir(t_rdir **head, t_rdir **curr, t_rdir *new)
-{
-	if (!new)
-		return ;
-	if (!*head)
-		*head = new;
-	else
-		(*curr)->next = new;
-	(*curr) = new;
 }
 
 static t_rdir	*handle_red(t_str type, t_str filename, int fd)
@@ -98,35 +66,55 @@ static t_rdir	*handle_red(t_str type, t_str filename, int fd)
 	return (red);
 }
 
+static t_rdir	*extract_one_redir(t_str cmd_str, int *i)
+{
+	t_str	type;
+	int		fd;
+	t_str	filename;
+	t_rdir	*red;
+
+	type = get_redir_type(cmd_str, i, &fd);
+	if (!type)
+		return (NULL);
+	filename = extract_filename(cmd_str, i);
+	if (!filename)
+		return (NULL);
+	red = handle_red(type, filename, fd);
+	free(filename);
+	return (red);
+}
+
+static void	handle_quote(char *quote, char c)
+{
+	if (!*quote)
+		*quote = c;
+	else if (c == *quote)
+		*quote = 0;
+}
+
 t_rdir	*extract_redirections(t_str cmd_str)
 {
 	t_rdir	*head;
 	t_rdir	*curr;
+	t_rdir	*red;
 	int		i;
-	t_str	type;
-	int		fd;
-	t_str	filename;
 	char	quote;
 
-	i = 0;
-	quote = 0;
 	head = NULL;
 	curr = NULL;
-	while (cmd_str[i])
+	quote = 0;
+	i = -1;
+	while (cmd_str[++i])
 	{
-		if (!quote && (cmd_str[i] == '\'' || cmd_str[i] == '"'))
-			quote = cmd_str[i];
-		else if (cmd_str[i] == quote)
-			quote = 0;
-		else if (!quote && (type = get_redir_type(cmd_str, &i, &fd))
-			&& (filename = extract_filename(cmd_str, &i)))
+		if (cmd_str[i] == '\'' || cmd_str[i] == '"')
+			handle_quote(&quote, cmd_str[i]);
+		else if (!quote)
 		{
-			add_redir(&head, &curr, handle_red(type, filename, fd));
-			free(filename);
-			continue;
+			red = extract_one_redir(cmd_str, &i);
+			if (red)
+				add_redir(&head, &curr, red);
+			continue ;
 		}
-		i++;
 	}
-	
 	return (head);
 }

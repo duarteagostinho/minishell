@@ -6,7 +6,7 @@
 /*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 10:59:57 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/09/03 15:03:12 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/09/18 16:06:54 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,14 @@ t_str is_external(t_shell *shell)
 	t_str path;
 	t_vtr paths;
 
-	// Safety checks
-	if (!shell || !shell->cmd || !shell->cmd->args || !shell->cmd->args[0])
+	if (!shell || !shell->cmd || !shell->cmd->args)
 		return (NULL);
-	
 	path = shell->cmd->args[0];
-	if (!path || !ft_strlen(path))
+	if (!path || !*path)
+	{
+		printf("Command not found %s\n", "");
 		return (NULL);
-	
+	}
 	if (access(path, X_OK) == 0)
 		return (ft_strdup(path));
 	i = -1;

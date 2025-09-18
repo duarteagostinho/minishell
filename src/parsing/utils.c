@@ -1,4 +1,16 @@
-#include "../../lib/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/18 14:39:31 by duandrad          #+#    #+#             */
+/*   Updated: 2025/09/18 14:39:37 by duandrad         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
 
 int	skip_whitespace(t_str line, int start)
 {
@@ -72,4 +84,15 @@ int	ft_strcmp(char *s1, char *s2)
 		i++;
 	}
 	return (s1[i] - s2[i]);
+}
+
+void	add_redir(t_rdir **head, t_rdir **curr, t_rdir *new)
+{
+	if (!new)
+		return ;
+	if (!*head)
+		*head = new;
+	else
+		(*curr)->next = new;
+	(*curr) = new;
 }

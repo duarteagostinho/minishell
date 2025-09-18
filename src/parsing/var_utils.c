@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   var_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 14:47:39 by duandrad          #+#    #+#             */
-/*   Updated: 2025/09/01 14:52:14 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/09/18 16:28:53 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	get_env_var_length(t_str str, int i, t_vtr env)
 	return (len);
 }
 
-static int	skip_var_name(t_str str, int i)
+int	skip_var_name(t_str str, int i)
 {
 	t_str	var_name;
 	int		new_i;
@@ -73,21 +73,16 @@ int	calculate_expansion_length(t_str str, t_vtr env, t_shell *shell)
 {
 	int		i;
 	int		final_len;
+	char	quote;
 
 	i = 0;
 	final_len = 0;
+	quote = 0;
 	while (str[i])
 	{
-		if (str[i] == '$' && str[i + 1])
-		{
-			final_len += process_dollar_sign(str, i, env, shell);
-			if (str[i + 1] == '$' || str[i + 1] == '?')
-				i += 2;
-			else if (ft_isalnum(str[i + 1]) || str[i + 1] == '_')
-				i = skip_var_name(str, i);
-			else
-				i++;
-		}
+		update_quote_state(str[i], &quote);
+		if (str[i] == '$' && str[i + 1] && quote != '\'')
+			final_len += handle_expansion(str, &i, env, shell);
 		else
 		{
 			final_len++;

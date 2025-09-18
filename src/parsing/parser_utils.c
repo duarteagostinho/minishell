@@ -6,12 +6,54 @@
 /*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 17:00:07 by duandrad          #+#    #+#             */
-/*   Updated: 2025/09/17 17:00:27 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/09/18 16:27:53 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	update_quote_state(char c, char *quote)
+{
+	if ((c == '\'' || c == '"') && *quote == 0)
+		*quote = c;
+	else if (c == *quote)
+		*quote = 0;
+}
+
+int	handle_expansion(t_str str, int *i, t_vtr env, t_shell *shell)
+{
+	int	len_added;
+
+	len_added = process_dollar_sign(str, *i, env, shell);
+	if (str[*i + 1] == '$' || str[*i + 1] == '?')
+		*i += 2;
+	else if (ft_isalnum(str[*i + 1]) || str[*i + 1] == '_')
+		*i = skip_var_name(str, *i);
+	else
+		(*i)++;
+	return (len_added);
+}
+
+t_str	extract_filename(t_str cmd_str, t_arr i)
+{
+	t_str	temp;
+	t_str	filename;
+	int		start;
+
+	while (cmd_str[*i] && cmd_str[*i] == '\x1F')
+		(*i)++;
+	start = *i;
+	while (cmd_str[*i] && cmd_str[*i] != '\x1F')
+		(*i)++;
+	if (start == *i)
+		return (NULL);
+	temp = ft_substr(cmd_str, start, *i - start);
+	if (!temp)
+		return (NULL);
+	filename = remove_quotes(temp);
+	free(temp);
+	return (filename);
+}
 
 t_cmd	*init_command_list(void)
 {
@@ -49,17 +91,4 @@ void	fill_commands(t_vtr cmds, t_cmd *curr)
 		curr->redirect = extract_redirections(cmds[i]);
 		i++;
 	}
-}
-
-void	cmds_config(t_vtr cmds, int *k, t_str *temp, t_cmd *commands)
-{
-	while (cmds[(*k)])
-	{
-		temp = cmds[*k];
-		cmds[*k] = expand_variables(temp, env, shell);
-		free(temp);
-		mark_unquoted_whitespace(cmds[*k]);
-		*k++;
-	}
-	commands = init_command_list();
 }
