@@ -1,38 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd_builtin.c                                      :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/03 00:16:27 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/09/25 16:40:14 by mrapp-he         ###   ########.fr       */
+/*   Created: 2024/10/30 21:57:56 by mrapp-he          #+#    #+#             */
+/*   Updated: 2024/11/15 19:29:05 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	get_sizeof_args(t_vtr args)
+int	ft_memcmp(const void *mem1, const void *mem2, size_t n)
 {
-	int	size;
+	unsigned char	*temp_mem1;
+	unsigned char	*temp_mem2;
 
-	size = 0;
-	if (!args || !*args)
-		return (-1);
-	while (args[size])
-		size++;
-	return (size);
-}
-
-int	pwd(t_shell *shell)
-{
-	t_str pwd;
-
-	(void)shell;
-	pwd = getcwd(NULL, 0);
-	if (!pwd)
-		return (EXIT_FAILURE);
-	printf("%s\n", pwd);
-	free(pwd);
-	return (EXIT_SUCCESS);
+	temp_mem1 = (unsigned char *)mem1;
+	temp_mem2 = (unsigned char *)mem2;
+	while (n--)
+	{
+		if (*temp_mem1 != *temp_mem2)
+			return (*temp_mem1 - *temp_mem2);
+		temp_mem1++;
+		temp_mem2++;
+	}
+	return (0);
 }

@@ -1,38 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd_builtin.c                                      :+:      :+:    :+:   */
+/*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/03 00:16:27 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/09/25 16:40:14 by mrapp-he         ###   ########.fr       */
+/*   Created: 2024/10/30 23:39:46 by mrapp-he          #+#    #+#             */
+/*   Updated: 2024/11/21 02:39:52 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	get_sizeof_args(t_vtr args)
+char	*ft_strnstr(const char *hs, const char *ndl, size_t n)
 {
-	int	size;
+	size_t	ndl_sz;
 
-	size = 0;
-	if (!args || !*args)
-		return (-1);
-	while (args[size])
-		size++;
-	return (size);
-}
-
-int	pwd(t_shell *shell)
-{
-	t_str pwd;
-
-	(void)shell;
-	pwd = getcwd(NULL, 0);
-	if (!pwd)
-		return (EXIT_FAILURE);
-	printf("%s\n", pwd);
-	free(pwd);
-	return (EXIT_SUCCESS);
+	ndl_sz = ft_strlen(ndl);
+	if (!ndl_sz)
+		return ((char *)hs);
+	if (!n)
+		return (NULL);
+	while (*hs && ndl_sz <= n--)
+	{
+		if (ft_strncmp(hs, ndl, ndl_sz) == 0)
+			return ((char *)hs);
+		hs++;
+	}
+	return (NULL);
 }

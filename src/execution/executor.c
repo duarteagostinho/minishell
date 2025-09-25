@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 14:49:12 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/09/18 17:12:17 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/09/25 17:14:23 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,20 +33,23 @@ static void	close_pipes(t_shell *shell, int n)
 
 static void  exec_single(t_shell *shell, t_cmd *cmd)
 {
+	int	pid;
+
+	pid = -1;
 	if (!shell->in_child)
 	{
 		if (exec_command(shell, shell->cmd) < 0)
-			shell->cmd->pid = fork();
-		if (shell->cmd->pid == 0)
+			pid = fork();
+		if (pid == 0)
 		{
 			signal_setup(shell, CHILD);
 			exec_external(shell, shell->cmd);
 			ft_exit(shell);
 		}
-		else if (shell->cmd->pid > 0)
+		else if (pid > 0)
 		{
 			signal_setup(shell, IGNORE);
-			waitpid(shell->cmd->pid, NULL, 0);
+			waitpid(pid, &shell->exit_status, 0);
 			signal_setup(shell, PARENT);
 		}
 		return ;
@@ -80,7 +83,7 @@ static void	exec_pipes(t_shell *shell, int size, int i)
 	signal_setup(shell, IGNORE);
 	i = -1;
 	while (++i < size)
-			waitpid(get_cmd(shell->cmd, i)->pid, NULL, 0);
+			waitpid(get_cmd(shell->cmd, i)->pid, &shell->exit_status, 0);
 	signal_setup(shell, PARENT);
 }
 
@@ -89,8 +92,13 @@ void  executor(t_shell *shell)
 	int	cmd_size;
 
 	cmd_size = commands_size(shell->cmd);
+	setup_redirection(shell);
+	if (shell->cmd->redirect)
+		exec_redirections(shell);
 	if (cmd_size == 1)
 		exec_single(shell, get_cmd(shell->cmd, 0));
 	else if (cmd_size > 1)
 		exec_pipes(shell, cmd_size, -1);
+	signal_setup(shell, PARENT);
+	shell->exit_status = (shell->exit_status >> 8) & 0xFF;
 }

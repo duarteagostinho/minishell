@@ -1,38 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd_builtin.c                                      :+:      :+:    :+:   */
+/*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/03 00:16:27 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/09/25 16:40:14 by mrapp-he         ###   ########.fr       */
+/*   Created: 2024/11/05 16:00:16 by mrapp-he          #+#    #+#             */
+/*   Updated: 2024/11/21 02:42:01 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	get_sizeof_args(t_vtr args)
+char	*ft_strmapi(char const *str, char (*f)(unsigned int, char))
 {
-	int	size;
+	unsigned int	i;
+	char			*res;
 
-	size = 0;
-	if (!args || !*args)
-		return (-1);
-	while (args[size])
-		size++;
-	return (size);
-}
-
-int	pwd(t_shell *shell)
-{
-	t_str pwd;
-
-	(void)shell;
-	pwd = getcwd(NULL, 0);
-	if (!pwd)
-		return (EXIT_FAILURE);
-	printf("%s\n", pwd);
-	free(pwd);
-	return (EXIT_SUCCESS);
+	if (!str || !f)
+		return (NULL);
+	res = ft_calloc(ft_strlen(str) + 1, sizeof(char));
+	if (!res)
+		return (NULL);
+	i = 0;
+	while (str[i])
+	{
+		res[i] = (*f)(i, str[i]);
+		i++;
+	}
+	return (res);
 }

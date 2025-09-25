@@ -1,38 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd_builtin.c                                      :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/03 00:16:27 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/09/25 16:40:14 by mrapp-he         ###   ########.fr       */
+/*   Created: 2024/10/30 20:27:58 by mrapp-he          #+#    #+#             */
+/*   Updated: 2024/11/22 21:26:59 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	get_sizeof_args(t_vtr args)
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	int	size;
-
-	size = 0;
-	if (!args || !*args)
-		return (-1);
-	while (args[size])
-		size++;
-	return (size);
-}
-
-int	pwd(t_shell *shell)
-{
-	t_str pwd;
-
-	(void)shell;
-	pwd = getcwd(NULL, 0);
-	if (!pwd)
-		return (EXIT_FAILURE);
-	printf("%s\n", pwd);
-	free(pwd);
-	return (EXIT_SUCCESS);
+	while (*s1 && *s2 && *s1 == *s2 && n--)
+	{
+		s1++;
+		s2++;
+	}
+	if (n == 0)
+		return (0);
+	return (*(unsigned char *)s1 - *(unsigned char *)s2);
 }

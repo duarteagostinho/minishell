@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_helpers.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 10:59:57 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/08/25 16:27:59 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/09/25 12:15:20 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../lib/minishell.h"
+#include "minishell.h"
 
 int	commands_size(t_cmd *cmd)
 {
@@ -51,7 +51,7 @@ int	exec_command(t_shell *shell, t_cmd *cmd)
 {
 	size_t	size;
 
-	size = ft_strlen(cmd->args[0]) + 1;
+	size = ft_strlen(cmd->args[0]);
 	if (!ft_strncmp("env", cmd->args[0], size))
 		return (env(shell));
 	else if (!ft_strncmp("export", cmd->args[0], size))
@@ -67,25 +67,4 @@ int	exec_command(t_shell *shell, t_cmd *cmd)
 	else if (!ft_strncmp("unset", cmd->args[0], size))
 		return (unset(shell));
 	return (-1);
-}
-
-t_str is_external(t_shell *shell)
-{
-	int	  i;
-	t_str tmp;
-	t_str path;
-	t_vtr paths;
-
-	i = -1;
-	paths = ft_split(get_env_val(shell->env, "PATH"), ':');
-	if (!paths)
-		return (NULL);
-	while (paths[++i])
-	{
-		tmp = ft_strjoin(paths[i], "/");
-		path = ft_strjoin(tmp, shell->cmd->args[0]);
-		if (access(path, X_OK) == 0)
-			return (free_vtr(paths), free(tmp), path);
-	}
-	return (free_vtr(paths), free(tmp),	free(path), NULL);
 }

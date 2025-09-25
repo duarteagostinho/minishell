@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   word_split.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 04:00:00 by duandrad          #+#    #+#             */
-/*   Updated: 2025/09/03 15:03:12 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/09/25 16:34:09 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ t_vtr	word_split(t_str str)
 		words[i] = extract_word(str, &pos);
 		if (!words[i])
 		{
-			free_vtr(words);
+			free_vtr(words, get_sizeof_args(words));
 			return (NULL);
 		}
 		i++;

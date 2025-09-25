@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:45:51 by duandrad          #+#    #+#             */
-/*   Updated: 2025/09/18 16:30:29 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/09/25 16:28:59 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ typedef struct s_shell
 	t_vtr				env;
 	int					exit_status;
 	int					in_child;
-	struct sigaction	sig;
 }	t_shell;
 
 typedef struct s_expand_ctx
@@ -103,8 +102,6 @@ typedef struct s_config_ctx
 	t_shell	*shell;
 }	t_config_ctx;
 
-typedef int		(*t_func)(t_shell *);
-
 /* PARSING UTILS */
 void		copy_quote_block(t_str clean_cmd, int *j, t_str cmd_str, int *i);
 void		skip_redirection(t_str cmd_str, int *i);
@@ -123,6 +120,7 @@ int			handle_expansion(t_str str, int *i, t_vtr env, t_shell *shell);
 void		update_quote_state(char c, char *quote);
 int			skip_var_name(t_str str, int i);
 int			process_dollar_sign(t_str str, int i, t_vtr env, t_shell *shell);
+
 /* PARSING FUNCTIONS */
 int			skip_whitespace(t_str line, int start);
 int			get_last_quote(t_str line);
@@ -155,15 +153,14 @@ void		restore_redirections(t_shell *shell);
 void		exec_redirections(t_shell *shell);
 void		close_redirects(t_shell *shell);
 void		free_rdirs(t_rdir *redirects);
-void		handle_single(t_shell *shell);
 void  		signal_setup(t_shell *shell, int process);
+void		cmd_error(t_str cmd);
 void		ft_swap(void **a, void **b);
 void		free_shell(t_shell *shell);
 void  		free_cmds(t_cmd *commands);
 void		executor(t_shell *shell);
-void		exec_external(t_shell *shell);
 void		init_shell(t_vtr env);
-void		free_vtr(t_vtr args);
+void		free_vtr(t_vtr args, int size);
 int			cd(t_shell *shell);
 int			pwd(t_shell *shell);
 int			env(t_shell *shell);

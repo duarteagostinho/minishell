@@ -34,17 +34,14 @@ static void	print_commands(t_cmd *commands)
 static void	run_prompt(t_vtr env)
 {
 	t_str prompt;
-
+	
+	signal_setup(shell(), PARENT);
 	init_shell(env);
 	while (1)
 	{
-		t_str cwd = getcwd(NULL, 0);
-		printf(COLOR_RESET GRN"%s"COLOR_RESET, cwd);
-		free(cwd);
 		prompt = readline(PRP" $> "WHT);
 		if (!prompt)
-			return ;
-		signal_setup(shell(), PARENT);
+			ft_exit(shell());
 		if (ft_strlen(prompt))
 			add_history(prompt);
 		shell()->cmd = parser(prompt, shell()->env, shell());
@@ -52,8 +49,8 @@ static void	run_prompt(t_vtr env)
 		{
 			printf("\n--- Parsing ---\n");
 			print_commands(shell()->cmd);
+			// executor(shell());
 		}
-		executor(shell());
 		free(prompt);
 	}
 }

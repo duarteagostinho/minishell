@@ -3,12 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   init_shell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 21:23:05 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/09/03 15:03:12 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/09/18 18:07:27 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "minishell.h"
 
 static void  lvl_up(t_shell *shell)
 {
@@ -17,15 +19,17 @@ static void  lvl_up(t_shell *shell)
 
 	sh_lvl = ft_atoi(get_env_val(shell->env, "SHLVL"));
 	new_lvl = ft_itoa(++sh_lvl);
-	add_env_var(&shell->env, "SHLVL", new_lvl);
+	add_env_var(shell->env, "SHLVL", new_lvl);
 	free(new_lvl);
 }
 
-static void empty_env(t_vtr *env)
+static void empty_env(t_shell *shell)
 {
-	t_str cwd = getcwd(NULL, 0);
-	add_env_var(env, "PWD", cwd);
-	add_env_var(env, "SHLVL", "1");
+	t_str	cwd;
+
+	cwd = getcwd(NULL, 0);
+	add_env_var(shell->env, "PWD", cwd);
+	add_env_var(shell->env, "SHLVL", "1");
 	free(cwd);
 }
 
@@ -41,6 +45,6 @@ void  init_shell(t_vtr env)
 			shell()->env[i] = ft_strdup(env[i]);
 	}
 	else
-		empty_env(&shell()->env);
+		empty_env(shell());
 	lvl_up(shell());
 }

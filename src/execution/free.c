@@ -3,40 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 18:50:41 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/09/02 18:03:05 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/09/25 16:31:47 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void free_vtr(t_vtr args)
+#include "minishell.h"
+
+void free_vtr(t_vtr args, int size)
 {
 	int	i;
 
 	i = -1;
 	if (!args)
 		return ;
-	while (args[++i])
+	while (++i < size)
 		free(args[i]);
 	free(args);
 }
 
 void  free_cmds(t_cmd *commands)
 {
-	t_cmd	*current;
+	t_cmd	*curr;
 	t_cmd	*next;
 
-	current = commands;
-	while (current)
+	curr = commands;
+	while (curr)
 	{
-		next = current->next;
-		if (current->args)
-			free_vtr(current->args);
-		if (current->redirect)
-			free_rdirs(current->redirect);
-		free(current);
-		current = next;
+		next = curr->next;
+		if (curr->args)
+			free_vtr(curr->args, get_sizeof_args(curr->args));
+		if (curr->redirect)
+			free_rdirs(curr->redirect);
+		free(curr);
+		curr = next;
 	}
 }
 
@@ -65,6 +67,6 @@ void  free_shell(t_shell *shell)
 		if (shell->cmd)
 			free_cmds(shell->cmd);
 		if (shell->env)
-			free_vtr(shell->env);
+			free_vtr(shell->env, get_sizeof_args(shell->env));
 	}
 }

@@ -1,38 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd_builtin.c                                      :+:      :+:    :+:   */
+/*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/03 00:16:27 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/09/25 16:40:14 by mrapp-he         ###   ########.fr       */
+/*   Created: 2024/11/05 17:44:45 by mrapp-he          #+#    #+#             */
+/*   Updated: 2024/11/21 23:57:08 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	get_sizeof_args(t_vtr args)
+char	*ft_itoa(int nbr)
 {
-	int	size;
+	char	*str;
+	char	arr[11];
+	int		i;
+	int		sgn;
 
-	size = 0;
-	if (!args || !*args)
-		return (-1);
-	while (args[size])
-		size++;
-	return (size);
-}
-
-int	pwd(t_shell *shell)
-{
-	t_str pwd;
-
-	(void)shell;
-	pwd = getcwd(NULL, 0);
-	if (!pwd)
-		return (EXIT_FAILURE);
-	printf("%s\n", pwd);
-	free(pwd);
-	return (EXIT_SUCCESS);
+	i = 11;
+	sgn = (nbr > 0) - (nbr < 0);
+	if (nbr == 0)
+		return (ft_strdup("0"));
+	while (nbr)
+	{
+		arr[--i] = (nbr % 10) * sgn + '0';
+		nbr /= 10;
+	}
+	if (sgn < 0)
+		arr[--i] = '-';
+	str = ft_calloc((11 - i) + 1, sizeof(char));
+	if (!str)
+		return (NULL);
+	return (ft_memcpy(str, arr + i, (11 - i)));
 }

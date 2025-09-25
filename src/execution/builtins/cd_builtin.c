@@ -6,13 +6,15 @@
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 16:35:35 by duandrad          #+#    #+#             */
-/*   Updated: 2025/08/31 19:37:23 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/09/18 17:51:08 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
+
 int	update_pwd(t_shell *shell, t_str lwd, t_str cwd)
 {
-	if (!add_env_var(&shell->env, "PWD", cwd) || !add_env_var(&shell->env, "OLDPWD", lwd))
+	if (!add_env_var(shell->env, "PWD", cwd) || !add_env_var(shell->env, "OLDPWD", lwd))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);	
 }

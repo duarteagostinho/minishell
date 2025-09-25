@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:50:41 by duandrad          #+#    #+#             */
-/*   Updated: 2025/09/18 16:27:15 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/09/25 16:32:48 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ t_cmd	*parser(t_str line, t_vtr env, t_shell *shell)
 		return (free(new_line), NULL);
 	cmds_config(&(t_config_ctx){cmds, &k, &commands, env, shell});
 	fill_commands(cmds, commands);
-	free_vtr(cmds);
+	free_vtr(cmds, get_sizeof_args(cmds));
 	free(new_line);
 	return (commands);
 }

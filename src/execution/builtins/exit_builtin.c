@@ -6,11 +6,11 @@
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 19:47:06 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/09/09 04:16:44 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/09/25 16:48:11 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../lib/minishell.h"
+#include "minishell.h"
 
 static void	exit_error(t_shell *shell, int error)
 {
@@ -53,6 +53,8 @@ int	ft_exit(t_shell *shell)
 
 	if (!shell->in_child)
 		printf("exit\n");
+	if (!shell->cmd)
+		return (free_shell(shell), exit(0), EXIT_SUCCESS);
 	if (get_sizeof_args(shell->cmd->args) > 2
 	&& !ft_strncmp(shell->cmd->args[0], "exit", 5))
 		return (exit_error(shell, 1), EXIT_FAILURE);
