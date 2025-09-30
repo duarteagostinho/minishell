@@ -3,20 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 13:20:54 by duandrad          #+#    #+#             */
-/*   Updated: 2025/09/18 14:38:57 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/09/25 18:10:34 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_str	get_redir_type(t_str cmd_str, t_arr i, t_arr fd)
+static t_str	get_redir_type(t_str cmd_str, t_arr i)
 {
 	if (cmd_str[*i] == '>')
 	{
-		*fd = STDOUT_FILENO;
 		if (cmd_str[*i + 1] == '>')
 		{
 			(*i) += 2;
@@ -27,7 +26,6 @@ static t_str	get_redir_type(t_str cmd_str, t_arr i, t_arr fd)
 	}
 	else if (cmd_str[*i] == '<')
 	{
-		*fd = STDIN_FILENO;
 		if (cmd_str[*i + 1] == '<')
 		{
 			(*i) += 2;
@@ -39,7 +37,7 @@ static t_str	get_redir_type(t_str cmd_str, t_arr i, t_arr fd)
 	return (NULL);
 }
 
-static t_rdir	*handle_red(t_str type, t_str filename, int fd)
+static t_rdir	*handle_red(t_str type, t_str filename)
 {
 	t_rdir	*red;
 
@@ -61,7 +59,7 @@ static t_rdir	*handle_red(t_str type, t_str filename, int fd)
 		free(red);
 		return (NULL);
 	}
-	red->fd = fd;
+	red->fd = 0;
 	red->next = NULL;
 	return (red);
 }
@@ -69,17 +67,16 @@ static t_rdir	*handle_red(t_str type, t_str filename, int fd)
 static t_rdir	*extract_one_redir(t_str cmd_str, int *i)
 {
 	t_str	type;
-	int		fd;
 	t_str	filename;
 	t_rdir	*red;
 
-	type = get_redir_type(cmd_str, i, &fd);
+	type = get_redir_type(cmd_str, i);
 	if (!type)
 		return (NULL);
 	filename = extract_filename(cmd_str, i);
 	if (!filename)
 		return (NULL);
-	red = handle_red(type, filename, fd);
+	red = handle_red(type, filename);
 	free(filename);
 	return (red);
 }

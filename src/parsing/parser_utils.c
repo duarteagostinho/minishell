@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 17:00:07 by duandrad          #+#    #+#             */
-/*   Updated: 2025/09/25 22:12:38 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/09/25 18:05:10 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

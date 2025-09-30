@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:45:51 by duandrad          #+#    #+#             */
-/*   Updated: 2025/09/25 23:09:59 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/09/30 14:30:28 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,8 @@ void		append_redir(t_rdir *redir);
 void		handle_heredoc(t_rdir *redir, t_shell *shell, t_vtr env);
 void		setup_redirection(t_shell *shell);
 void		restore_redirections(t_shell *shell);
-void		exec_redirections(t_shell *shell);
+void		load_redirections(t_shell *shell);
+void		apply_redirections(t_shell *shell);
 void		close_redirects(t_shell *shell);
 void		free_rdirs(t_rdir *redirects);
 void  		signal_setup(t_shell *shell, int process);
