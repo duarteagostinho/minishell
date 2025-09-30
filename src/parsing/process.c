@@ -6,7 +6,7 @@
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 13:04:04 by duandrad          #+#    #+#             */
-/*   Updated: 2025/09/25 16:33:38 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/09/25 22:38:41 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,16 +65,6 @@ t_str	prepare_line(t_str line)
 	return (new_line);
 }
 
-static int	count_vtr(t_vtr vtr)
-{
-	int	i;
-
-	i = 0;
-	while (vtr[i])
-		i++;
-	return (i);
-}
-
 t_vtr	process_args(t_str cmd_str)
 {
 	int		i;
@@ -86,17 +76,18 @@ t_vtr	process_args(t_str cmd_str)
 	if (!clean_cmd)
 		return (NULL);
 	split = ft_split(clean_cmd, '\x1F');
-	args = ft_calloc(sizeof(char *), count_vtr(split) + 1);
+	args = ft_calloc(get_sizeof_args(split) + 1, sizeof(t_str));
 	if (!args)
-		return (free_vtr(split, get_sizeof_args(split)), NULL);
+		return (free_vtr(split), NULL);
 	i = 0;
 	while (split[i])
 	{
 		args[i] = remove_quotes(split[i]);
 		i++;
 	}
-	args[i] = NULL;
-	free_vtr(split, get_sizeof_args(split));
+	free_vtr(split);
 	free(clean_cmd);
+	if (args[0])
+		args[0] = get_path(shell(), args[0]);
 	return (args);
 }

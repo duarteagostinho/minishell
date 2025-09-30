@@ -6,7 +6,7 @@
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 10:59:57 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/09/25 12:15:20 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/09/25 21:43:59 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	is_valid_id(const t_str key)
 	return (EXIT_SUCCESS);
 }
 
-int	exec_command(t_shell *shell, t_cmd *cmd)
+int	exec_builtin(t_shell *shell, t_cmd *cmd)
 {
 	size_t	size;
 

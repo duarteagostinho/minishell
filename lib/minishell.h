@@ -6,7 +6,7 @@
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:45:51 by duandrad          #+#    #+#             */
-/*   Updated: 2025/09/25 16:28:59 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/09/25 23:09:59 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,9 +158,10 @@ void		cmd_error(t_str cmd);
 void		ft_swap(void **a, void **b);
 void		free_shell(t_shell *shell);
 void  		free_cmds(t_cmd *commands);
-void		executor(t_shell *shell);
+void		executor(t_shell *shell, int in, int out);
 void		init_shell(t_vtr env);
-void		free_vtr(t_vtr args, int size);
+void		free_vtr(t_vtr args);
+int			is_builtin(t_str name);
 int			cd(t_shell *shell);
 int			pwd(t_shell *shell);
 int			env(t_shell *shell);
@@ -173,13 +174,14 @@ int			get_sizeof_args(t_vtr args);
 int			is_valid_id(const t_str key);
 int			export_no_args(t_shell *shell);
 int			export_args(t_shell *shell, t_vtr args);
-int			exec_command(t_shell *shell, t_cmd *cmd);
-int			exec_external(t_shell *shell, t_cmd *cmd);
+int			exec_builtin(t_shell *shell, t_cmd *cmd);
 int			update_pwd(t_shell *shell, t_str lwd, t_str cwd);
 t_vtr		add_env_var(t_vtr env, const t_str key, const t_str val);
 t_vtr		realloc_env(t_vtr env, const t_str new_var, int size);
 t_vtr		rmv_env_var(t_vtr env, const t_str key);
 t_str		get_env_val(t_vtr env, const t_str key);
+t_str		get_path(t_shell *shell, t_str name);
+t_str		ft_str_add(t_vtr str, t_str add);
 t_shell		*shell(void);
 
 #endif

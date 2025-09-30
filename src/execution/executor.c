@@ -6,99 +6,78 @@
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 14:49:12 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/09/25 17:14:23 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/09/25 23:31:23 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_cmd	*get_cmd(t_cmd *cmd, int n)
+static void  wait_cmds(t_shell *shell)
 {
-	t_cmd	*curr;
+	t_cmd *cmd;
 
-	curr = cmd;
-	while (curr && n--)
-		curr = curr->next;
-	return (curr);
-}
-
-static void	close_pipes(t_shell *shell, int n)
-{
-	while (--n >= 0)
+	cmd = shell->cmd;
+	while (cmd)
 	{
-		close(get_cmd(shell->cmd, n)->pipes[0]);
-		close(get_cmd(shell->cmd, n)->pipes[1]);
+		waitpid(cmd->pid, &shell->exit_status, 0);
+		cmd = cmd->next;
 	}
-}
-
-static void  exec_single(t_shell *shell, t_cmd *cmd)
-{
-	int	pid;
-
-	pid = -1;
-	if (!shell->in_child)
-	{
-		if (exec_command(shell, shell->cmd) < 0)
-			pid = fork();
-		if (pid == 0)
-		{
-			signal_setup(shell, CHILD);
-			exec_external(shell, shell->cmd);
-			ft_exit(shell);
-		}
-		else if (pid > 0)
-		{
-			signal_setup(shell, IGNORE);
-			waitpid(pid, &shell->exit_status, 0);
-			signal_setup(shell, PARENT);
-		}
-		return ;
-	}
-	if (exec_command(shell, cmd) < 0)
-		exec_external(shell, cmd);
-	ft_exit(shell);
-}
-
-static void	exec_pipes(t_shell *shell, int size, int i)
-{
-	while (++i < size)
-	{
-		if (i < size - 1 && pipe(get_cmd(shell->cmd, i)->pipes) == -1)
-			exit(EXIT_FAILURE);
-		get_cmd(shell->cmd, i)->pid = fork();
-		if (get_cmd(shell->cmd, i)->pid < 0)
-			exit(EXIT_FAILURE);
-		if (get_cmd(shell->cmd, i)->pid == 0)
-		{
-			signal_setup(shell, CHILD);
-			if (i == 0 || (i > 0 && i < size - 1))
-				dup2(get_cmd(shell->cmd, i)->pipes[1], STDOUT_FILENO);
-			if (i == size - 1 || (i > 0 && i < size - 1))
-				dup2(get_cmd(shell->cmd, i - 1)->pipes[0], STDIN_FILENO);
-			close_pipes(shell, size - 1);
-			exec_single(shell, get_cmd(shell->cmd, i));
-		}
-	}
-	close_pipes(shell, size - 1);
-	signal_setup(shell, IGNORE);
-	i = -1;
-	while (++i < size)
-			waitpid(get_cmd(shell->cmd, i)->pid, &shell->exit_status, 0);
-	signal_setup(shell, PARENT);
-}
-
-void  executor(t_shell *shell)
-{
-	int	cmd_size;
-
-	cmd_size = commands_size(shell->cmd);
-	setup_redirection(shell);
-	if (shell->cmd->redirect)
-		exec_redirections(shell);
-	if (cmd_size == 1)
-		exec_single(shell, get_cmd(shell->cmd, 0));
-	else if (cmd_size > 1)
-		exec_pipes(shell, cmd_size, -1);
-	signal_setup(shell, PARENT);
 	shell->exit_status = (shell->exit_status >> 8) & 0xFF;
+}
+
+static int	close_fd(int new_fd, int old_fd)
+{
+	close(old_fd);
+	return (new_fd);
+}
+
+static void	exec_cmd(t_cmd *cmd, int in, int out, int is_single)
+{
+	if (!is_single)
+		cmd->pid = fork();
+	if (cmd->pid == 0)
+	{
+		dup2(in, STDIN_FILENO);
+		dup2(out, STDOUT_FILENO);
+		close(in);
+		close(out);
+		if (!is_single)
+			signal_setup(shell(), CHILD);
+		if (exec_builtin(shell(), cmd) < 0)
+		{
+			execve(cmd->args[0], cmd->args, shell()->env);
+			cmd_error(cmd->args[0]);
+			ft_exit(shell());
+		}
+		if (is_single)
+			return ;
+		ft_exit(shell());
+	}
+	close(in);
+	close(out);
+}
+
+void  executor(t_shell *shell, int in, int out)
+{
+	t_cmd	*cmd;
+
+	in = dup(STDIN_FILENO);
+	cmd = shell->cmd;
+	while (cmd)
+	{
+		out = dup(STDOUT_FILENO);
+		if (cmd->next)
+		{
+			pipe(cmd->pipes);
+			out = close_fd(cmd->pipes[1], out);
+		}
+		// if (cmd->redirect_out)
+		// 	out = close_fd(cmd->redirect_out, out);
+		// if (cmd->redirect_in)
+		// 	in = close_fd(cmd->redirect_in, in);
+		exec_cmd(cmd, in, out, (!shell->cmd->next && is_builtin(cmd->args[0])));
+		in = close_fd(cmd->pipes[0], in);
+		cmd = cmd->next;
+	}
+	wait_cmds(shell);
 }

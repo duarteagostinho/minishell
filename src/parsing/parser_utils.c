@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 17:00:07 by duandrad          #+#    #+#             */
-/*   Updated: 2025/09/18 16:27:53 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/09/25 22:12:38 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,13 @@ t_cmd	*init_command_list(void)
 {
 	t_cmd	*commands;
 
-	commands = malloc(sizeof(t_cmd));
+	commands = ft_calloc(sizeof(t_cmd), 1);
 	if (!commands)
 		return (NULL);
 	commands->next = NULL;
 	commands->redirect = NULL;
-	commands->redirect_in = STDIN_FILENO;
-	commands->redirect_out = STDOUT_FILENO;
+	commands->redirect_in = 0;
+	commands->redirect_out = 0;
 	return (commands);
 }
 
@@ -78,14 +78,14 @@ void	fill_commands(t_vtr cmds, t_cmd *curr)
 	{
 		if (i > 0)
 		{
-			curr->next = malloc(sizeof(t_cmd));
+			curr->next = ft_calloc(sizeof(t_cmd), 1);
 			if (!curr->next)
 				return ;
 			curr = curr->next;
 			curr->next = NULL;
 			curr->redirect = NULL;
-			curr->redirect_in = STDIN_FILENO;
-			curr->redirect_out = STDOUT_FILENO;
+			curr->redirect_in = 0;
+			curr->redirect_out = 0;
 		}
 		curr->args = process_args(cmds[i]);
 		curr->redirect = extract_redirections(cmds[i]);

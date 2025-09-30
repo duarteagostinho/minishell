@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static void	print_commands(t_cmd *commands)
+void	print_commands(t_cmd *commands)
 {
 	t_cmd	*curr;
 	int		cmd_num;
@@ -45,13 +45,13 @@ static void	run_prompt(t_vtr env)
 		if (ft_strlen(prompt))
 			add_history(prompt);
 		shell()->cmd = parser(prompt, shell()->env, shell());
+		free(prompt);
 		if (shell()->cmd)
 		{
-			printf("\n--- Parsing ---\n");
-			print_commands(shell()->cmd);
-			// executor(shell());
+			// printf("\n--- Parsing ---\n");
+			// print_commands(shell()->cmd);
+			executor(shell(), STDIN_FILENO, STDOUT_FILENO);
 		}
-		free(prompt);
 	}
 }
 

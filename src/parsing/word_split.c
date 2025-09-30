@@ -6,7 +6,7 @@
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 04:00:00 by duandrad          #+#    #+#             */
-/*   Updated: 2025/09/25 16:34:09 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/09/25 22:31:48 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ t_vtr	word_split(t_str str)
 		words[i] = extract_word(str, &pos);
 		if (!words[i])
 		{
-			free_vtr(words, get_sizeof_args(words));
+			free_vtr(words);
 			return (NULL);
 		}
 		i++;

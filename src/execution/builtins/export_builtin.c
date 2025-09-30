@@ -6,7 +6,7 @@
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 00:41:25 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/09/25 16:36:37 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/09/25 22:32:26 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	export_args(t_shell *shell, t_vtr args)
 		shell->env = add_env_var(shell->env, var[0], var[1]);
 		if (!shell->env)
 			return (EXIT_FAILURE);
-		free_vtr(var, get_sizeof_args(var));
+		free_vtr(var);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -107,8 +107,8 @@ int	export_no_args(t_shell *shell)
 		if (!var)
 			return (EXIT_FAILURE);
 		printf("declare -x %s=\"%s\"\n", var[0], get_env_val(exports, var[0]));
-		free_vtr(var, get_sizeof_args(var));
+		free_vtr(var);
 	}
-	free_vtr(exports, get_sizeof_args(exports));
+	free_vtr(exports);
 	return (EXIT_SUCCESS);
 }
