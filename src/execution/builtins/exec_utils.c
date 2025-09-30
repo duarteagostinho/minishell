@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 19:05:33 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/09/25 23:30:53 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/09/30 16:39:23 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_str	get_path(t_shell *shell, t_str name)
 	{
 		ft_str_add(&paths[i], "/");
 		ft_str_add(&paths[i], name);
-		if (access(paths[i], X_OK))
+		if (!access(paths[i], X_OK))
 		{
 			path = ft_strdup(paths[i]);
 			return (free_vtr(paths), free(name), path);

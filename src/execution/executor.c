@@ -6,7 +6,7 @@
 /*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 14:49:12 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/09/25 23:31:23 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/09/30 18:28:11 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,16 @@ void  executor(t_shell *shell, int in, int out)
 	while (cmd)
 	{
 		out = dup(STDOUT_FILENO);
+		load_redirections(shell);
 		if (cmd->next)
 		{
 			pipe(cmd->pipes);
 			out = close_fd(cmd->pipes[1], out);
 		}
-		// if (cmd->redirect_out)
-		// 	out = close_fd(cmd->redirect_out, out);
-		// if (cmd->redirect_in)
-		// 	in = close_fd(cmd->redirect_in, in);
+		if (cmd->redirect_out)
+		 	out = close_fd(cmd->redirect_out, out);
+		if (cmd->redirect_in)
+		 	in = close_fd(cmd->redirect_in, in);
 		exec_cmd(cmd, in, out, (!shell->cmd->next && is_builtin(cmd->args[0])));
 		in = close_fd(cmd->pipes[0], in);
 		cmd = cmd->next;

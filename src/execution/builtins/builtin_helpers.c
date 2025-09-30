@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_helpers.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 10:59:57 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/09/25 21:43:59 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/09/30 16:39:30 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ int	exec_builtin(t_shell *shell, t_cmd *cmd)
 {
 	size_t	size;
 
+	if (!cmd->args[0])
+		return (-1);
 	size = ft_strlen(cmd->args[0]);
 	if (!ft_strncmp("env", cmd->args[0], size))
 		return (env(shell));
