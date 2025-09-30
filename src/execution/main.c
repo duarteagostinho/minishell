@@ -23,8 +23,17 @@ static void	print_commands(t_cmd *commands)
 			printf("\n");
 		}
 		printf("  Redirect in: %d, out: %d\n", curr->redirect_in, curr->redirect_out);
-		if (curr->redirect)
-			printf("  Has redirections\n");
+		{
+			t_rdir *r;
+
+			r = curr->redirect;
+			while (r)
+			{
+				printf("  Has redirections\n");
+				printf("  Redir type = %s, redir->fd = %d\n", r->args[0], r->fd);
+				r = r->next;
+			}
+		}
 		printf("\n");
 		curr = curr->next;
 		cmd_num++;
@@ -34,7 +43,7 @@ static void	print_commands(t_cmd *commands)
 static void	run_prompt(t_vtr env)
 {
 	t_str prompt;
-	
+
 	signal_setup(shell(), PARENT);
 	init_shell(env);
 	while (1)
@@ -49,8 +58,10 @@ static void	run_prompt(t_vtr env)
 		{
 			printf("\n--- Parsing ---\n");
 			print_commands(shell()->cmd);
-			// executor(shell());
 		}
+		if (shell()->cmd->redirect)
+			exec_redirections(shell());
+		executor(shell());
 		free(prompt);
 	}
 }

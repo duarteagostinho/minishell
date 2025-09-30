@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 14:49:12 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/09/25 17:14:23 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/09/29 19:15:08 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ static void  exec_single(t_shell *shell, t_cmd *cmd)
 		if (pid == 0)
 		{
 			signal_setup(shell, CHILD);
+			if (shell->cmd->redirect)
+				apply_redirections(shell);
 			exec_external(shell, shell->cmd);
 			ft_exit(shell);
 		}
@@ -54,6 +56,8 @@ static void  exec_single(t_shell *shell, t_cmd *cmd)
 		}
 		return ;
 	}
+	if (shell->cmd->redirect)
+		apply_redirections(shell);
 	if (exec_command(shell, cmd) < 0)
 		exec_external(shell, cmd);
 	ft_exit(shell);
@@ -71,6 +75,8 @@ static void	exec_pipes(t_shell *shell, int size, int i)
 		if (get_cmd(shell->cmd, i)->pid == 0)
 		{
 			signal_setup(shell, CHILD);
+			if (get_cmd(shell->cmd, i)->redirect)
+				apply_redirections(shell);
 			if (i == 0 || (i > 0 && i < size - 1))
 				dup2(get_cmd(shell->cmd, i)->pipes[1], STDOUT_FILENO);
 			if (i == size - 1 || (i > 0 && i < size - 1))
@@ -83,18 +89,15 @@ static void	exec_pipes(t_shell *shell, int size, int i)
 	signal_setup(shell, IGNORE);
 	i = -1;
 	while (++i < size)
-			waitpid(get_cmd(shell->cmd, i)->pid, &shell->exit_status, 0);
+		waitpid(get_cmd(shell->cmd, i)->pid, &shell->exit_status, 0);
 	signal_setup(shell, PARENT);
 }
 
 void  executor(t_shell *shell)
 {
 	int	cmd_size;
-
+	
 	cmd_size = commands_size(shell->cmd);
-	setup_redirection(shell);
-	if (shell->cmd->redirect)
-		exec_redirections(shell);
 	if (cmd_size == 1)
 		exec_single(shell, get_cmd(shell->cmd, 0));
 	else if (cmd_size > 1)

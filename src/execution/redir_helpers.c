@@ -16,14 +16,25 @@ void  close_redirects(t_shell *shell)
 void	exec_redirections(t_shell *shell)
 {
 	t_rdir	*redir;
-	
+
 	redir = shell->cmd->redirect;
-	if (!redir)
-		return;
-	while(redir)
+	while (redir)
 	{
 		if (ft_strncmp(redir->args[0], "<<", 3) == 0)
 			handle_heredoc(redir, shell, shell->env);
+		redir = redir->next;
+	}
+}
+
+void	apply_redirections(t_shell *shell)
+{
+	t_rdir	*redir;
+
+	redir = shell->cmd->redirect;
+	while (redir)
+	{
+		if (ft_strncmp(redir->args[0], "<<", 3) == 0)
+			dup2(redir->fd, STDIN_FILENO);
 		else if (ft_strncmp(redir->args[0], ">>", 3) == 0)
 			append_redir(redir);
 		else if (ft_strncmp(redir->args[0], "<", 2) == 0)
@@ -33,31 +44,3 @@ void	exec_redirections(t_shell *shell)
 		redir = redir->next;
 	}
 }
-
-void	setup_redirection(t_shell *shell)
-{
-	if (shell->cmd->redirect)
-	{
-		shell->cmd->redirect_in = dup(STDIN_FILENO);
-		shell->cmd->redirect_out = dup(STDOUT_FILENO);
-	}
-	else
-	{
-		shell->cmd->redirect_in = -1;
-		shell->cmd->redirect_out = -1;
-	}
-}
-void	restore_redirections(t_shell *shell)
-{
-	if(shell->cmd->redirect_in != -1)
-	{
-		dup2(shell->cmd->redirect_in, STDIN_FILENO);
-		close(shell->cmd->redirect_in);
-	}
-	if (shell->cmd->redirect_out != -1)
-	{
-		dup2(shell->cmd->redirect_out, STDOUT_FILENO);
-		close(shell->cmd->redirect_out);
-	}
-}
-

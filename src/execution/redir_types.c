@@ -42,34 +42,44 @@ void	append_redir(t_rdir *redir)
 	close(fd);
 }
 
-
-
 void	handle_heredoc(t_rdir *redir, t_shell *shell, char **env)
 {
 	char	*line;
-	int		fd;
+	int		fds[2];
+	int		pid;
 	
-	fd = open("tmp_heredoc.txt", O_CREAT | O_RDWR | O_TRUNC, 0644);
-	line = readline(">");
-	while (line)
+	pipe(fds);
+	pid = fork();
+	if (pid)
 	{
-		line = expand_variables(line ,env, shell);
+		close(fds[1]);
+		waitpid(pid, NULL, 0);
+		redir->fd = fds[0];
+		return ;
+	}
+	close(fds[0]);
+	while (1)
+	{
+		shell->exit_status = 0;
+		line = readline("> ");
+		if (!line)
+		{
+			close(fds[1]);
+			ft_exit(shell);
+		}
+		line = expand_variables(line, env, shell);
 		if (ft_strcmp(line, redir->args[1]) == 0)
 		{
-			close(fd);
-			fd = open("tmp_heredoc.txt", O_RDONLY);
-			dup2(fd, STDIN_FILENO);
-			close(fd);
-			unlink("tmp_heredoc.txt");
 			free(line);
 			break;
 		}
 		else
 		{
-			write(fd, line, ft_strlen(line));
-			write(fd, "\n", 1);
+			write(fds[1], line, ft_strlen(line));
+			write(fds[1], "\n", 1);
 		}
 		free(line);
-		line = readline(">");
-	}
+	}	
+	close(fds[1]);
+	ft_exit(shell);
 }
