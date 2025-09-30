@@ -6,7 +6,7 @@
 /*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 14:49:12 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/09/29 19:15:08 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/09/30 14:41:35 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void  exec_single(t_shell *shell, t_cmd *cmd)
 		}
 		return ;
 	}
-	if (shell->cmd->redirect)
+	if (shell->cmd->redirect && !shell->in_child)
 		apply_redirections(shell);
 	if (exec_command(shell, cmd) < 0)
 		exec_external(shell, cmd);
@@ -75,8 +75,14 @@ static void	exec_pipes(t_shell *shell, int size, int i)
 		if (get_cmd(shell->cmd, i)->pid == 0)
 		{
 			signal_setup(shell, CHILD);
+			shell->in_child = 1;
 			if (get_cmd(shell->cmd, i)->redirect)
+			{
+				t_cmd *temp = shell->cmd;
+				shell->cmd = get_cmd(shell->cmd, i);
 				apply_redirections(shell);
+				shell->cmd = temp;
+			}
 			if (i == 0 || (i > 0 && i < size - 1))
 				dup2(get_cmd(shell->cmd, i)->pipes[1], STDOUT_FILENO);
 			if (i == size - 1 || (i > 0 && i < size - 1))
@@ -96,8 +102,24 @@ static void	exec_pipes(t_shell *shell, int size, int i)
 void  executor(t_shell *shell)
 {
 	int	cmd_size;
+	int	i;
+	t_cmd *current_cmd;
 	
 	cmd_size = commands_size(shell->cmd);
+	i = 0;
+	current_cmd = shell->cmd;
+	while (i < cmd_size && current_cmd)
+	{
+		if (current_cmd->redirect)
+		{
+			t_cmd *temp = shell->cmd;
+			shell->cmd = current_cmd;
+			load_redirections(shell);
+			shell->cmd = temp;
+		}
+		current_cmd = current_cmd->next;
+		i++;
+	}
 	if (cmd_size == 1)
 		exec_single(shell, get_cmd(shell->cmd, 0));
 	else if (cmd_size > 1)
