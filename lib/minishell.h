@@ -3,55 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:45:51 by duandrad          #+#    #+#             */
-/*   Updated: 2025/09/30 14:30:28 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/10/01 14:05:45 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-#  include <stdio.h>
-#  include <unistd.h>
-#  include <fcntl.h>
-#  include <stdlib.h>
-#  include <stdarg.h>
-#  include <readline/readline.h>
-#  include <readline/history.h>
-#  include <stdbool.h>
-#  include <signal.h>
-#  include <sys/wait.h>
-#  include "Libft/libft.h"
-
-#  define PARENT 1
-#  define CHILD 2
-#  define IGNORE 3
-#  define ERR_EXIT "numeric argument required\n"
-#  define ERR_SYN_QUOTES "Syntax error: quotes unclosed\n"
-#  define ERR_SYN_RD "Syntax error: redirections\n"
-#  define ERR_SYN_PIPE "Syntax error: pipes\n"
-#  define ERR_EMPTY_INP "Error: Empy input\n"
-#  define GRN "\e[4;32m"
-#  define PRP "\e[0;35m"
-#  define WHT "\e[1;37m"
-#  define RED "\e[1;31m"
-#  define LG_RED "\e[0;31m"
-#  define COLOR_RESET "\e[0m"
-#  define _GNU_SOURCE 
-
-#  include <stdio.h>
-#  include <unistd.h>
-#  include <fcntl.h>
-#  include <stdlib.h>
-#  include <stdarg.h>
-#  include <readline/readline.h>
-#  include <readline/history.h>
-#  include <stdbool.h>
-#  include <signal.h>
-#  include <sys/wait.h>
-#  include "Libft/libft.h"
+# include <stdio.h>
+# include <unistd.h>
+# include <fcntl.h>
+# include <stdlib.h>
+# include <stdarg.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <stdbool.h>
+# include <signal.h>
+# include <sys/wait.h>
+# include "Libft/libft.h"
+# define PARENT 1
+# define CHILD 2
+# define IGNORE 3
+# define ERR_EXIT "numeric argument required\n"
+# define ERR_SYN_QUOTES "Syntax error: quotes unclosed\n"
+# define ERR_SYN_RD "Syntax error: redirections\n"
+# define ERR_SYN_PIPE "Syntax error: pipes\n"
+# define ERR_EMPTY_INP "Error: Empy input\n"
+# define GRN "\e[4;32m"
+# define PRP "\e[0;35m"
+# define WHT "\e[1;37m"
+# define RED "\e[1;31m"
+# define LG_RED "\e[0;31m"
+# define COLOR_RESET "\e[0m"
+# define _GNU_SOURCE 
+# include <stdio.h>
+# include <limits.h>
+# include <unistd.h>
+# include <fcntl.h>
+# include <stdlib.h>
+# include <stdarg.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <stdbool.h>
+# include <signal.h>
+# include <sys/wait.h>
+# include "Libft/libft.h"
 
 typedef char*	t_str;
 typedef char**	t_vtr;

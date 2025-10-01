@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 14:49:12 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/09/30 18:28:11 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/10/01 14:11:16 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,9 @@ static int	close_fd(int new_fd, int old_fd)
 
 static void	exec_cmd(t_cmd *cmd, int in, int out, int is_single)
 {
+	int	fds;
+
+	fds = 2;
 	if (!is_single)
 		cmd->pid = fork();
 	if (cmd->pid == 0)
@@ -45,6 +48,8 @@ static void	exec_cmd(t_cmd *cmd, int in, int out, int is_single)
 			signal_setup(shell(), CHILD);
 		if (exec_builtin(shell(), cmd) < 0)
 		{
+			while (++fds < FOPEN_MAX)
+				close(fds);
 			execve(cmd->args[0], cmd->args, shell()->env);
 			cmd_error(cmd->args[0]);
 			ft_exit(shell());
