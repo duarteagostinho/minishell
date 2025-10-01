@@ -6,7 +6,7 @@
 /*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 19:47:06 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/09/30 18:35:22 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/10/01 15:19:57 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ static int	exit_code(t_shell *shell)
 	t_str	code;
 
 	i = 0;
-	if (!shell->cmd->args[1] || shell->in_child)
+	if (ft_strncmp(shell->cmd->args[0], "exit", 5)
+		|| !shell->cmd->args[1] || shell->in_child)
 		return (shell->exit_status);
 	code = shell->cmd->args[1];
 	if (code[i] == '-' || code[i] == '+')

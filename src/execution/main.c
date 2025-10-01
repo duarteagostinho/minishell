@@ -50,7 +50,10 @@ static void	run_prompt(t_vtr env)
 	{
 		prompt = readline(PRP" $> "WHT);
 		if (!prompt)
+		{
+			printf("ctrl+d\n");
 			ft_exit(shell());
+		}
 		if (ft_strlen(prompt))
 			add_history(prompt);
 		shell()->cmd = parser(prompt, shell()->env, shell());
