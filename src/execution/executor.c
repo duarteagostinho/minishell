@@ -6,7 +6,7 @@
 /*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 14:49:12 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/10/01 14:11:16 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/10/01 17:43:51 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static int	close_fd(int new_fd, int old_fd)
 static void	exec_cmd(t_cmd *cmd, int in, int out, int is_single)
 {
 	int	fds;
+	t_shell temp_shell;
 
 	fds = 2;
 	if (!is_single)
@@ -44,6 +45,17 @@ static void	exec_cmd(t_cmd *cmd, int in, int out, int is_single)
 		dup2(out, STDOUT_FILENO);
 		close(in);
 		close(out);
+		if (cmd->pipes[0] > 2 && cmd->pipes[0] != in && cmd->pipes[0] != out)
+			close(cmd->pipes[0]);
+		if (cmd->pipes[1] > 2 && cmd->pipes[1] != in && cmd->pipes[1] != out)
+			close(cmd->pipes[1]);
+		if (cmd->redirect)
+		{
+			temp_shell = *shell();
+			temp_shell.cmd = cmd;
+			load_redirections(&temp_shell);
+			apply_redirections(&temp_shell);
+		}
 		if (!is_single)
 			signal_setup(shell(), CHILD);
 		if (exec_builtin(shell(), cmd) < 0)
@@ -58,8 +70,6 @@ static void	exec_cmd(t_cmd *cmd, int in, int out, int is_single)
 			return ;
 		ft_exit(shell());
 	}
-	close(in);
-	close(out);
 }
 
 void  executor(t_shell *shell, int in, int out)
@@ -73,17 +83,22 @@ void  executor(t_shell *shell, int in, int out)
 		out = dup(STDOUT_FILENO);
 		load_redirections(shell);
 		if (cmd->next)
-		{
 			pipe(cmd->pipes);
-			out = close_fd(cmd->pipes[1], out);
-		}
 		if (cmd->redirect_out)
 		 	out = close_fd(cmd->redirect_out, out);
+		else if (cmd->next)
+			out = close_fd(cmd->pipes[1], out);
 		if (cmd->redirect_in)
 		 	in = close_fd(cmd->redirect_in, in);
 		exec_cmd(cmd, in, out, (!shell->cmd->next && is_builtin(cmd->args[0])));
-		in = close_fd(cmd->pipes[0], in);
+		close(out);
+		if (cmd->next)
+		{
+			close(in);
+			in = cmd->pipes[0];
+		}
 		cmd = cmd->next;
 	}
+	close(in);
 	wait_cmds(shell);
 }

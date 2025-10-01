@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 13:20:54 by duandrad          #+#    #+#             */
-/*   Updated: 2025/09/25 18:10:34 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/10/01 17:43:57 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,8 @@ t_rdir	*extract_redirections(t_str cmd_str)
 			red = extract_one_redir(cmd_str, &i);
 			if (red)
 				add_redir(&head, &curr, red);
+			if (!cmd_str[i])
+				break ;
 			continue ;
 		}
 	}

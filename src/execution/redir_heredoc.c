@@ -5,9 +5,13 @@ void	handle_heredoc(t_rdir *redir, t_shell *shell, char **env)
 	char	*line;
 	int		fds[2];
 	int		pid;
-	
-	pipe(fds);
+
 	pid = fork();
+	if (pipe(fds) == -1)
+	{
+		perror("pipe");
+		return ;
+	}
 	if (pid)
 	{
 		close(fds[1]);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 19:47:06 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/10/01 15:19:57 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/10/01 17:40:18 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int	exit_code(t_shell *shell)
 		i++;
 	while (ft_isdigit(code[i]))
 		i++;
-	if (code[i])
+	if (i > 19 || code[i])
 		exit_error(shell, 0);
 	return (ft_atoi(code) % 256);
 }
@@ -61,6 +61,7 @@ int	ft_exit(t_shell *shell)
 		return (exit_error(shell, 1), EXIT_FAILURE);
 	code = exit_code(shell);
 	free_shell(shell);
+	(close(0), close(1), close(2));
 	exit(code);
 	return (EXIT_SUCCESS);
 }

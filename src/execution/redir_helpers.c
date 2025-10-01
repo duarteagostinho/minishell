@@ -30,6 +30,8 @@ void	load_redirections(t_shell *shell)
 {
 	t_rdir	*redir;
 
+	if (!shell->cmd || !shell->cmd->redirect)
+		return ;
 	redir = shell->cmd->redirect;
 	while (redir)
 	{
@@ -56,12 +58,12 @@ void	apply_redirections(t_shell *shell)
 	{
 		if (prev)
 			close(prev->fd);
-		if (ft_strncmp(curr->args[0], "<", 2) == 0)
+		if (ft_strncmp(curr->args[0], "<<", 3) == 0)
 			dup2(curr->fd, STDIN_FILENO);
 		else if (ft_strncmp(curr->args[0], ">", 2) == 0
 			|| ft_strncmp(curr->args[0], ">>", 3) == 0)
 			dup2(curr->fd, STDOUT_FILENO);
-		else if (ft_strncmp(curr->args[0], "<<", 3) == 0)
+		else if (ft_strncmp(curr->args[0], "<", 2) == 0)
 			dup2(curr->fd, STDIN_FILENO);
 		prev = curr;
 		curr = curr->next;
