@@ -6,7 +6,7 @@
 /*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:45:51 by duandrad          #+#    #+#             */
-/*   Updated: 2025/10/02 14:17:22 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/10/02 15:57:44 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # define PARENT 1
 # define CHILD 2
 # define IGNORE 3
+# define HEREDOC 4
 # define ERR_EXIT "numeric argument required\n"
 # define ERR_SYN_QUOTES "Syntax error: quotes unclosed\n"
 # define ERR_SYN_RD "Syntax error: redirections\n"
@@ -44,6 +45,13 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdlib.h>
+# define ERR_SYN_PIPE "Syntax error: pipes\n"
+# define ERR_EMPTY_INP "Error: Empy input\n"
+# define GRN "\e[4;32m"
+# define PRP "\e[0;35m"
+# define WHT "\e[1;37m"
+# define RED "\e[1;31m"
+# define LG_RED "\e[0;31m"
 # include <stdarg.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -143,9 +151,10 @@ t_vtr		process_args(t_str cmd_str);
 t_vtr		word_split(t_str str);
 
 /*EXECUTION FUNCTIONS*/
-void		handle_heredoc(t_rdir *redir, t_shell *shell, char **env);
+void		handle_heredoc(t_rdir *redir, t_shell *shell);
 void		load_redirections(t_shell *shell);
-void		apply_redirections(t_shell *shell);
+void		load_heredocs(t_shell *shell);
+void		apply_redirections(t_cmd *cmd);
 void		close_redirects(t_shell *shell);
 void		free_rdirs(t_rdir *redirects);
 void		signal_setup(t_shell *shell, int process);

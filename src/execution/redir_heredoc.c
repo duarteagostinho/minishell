@@ -6,13 +6,13 @@
 /*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 13:55:07 by duandrad          #+#    #+#             */
-/*   Updated: 2025/10/02 14:01:52 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/10/02 16:14:53 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	heredoc_child(int write_fd, char *delimiter, t_shell *shell)
+static void	write_heredoc_content(int fd, char *delimiter, t_shell *shell)
 {
 	char	*line;
 
@@ -21,61 +21,59 @@ static void	heredoc_child(int write_fd, char *delimiter, t_shell *shell)
 		shell->exit_status = 0;
 		line = readline("> ");
 		if (!line)
-			break ;
+			ft_exit(shell);
 		if (ft_strcmp(line, delimiter) == 0)
 		{
 			free(line);
 			break ;
 		}
-		write(write_fd, line, ft_strlen(line));
-		write(write_fd, "\n", 1);
+		write(fd, line, ft_strlen(line));
+		write(fd, "\n", 1);
 		free(line);
 	}
-	close(write_fd);
-	exit(0);
 }
 
-static int	create_heredoc_pipe(int *fds)
+static int	create_heredoc_file(char *filename, char *delimiter, t_shell *shell)
 {
-	if (pipe(fds) == -1)
-	{
-		perror("pipe");
-		return (0);
-	}
-	return (1);
-}
+	int	fd;
 
-static int	fork_heredoc(int *fds, t_rdir *redir, t_shell *shell)
-{
-	int	pid;
-
-	pid = fork();
-	if (pid == -1)
+	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0640);
+	if (fd == -1)
 	{
-		perror("fork");
-		close(fds[0]);
-		close(fds[1]);
+		perror("heredoc open");
 		return (-1);
 	}
-	if (pid == 0)
-		heredoc_child(fds[1], redir->args[1], shell);
-	return (pid);
+	write_heredoc_content(fd, delimiter, shell);
+	close(fd);
+	unlink(filename);
+	return (fd);
 }
 
-void	handle_heredoc(t_rdir *redir, t_shell *shell, char **env)
+void	handle_heredoc(t_rdir *redir, t_shell *shell)
 {
-	int	fds[2];
-	int	pid;
+	int		fd;
+	pid_t	pid;
 
-	(void)env;
 	if (!redir || !redir->args[1])
 		return ;
-	if (!create_heredoc_pipe(fds))
-		return ;
-	pid = fork_heredoc(fds, redir, shell);
-	if (pid == -1)
-		return ;
-	close(fds[1]);
-	waitpid(pid, NULL, 0);
-	redir->fd = fds[0];
+	pid = fork();
+	if (pid == 0)
+	{
+		signal_setup(shell, HEREDOC);
+		fd = create_heredoc_file("/tmp/heredoc_tmp", redir->args[1], shell);
+		if (fd == -1)
+			return ;
+	}
+	signal_setup(shell, IGNORE);
+	waitpid(pid, &shell->exit_status, 0);
+	if (WIFSIGNALED(shell->exit_status))
+	{
+		if (WTERMSIG(shell->exit_status) == SIGINT)
+			shell->exit_status = 130;
+		else if (WTERMSIG(shell->exit_status) == SIGQUIT)
+			shell->exit_status = 131;
+	}
+	else if (WIFEXITED(shell->exit_status))
+		shell->exit_status = WEXITSTATUS(shell->exit_status);
+	redir->fd = open("/tmp/heredoc_tmp", O_RDONLY);
 }

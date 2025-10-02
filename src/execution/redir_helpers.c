@@ -6,7 +6,7 @@
 /*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 13:50:43 by duandrad          #+#    #+#             */
-/*   Updated: 2025/10/02 14:19:58 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/10/02 15:57:19 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,11 @@ void	close_redirects(t_shell *shell)
 		shell->cmd->redirect = shell->cmd->redirect->next;
 	}
 }
+
 void	open_with_options(t_rdir *redir, int flags, int mode)
 {
-	int	 fd;
+	int	fd;
+
 	fd = open(redir->args[1], flags, mode);
 	if (fd < 0)
 	{
@@ -35,15 +37,36 @@ void	open_with_options(t_rdir *redir, int flags, int mode)
 	}
 	redir->fd = fd;
 }
+
+void	load_heredocs(t_shell *shell)
+{
+	t_rdir  *redir;
+	t_cmd 	*cmd;
+	
+	cmd = shell->cmd;
+	while (cmd)
+	{
+		redir = cmd->redirect;
+		while (redir)
+		{
+			if (!ft_strncmp(redir->args[0], "<<", 3))
+				handle_heredoc(redir, shell);
+			signal_setup(shell, PARENT);
+			redir = redir->next;
+		}
+		cmd = cmd->next;
+	}
+}
+
 void	load_redirections(t_shell *shell)
 {
 	t_rdir  *redir;
+	
+	load_heredocs(shell);
 	redir = shell->cmd->redirect;
 	while (redir)
 	{
-		if (!ft_strncmp(redir->args[0], "<<", 3))
-			handle_heredoc(redir, shell, shell->env);
-		else if (!ft_strncmp(redir->args[0], ">>", 3))
+		if (!ft_strncmp(redir->args[0], ">>", 3))
 			open_with_options(redir, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		else if (!ft_strncmp(redir->args[0], "<", 2))
 			open_with_options(redir, O_RDONLY, 0);
@@ -52,19 +75,20 @@ void	load_redirections(t_shell *shell)
 		redir = redir->next;
 	}
 }
-void	apply_redirections(t_shell *shell)
+void	apply_redirections(t_cmd *cmd)
 {
 	t_rdir  *curr;
-	curr = shell->cmd->redirect;
+	
+	curr = cmd->redirect;
 	while (curr)
 	{
 		if (!ft_strncmp(curr->args[0], "<", 2))
-			shell->cmd->redirect_in = curr->fd;
+			cmd->redirect_in = curr->fd;
 		else if (!ft_strncmp(curr->args[0], ">", 2)
 			|| !ft_strncmp(curr->args[0], ">>", 3))
-			shell->cmd->redirect_out = curr->fd;
+			cmd->redirect_out = curr->fd;
 		else if (!ft_strncmp(curr->args[0], "<<", 3))
-			shell->cmd->redirect_in = curr->fd;
+			cmd->redirect_in = curr->fd;
 		curr = curr->next;
 	}
 }

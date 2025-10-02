@@ -6,7 +6,7 @@
 /*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:40:54 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/10/02 14:02:38 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/10/02 16:13:04 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,12 @@ void	signal_setup(t_shell *shell, int process)
 	{
 		shell->in_child = 0;
 		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
+	}
+	else if (process == HEREDOC)
+	{
+		shell->in_child = 1;
+		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_IGN);
 	}
 }
