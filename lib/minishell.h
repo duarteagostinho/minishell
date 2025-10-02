@@ -6,7 +6,7 @@
 /*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:45:51 by duandrad          #+#    #+#             */
-/*   Updated: 2025/10/01 14:05:45 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/10/02 13:39:34 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ t_vtr		word_split(t_str str);
 void		input_redir(t_rdir *redir);
 void		output_redir(t_rdir *redir);
 void		append_redir(t_rdir *redir);
-void		handle_heredoc(t_rdir *redir, t_shell *shell, t_vtr env);
+void		handle_heredoc(t_rdir *redir, t_shell *shell, char **env);
 void		setup_redirection(t_shell *shell);
 void		restore_redirections(t_shell *shell);
 void		load_redirections(t_shell *shell);

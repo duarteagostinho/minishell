@@ -62,7 +62,6 @@ static void	run_prompt(t_vtr env)
 		{
 			// printf("\n--- Parsing ---\n");
 			// print_commands(shell()->cmd);
-			load_redirections(shell());
 			executor(shell(), STDIN_FILENO, STDOUT_FILENO);
 			free_cmds(shell()->cmd);
 			shell()->cmd = NULL;

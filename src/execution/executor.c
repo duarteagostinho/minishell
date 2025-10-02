@@ -6,7 +6,7 @@
 /*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 14:49:12 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/10/01 17:43:51 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/10/02 13:39:39 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ static void	exec_cmd(t_cmd *cmd, int in, int out, int is_single)
 		{
 			temp_shell = *shell();
 			temp_shell.cmd = cmd;
-			load_redirections(&temp_shell);
 			apply_redirections(&temp_shell);
 		}
 		if (!is_single)
@@ -81,6 +80,7 @@ void  executor(t_shell *shell, int in, int out)
 	while (cmd)
 	{
 		out = dup(STDOUT_FILENO);
+		shell->cmd = cmd;
 		load_redirections(shell);
 		if (cmd->next)
 			pipe(cmd->pipes);
@@ -90,7 +90,8 @@ void  executor(t_shell *shell, int in, int out)
 			out = close_fd(cmd->pipes[1], out);
 		if (cmd->redirect_in)
 		 	in = close_fd(cmd->redirect_in, in);
-		exec_cmd(cmd, in, out, (!shell->cmd->next && is_builtin(cmd->args[0])));
+		if (cmd->args && cmd->args[0])
+			exec_cmd(cmd, in, out, (!shell->cmd->next && is_builtin(cmd->args[0])));
 		close(out);
 		if (cmd->next)
 		{

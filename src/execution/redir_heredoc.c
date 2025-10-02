@@ -6,13 +6,23 @@ void	handle_heredoc(t_rdir *redir, t_shell *shell, char **env)
 	int		fds[2];
 	int		pid;
 
-	pid = fork();
+	(void)env;
+	if (!redir || !redir->args[1])
+		return ;
 	if (pipe(fds) == -1)
 	{
 		perror("pipe");
 		return ;
 	}
-	if (pid)
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork");
+		close(fds[0]);
+		close(fds[1]);
+		return ;
+	}
+	if (pid > 0)
 	{
 		close(fds[1]);
 		waitpid(pid, NULL, 0);
@@ -27,21 +37,17 @@ void	handle_heredoc(t_rdir *redir, t_shell *shell, char **env)
 		if (!line)
 		{
 			close(fds[1]);
-			ft_exit(shell);
+			exit(0);
 		}
-		line = expand_variables(line, env, shell);
 		if (ft_strcmp(line, redir->args[1]) == 0)
 		{
 			free(line);
 			break;
 		}
-		else
-		{
-			write(fds[1], line, ft_strlen(line));
-			write(fds[1], "\n", 1);
-		}
+		write(fds[1], line, ft_strlen(line));
+		write(fds[1], "\n", 1);
 		free(line);
 	}	
 	close(fds[1]);
-	ft_exit(shell);
+	exit(0);
 }

@@ -36,13 +36,25 @@ void	load_redirections(t_shell *shell)
 	while (redir)
 	{
 		if (ft_strncmp(redir->args[0], "<<", 3) == 0)
+		{
 			handle_heredoc(redir, shell, shell->env);
+			shell->cmd->redirect_in = redir->fd;
+		}
 		else if (ft_strncmp(redir->args[0], ">>", 3) == 0)
+		{
 			open_with_options(redir, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			shell->cmd->redirect_out = redir->fd;
+		}
 		else if (ft_strncmp(redir->args[0], "<", 2) == 0)
+		{
 			open_with_options(redir, O_RDONLY, 0);
+			shell->cmd->redirect_in = redir->fd;
+		}
 		else if (ft_strncmp(redir->args[0], ">", 2) == 0)
+		{
 			open_with_options(redir, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			shell->cmd->redirect_out = redir->fd;
+		}
 		redir = redir->next;
 	}
 }

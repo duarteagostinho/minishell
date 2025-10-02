@@ -76,6 +76,12 @@ t_vtr	process_args(t_str cmd_str)
 	if (!clean_cmd)
 		return (NULL);
 	split = ft_split(clean_cmd, '\x1F');
+	if (!split || get_sizeof_args(split) < 0)
+	{
+		free_vtr(split);
+		free(clean_cmd);
+		return (NULL);
+	}
 	args = ft_calloc(get_sizeof_args(split) + 1, sizeof(t_str));
 	if (!args)
 		return (free_vtr(split), NULL);
