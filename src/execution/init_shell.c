@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   init_shell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 21:23:05 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/09/18 18:07:27 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/10/02 13:50:33 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void  lvl_up(t_shell *shell)
+static void	lvl_up(t_shell *shell)
 {
-	int	  sh_lvl;
-	t_str new_lvl;
+	int		sh_lvl;
+	t_str	new_lvl;
 
 	sh_lvl = ft_atoi(get_env_val(shell->env, "SHLVL"));
 	new_lvl = ft_itoa(++sh_lvl);
@@ -23,7 +23,7 @@ static void  lvl_up(t_shell *shell)
 	free(new_lvl);
 }
 
-static void empty_env(t_shell *shell)
+static void	empty_env(t_shell *shell)
 {
 	t_str	cwd;
 
@@ -33,9 +33,9 @@ static void empty_env(t_shell *shell)
 	free(cwd);
 }
 
-void  init_shell(t_vtr env)
+void	init_shell(t_vtr env)
 {
-	int	  i;
+	int	i;
 
 	i = -1;
 	if (env && *env)

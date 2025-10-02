@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 18:50:41 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/09/25 22:31:04 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/10/02 13:48:34 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void free_vtr(t_vtr args)
+void	free_vtr(t_vtr args)
 {
 	int	i;
 
@@ -24,7 +24,7 @@ void free_vtr(t_vtr args)
 	free(args);
 }
 
-void  free_cmds(t_cmd *commands)
+void	free_cmds(t_cmd *commands)
 {
 	t_cmd	*curr;
 	t_cmd	*next;
@@ -60,7 +60,7 @@ void	free_rdirs(t_rdir *redirects)
 	}
 }
 
-void  free_shell(t_shell *shell)
+void	free_shell(t_shell *shell)
 {
 	if (shell)
 	{

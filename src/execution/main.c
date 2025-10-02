@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/02 14:11:35 by duandrad          #+#    #+#             */
+/*   Updated: 2025/10/02 14:11:36 by duandrad         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-void	print_commands(t_cmd *commands)
+/* void	print_commands(t_cmd *commands)
 {
 	t_cmd	*curr;
 	int		cmd_num;
@@ -38,7 +50,7 @@ void	print_commands(t_cmd *commands)
 		curr = curr->next;
 		cmd_num++;
 	}
-}
+} */
 
 static void	run_prompt(t_vtr env)
 {
@@ -50,18 +62,13 @@ static void	run_prompt(t_vtr env)
 	{
 		prompt = readline(PRP" $> "WHT);
 		if (!prompt)
-		{
-			printf("ctrl+d\n");
 			ft_exit(shell());
-		}
 		if (ft_strlen(prompt))
 			add_history(prompt);
 		shell()->cmd = parser(prompt, shell()->env, shell());
 		free(prompt);
 		if (shell()->cmd)
 		{
-			// printf("\n--- Parsing ---\n");
-			// print_commands(shell()->cmd);
 			executor(shell(), STDIN_FILENO, STDOUT_FILENO);
 			free_cmds(shell()->cmd);
 			shell()->cmd = NULL;

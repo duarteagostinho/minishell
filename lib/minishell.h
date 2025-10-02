@@ -6,7 +6,7 @@
 /*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:45:51 by duandrad          #+#    #+#             */
-/*   Updated: 2025/10/02 13:39:34 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/10/02 14:17:22 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,21 +143,16 @@ t_vtr		process_args(t_str cmd_str);
 t_vtr		word_split(t_str str);
 
 /*EXECUTION FUNCTIONS*/
-void		input_redir(t_rdir *redir);
-void		output_redir(t_rdir *redir);
-void		append_redir(t_rdir *redir);
 void		handle_heredoc(t_rdir *redir, t_shell *shell, char **env);
-void		setup_redirection(t_shell *shell);
-void		restore_redirections(t_shell *shell);
 void		load_redirections(t_shell *shell);
 void		apply_redirections(t_shell *shell);
 void		close_redirects(t_shell *shell);
 void		free_rdirs(t_rdir *redirects);
-void  		signal_setup(t_shell *shell, int process);
+void		signal_setup(t_shell *shell, int process);
 void		cmd_error(t_str cmd);
 void		ft_swap(void **a, void **b);
 void		free_shell(t_shell *shell);
-void  		free_cmds(t_cmd *commands);
+void		free_cmds(t_cmd *commands);
 void		executor(t_shell *shell, int in, int out);
 void		init_shell(t_vtr env);
 void		free_vtr(t_vtr args);
