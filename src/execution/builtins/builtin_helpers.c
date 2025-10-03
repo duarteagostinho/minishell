@@ -6,7 +6,7 @@
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 10:59:57 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/10/03 18:37:45 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/10/03 18:41:48 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ int	is_valid_id(const t_str key)
 
 int	exec_builtin(t_shell *shell, t_cmd *cmd)
 {
-	if (ft_strlen(*cmd->args) == 0)
-		return (-1);
 	if (!ft_strcmp("env", cmd->args[0]))
 		return (env(shell));
 	else if (!ft_strcmp("export", cmd->args[0]))

@@ -6,7 +6,7 @@
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:11:35 by duandrad          #+#    #+#             */
-/*   Updated: 2025/10/03 17:16:06 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/10/03 19:44:28 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	run_prompt(t_vtr env)
 		free(prompt);
 		if (shell()->cmd)
 		{
-			executor(shell(), dup(STDIN_FILENO), STDOUT_FILENO);
+			executor(shell(), STDIN_FILENO, STDOUT_FILENO);
 			if (!access("/tmp/heredoc_tmp", R_OK))
 				unlink("/tmp/heredoc_tmp");
 			free_cmds(shell()->cmd);

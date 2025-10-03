@@ -6,7 +6,7 @@
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 19:47:06 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/10/03 13:16:43 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/10/03 19:41:11 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	exit_code(t_shell *shell)
 	t_str	code;
 
 	i = 0;
-	if (ft_strncmp(shell->cmd->args[0], "exit", 5)
+	if (!shell->cmd->args || ft_strncmp(shell->cmd->args[0], "exit", 5)
 		|| !shell->cmd->args[1] || shell->in_child)
 		return (shell->exit_status);
 	code = shell->cmd->args[1];
@@ -61,7 +61,6 @@ int	ft_exit(t_shell *shell)
 		return (exit_error(shell, 1), EXIT_FAILURE);
 	code = exit_code(shell);
 	free_shell(shell);
-	(close(0), close(1), close(2));
 	exit(code);
 	return (EXIT_SUCCESS);
 }

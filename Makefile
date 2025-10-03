@@ -32,7 +32,7 @@ fclean: clean
 re: fclean all
 
 val: re
-	valgrind --show-leak-kinds=all --leak-check=full --track-fds=all --suppressions=readline.supp ./minishell
+	valgrind --show-leak-kinds=all --leak-check=full --track-fds=all --suppressions=readline.supp -s ./minishell
 
 r:
 	make re && make clean && clear && ./minishell

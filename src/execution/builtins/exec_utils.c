@@ -6,7 +6,7 @@
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 19:05:33 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/10/03 18:35:53 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/10/03 18:41:20 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ t_str	get_path(t_shell *shell, t_str name)
 	t_vtr	paths;
 
 	i = -1;
-	if (!access(name, X_OK) || is_builtin(&name))
+	if (!access(name, X_OK) || is_builtin(name))
 		return (name);
 	paths = ft_split(get_env_val(shell->env, "PATH"), ':');
 	if (!paths)
@@ -57,23 +57,21 @@ t_str	get_path(t_shell *shell, t_str name)
 	return (free_vtr(paths), name);
 }
 
-int	is_builtin(t_vtr args)
+int	is_builtin(t_str name)
 {
-	if (ft_strlen(args[0]) == 0)
-		return (-1);	
-	if (!ft_strcmp("env", args[0]))
+	if (!ft_strcmp("env", name))
 		return (1);
-	else if (!ft_strcmp("export", args[0]))
+	else if (!ft_strcmp("export", name))
 		return (1);
-	else if (!ft_strcmp("exit", args[0]))
+	else if (!ft_strcmp("exit", name))
 		return (1);
-	else if (!ft_strcmp("echo", args[0]))
+	else if (!ft_strcmp("echo", name))
 		return (1);
-	else if (!ft_strcmp("pwd", args[0]))
+	else if (!ft_strcmp("pwd", name))
 		return (1);
-	else if (!ft_strcmp("cd", args[0]))
+	else if (!ft_strcmp("cd", name))
 		return (1);
-	else if (!ft_strcmp("unset", args[0]))
+	else if (!ft_strcmp("unset", name))
 		return (1);
 	return (0);
 }

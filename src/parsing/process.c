@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 13:04:04 by duandrad          #+#    #+#             */
-/*   Updated: 2025/10/02 13:46:43 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/10/03 19:10:28 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,18 +77,16 @@ t_vtr	process_args(t_str cmd_str)
 	if (!clean_cmd)
 		return (NULL);
 	split = ft_split(clean_cmd, '\x1F');
-	free(clean_cmd);
 	size = get_sizeof_args(split);
 	if (!split || size < 0)
-		return (free_vtr(split), NULL);
+		return (free_vtr(split), free(clean_cmd), NULL);
 	args = ft_calloc(size + 1, sizeof(t_str));
 	if (!args)
-		return (free_vtr(split), NULL);
+		return (free_vtr(split), free(clean_cmd), NULL);
 	i = -1;
 	while (split[++i])
 		args[i] = remove_quotes(split[i]);
-	free_vtr(split);
 	if (args[0])
 		args[0] = get_path(shell(), args[0]);
-	return (args);
+	return (free_vtr(split), free(clean_cmd), args);
 }

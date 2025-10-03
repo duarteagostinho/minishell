@@ -6,7 +6,7 @@
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:45:51 by duandrad          #+#    #+#             */
-/*   Updated: 2025/10/03 18:07:04 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/10/03 19:30:50 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,9 +166,10 @@ void		ft_swap(void **a, void **b);
 void		free_shell(t_shell *shell);
 void		free_cmds(t_cmd *commands);
 void		executor(t_shell *shell, int in, int out);
+void		close_fds(int in, int out);
 void		init_shell(t_vtr env);
 void		free_vtr(t_vtr args);
-int			is_builtin(t_vtr args);
+int			is_builtin(t_str name);
 int			cd(t_shell *shell);
 int			pwd(t_shell *shell);
 int			env(t_shell *shell);

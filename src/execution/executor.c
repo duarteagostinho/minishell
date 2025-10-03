@@ -6,7 +6,7 @@
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 14:49:12 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/10/03 18:33:57 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/10/03 19:45:44 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,36 +41,43 @@ static void	wait_cmds(t_shell *shell)
 static int	close_fd(int new_fd, int old_fd)
 {
 	struct stat	fd_info;
-
+	
 	if (fstat(old_fd, &fd_info) == 0)
 		close(old_fd);
 	return (new_fd);
 }
 
+void	close_fds(int in, int out)
+{
+	close(in);
+	close(out);
+}
+
 static void	exec_cmd(t_cmd *cmd, int in, int out, int is_single)
 {
-	if (!is_single || !is_builtin(cmd->args))
+	if (!cmd->args)
+		return (close_fds(in, out));
+	if (!is_single || !is_builtin(cmd->args[0]))
 		cmd->pid = fork();
 	if (cmd->pid == 0)
 	{
-		if (!is_single || (is_single && !is_builtin(cmd->args)))
+		if (!is_builtin(cmd->args[0]) || !is_single)
 			signal_setup(shell(), CHILD);
-		close_fd(dup2(in, STDIN_FILENO), in);
-		close_fd(dup2(out, STDOUT_FILENO), out);
-		if (exec_builtin(shell(), cmd) == -1 && is_builtin(cmd->args) > 0)
+		dup2(in, STDIN_FILENO);
+		dup2(out, STDOUT_FILENO);
+		close_fds(in, out);
+		if (exec_builtin(shell(), cmd) < 0)
 		{
 			execve(cmd->args[0], cmd->args, shell()->env);
 			cmd_error(cmd->args[0]);
 			ft_exit(shell());
 		}
-		if (is_single
-			&& (is_builtin(cmd->args) > 0 || is_builtin(cmd->args) < 0))
+		if (is_builtin(cmd->args[0]) && is_single)
 			return ;
 		ft_exit(shell());
 	}
 	signal_setup(shell(), PARENT);
-	close(in);
-	close(out);
+	close_fds(in, out);
 }
 
 void	executor(t_shell *shell, int in, int out)
@@ -79,6 +86,7 @@ void	executor(t_shell *shell, int in, int out)
 
 	load_redirections(shell);
 	cmd = shell->cmd;
+	in = dup(STDIN_FILENO);
 	while (cmd)
 	{
 		out = dup(STDOUT_FILENO);
