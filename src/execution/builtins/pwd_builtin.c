@@ -6,7 +6,7 @@
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 00:16:27 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/09/25 16:40:14 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/10/03 13:17:39 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	get_sizeof_args(t_vtr args)
 
 int	pwd(t_shell *shell)
 {
-	t_str pwd;
+	t_str	pwd;
 
 	(void)shell;
 	pwd = getcwd(NULL, 0);

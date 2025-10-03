@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 19:47:06 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/10/01 17:40:18 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/10/03 13:16:43 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	exit_error(t_shell *shell, int error)
 {
 	if (!shell->in_child)
-	{	
+	{
 		ft_putstr_fd("minishell: exit: ", 2);
 		if (error == 1)
 		{
@@ -57,7 +57,7 @@ int	ft_exit(t_shell *shell)
 	if (!shell->cmd)
 		return (free_shell(shell), exit(0), EXIT_SUCCESS);
 	if (get_sizeof_args(shell->cmd->args) > 2
-	&& !ft_strncmp(shell->cmd->args[0], "exit", 5))
+		&& !ft_strncmp(shell->cmd->args[0], "exit", 5))
 		return (exit_error(shell, 1), EXIT_FAILURE);
 	code = exit_code(shell);
 	free_shell(shell);

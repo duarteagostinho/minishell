@@ -6,13 +6,13 @@
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 00:41:25 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/09/25 22:32:26 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/10/03 13:17:11 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int		is_sorted(t_vtr env)
+static int	is_sorted(t_vtr env)
 {
 	int		i;
 	int		j;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_setup.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 16:40:54 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/10/02 16:13:04 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/10/03 17:21:37 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ static void	parent_sig_handler(int signal)
 {
 	(void)signal;
 	shell()->exit_status = 130;
+	rl_replace_line("", 0);
 	write(1, "\n", 1);
 	rl_on_new_line();
-	rl_replace_line("", 0);
 	rl_redisplay();
 }
 

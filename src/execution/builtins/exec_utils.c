@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 19:05:33 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/09/30 16:39:23 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/10/03 18:35:53 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,12 @@ void	cmd_error(t_str cmd)
 
 t_str	get_path(t_shell *shell, t_str name)
 {
-	int	  	i;
+	int		i;
 	t_str	path;
 	t_vtr	paths;
 
 	i = -1;
-	if (!access(name, X_OK) || is_builtin(name))
+	if (!access(name, X_OK) || is_builtin(&name))
 		return (name);
 	paths = ft_split(get_env_val(shell->env, "PATH"), ':');
 	if (!paths)
@@ -57,24 +57,23 @@ t_str	get_path(t_shell *shell, t_str name)
 	return (free_vtr(paths), name);
 }
 
-int	is_builtin(t_str name)
+int	is_builtin(t_vtr args)
 {
-	size_t	size;
-
-	size = ft_strlen(name);
-	if (!ft_strncmp("env", name, size))
+	if (ft_strlen(args[0]) == 0)
+		return (-1);	
+	if (!ft_strcmp("env", args[0]))
 		return (1);
-	else if (!ft_strncmp("export", name, size))
+	else if (!ft_strcmp("export", args[0]))
 		return (1);
-	else if (!ft_strncmp("exit", name, size))
+	else if (!ft_strcmp("exit", args[0]))
 		return (1);
-	else if (!ft_strncmp("echo", name, size))
+	else if (!ft_strcmp("echo", args[0]))
 		return (1);
-	else if (!ft_strncmp("pwd", name, size))
+	else if (!ft_strcmp("pwd", args[0]))
 		return (1);
-	else if (!ft_strncmp("cd", name, size))
+	else if (!ft_strcmp("cd", args[0]))
 		return (1);
-	else if (!ft_strncmp("unset", name, size))
+	else if (!ft_strcmp("unset", args[0]))
 		return (1);
 	return (0);
 }

@@ -3,14 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   redir_helpers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 13:50:43 by duandrad          #+#    #+#             */
-/*   Updated: 2025/10/02 15:57:19 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/10/03 16:38:47 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	open_error(t_str filename, int error)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(filename, 2);
+	if (error == 1)
+	{
+		ft_putstr_fd(": No such file or directory\n", 2);
+		return ;
+	}
+	ft_putstr_fd(": Permission denied\n", 2);
+}
 
 void	close_redirects(t_shell *shell)
 {
@@ -27,58 +39,49 @@ void	close_redirects(t_shell *shell)
 
 void	open_with_options(t_rdir *redir, int flags, int mode)
 {
-	int	fd;
+	int			fd;
+	struct stat	f_info;
 
 	fd = open(redir->args[1], flags, mode);
-	if (fd < 0)
+	if (fd == -1)
 	{
-		perror("Error: Unable to open fd\n");
-		return;
+		if (stat(redir->args[1], &f_info) == -1)
+			open_error(redir->args[1], 1);
+		else if (access(redir->args[1], W_OK) == -1)
+			open_error(redir->args[1], 0);
+		return ;
 	}
 	redir->fd = fd;
 }
 
-void	load_heredocs(t_shell *shell)
+void	load_redirections(t_shell *shell)
 {
-	t_rdir  *redir;
-	t_cmd 	*cmd;
-	
+	t_rdir	*redir;
+	t_cmd	*cmd;
+
+	load_heredocs(shell);
 	cmd = shell->cmd;
 	while (cmd)
 	{
 		redir = cmd->redirect;
 		while (redir)
 		{
-			if (!ft_strncmp(redir->args[0], "<<", 3))
-				handle_heredoc(redir, shell);
-			signal_setup(shell, PARENT);
+			if (!ft_strncmp(redir->args[0], ">>", 3))
+				open_with_options(redir, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			else if (!ft_strncmp(redir->args[0], "<", 2))
+				open_with_options(redir, O_RDONLY, 0);
+			else if (!ft_strncmp(redir->args[0], ">", 2))
+				open_with_options(redir, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			redir = redir->next;
 		}
 		cmd = cmd->next;
 	}
 }
 
-void	load_redirections(t_shell *shell)
-{
-	t_rdir  *redir;
-	
-	load_heredocs(shell);
-	redir = shell->cmd->redirect;
-	while (redir)
-	{
-		if (!ft_strncmp(redir->args[0], ">>", 3))
-			open_with_options(redir, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		else if (!ft_strncmp(redir->args[0], "<", 2))
-			open_with_options(redir, O_RDONLY, 0);
-		else if (!ft_strncmp(redir->args[0], ">", 2))
-			open_with_options(redir, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		redir = redir->next;
-	}
-}
 void	apply_redirections(t_cmd *cmd)
 {
-	t_rdir  *curr;
-	
+	t_rdir	*curr;
+
 	curr = cmd->redirect;
 	while (curr)
 	{

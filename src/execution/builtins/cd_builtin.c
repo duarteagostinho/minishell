@@ -6,7 +6,7 @@
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 16:35:35 by duandrad          #+#    #+#             */
-/*   Updated: 2025/09/18 17:51:08 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/10/03 13:13:39 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 int	update_pwd(t_shell *shell, t_str lwd, t_str cwd)
 {
-	if (!add_env_var(shell->env, "PWD", cwd) || !add_env_var(shell->env, "OLDPWD", lwd))
+	if (!add_env_var(shell->env, "PWD", cwd)
+		|| !add_env_var(shell->env, "OLDPWD", lwd))
 		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);	
+	return (EXIT_SUCCESS);
 }
 
 int	cd(t_shell *shell)

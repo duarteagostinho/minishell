@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:45:51 by duandrad          #+#    #+#             */
-/*   Updated: 2025/10/02 15:57:44 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/10/03 18:07:04 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@
 # include <stdbool.h>
 # include <signal.h>
 # include <sys/wait.h>
+# include <sys/types.h>
+# include <sys/stat.h>
 # include "Libft/libft.h"
 
 typedef char*	t_str;
@@ -157,6 +159,7 @@ void		load_heredocs(t_shell *shell);
 void		apply_redirections(t_cmd *cmd);
 void		close_redirects(t_shell *shell);
 void		free_rdirs(t_rdir *redirects);
+void		open_error(t_str filename, int error);
 void		signal_setup(t_shell *shell, int process);
 void		cmd_error(t_str cmd);
 void		ft_swap(void **a, void **b);
@@ -165,7 +168,7 @@ void		free_cmds(t_cmd *commands);
 void		executor(t_shell *shell, int in, int out);
 void		init_shell(t_vtr env);
 void		free_vtr(t_vtr args);
-int			is_builtin(t_str name);
+int			is_builtin(t_vtr args);
 int			cd(t_shell *shell);
 int			pwd(t_shell *shell);
 int			env(t_shell *shell);
