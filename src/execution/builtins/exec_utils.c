@@ -6,11 +6,20 @@
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 19:05:33 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/10/03 18:41:20 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/10/04 13:09:11 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	destroy_fds(void)
+{
+	int	fd;
+
+	fd = 2;
+	while (++fd < FOPEN_MAX)
+		close(fd);
+}
 
 t_str	ft_str_add(t_vtr str, t_str add)
 {

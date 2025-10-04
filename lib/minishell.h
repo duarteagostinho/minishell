@@ -6,7 +6,7 @@
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:45:51 by duandrad          #+#    #+#             */
-/*   Updated: 2025/10/03 19:30:50 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/10/04 13:09:27 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,7 @@ void		free_rdirs(t_rdir *redirects);
 void		open_error(t_str filename, int error);
 void		signal_setup(t_shell *shell, int process);
 void		cmd_error(t_str cmd);
+void		destroy_fds(void);
 void		ft_swap(void **a, void **b);
 void		free_shell(t_shell *shell);
 void		free_cmds(t_cmd *commands);

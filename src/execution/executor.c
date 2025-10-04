@@ -6,7 +6,7 @@
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 14:49:12 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/10/03 19:45:44 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/10/04 13:10:54 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@ static void	wait_cmds(t_shell *shell)
 	signal_setup(shell, PARENT);
 }
 
-static int	close_fd(int new_fd, int old_fd)
+int	close_fd(int new_fd, int old_fd)
 {
 	struct stat	fd_info;
-	
+
 	if (fstat(old_fd, &fd_info) == 0)
 		close(old_fd);
 	return (new_fd);
@@ -68,6 +68,7 @@ static void	exec_cmd(t_cmd *cmd, int in, int out, int is_single)
 		close_fds(in, out);
 		if (exec_builtin(shell(), cmd) < 0)
 		{
+			destroy_fds();
 			execve(cmd->args[0], cmd->args, shell()->env);
 			cmd_error(cmd->args[0]);
 			ft_exit(shell());
