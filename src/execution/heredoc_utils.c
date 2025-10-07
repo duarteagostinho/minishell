@@ -6,7 +6,7 @@
 /*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 10:50:00 by duandrad          #+#    #+#             */
-/*   Updated: 2025/10/06 23:10:18 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/10/07 18:14:53 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,14 @@ static char	*expand_heredoc_line(char *str, t_vtr env, t_shell *shell)
 	int				i;
 	int				pos;
 	char			*expanded;
+	int				final_len;
 
 	i = 0;
 	pos = 0;
-	expanded = malloc(ft_strlen(str) * 2 + 1);
+	final_len = calculate_expansion_length(str, env, shell);
+	if (final_len <= 0)
+		expanded = ft_strdup("");
+	expanded = malloc(final_len + 1);
 	if (!expanded)
 		return (NULL);
 	ctx = (t_expand_ctx){str, &i, expanded, &pos, env, shell};
