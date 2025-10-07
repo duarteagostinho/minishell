@@ -1,10 +1,20 @@
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -Ilib -g
+CFLAGS = -Wall -Werror -Wextra -Ilib -g -fsanitize=address -fsanitize=leak
 SRCS = $(shell find src/ -type f -name '*.c')
 OBJS = $(SRCS:.c=.o)
 NAME = minishell
-LDFLAGS = -lft -L/usr/local/opt/readline/lib -lreadline
 LIBFT_DIR = lib/Libft
+
+# OS Detection for readline library
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+	LDFLAGS = -lft -lreadline
+else ifeq ($(UNAME_S),Darwin)
+	LDFLAGS = -lft -L$(shell brew --prefix readline)/lib -lreadline
+	CFLAGS += -I$(shell brew --prefix readline)/include
+else
+	LDFLAGS = -lft -lreadline
+endif
 LIBFT_SRCS =$(shell find $(LIBFT_DIR) -type f -name '*.c')
 LIBFT_OBJS = $(LIBFT_SRCS:.c=.o)
 LIBFT_LIB = $(LIBFT_DIR)/libft.a

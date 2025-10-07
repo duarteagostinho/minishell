@@ -3,14 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:11:35 by duandrad          #+#    #+#             */
-/*   Updated: 2025/10/03 19:44:28 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/10/06 23:09:47 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/* void	print_commands(t_cmd *commands)
+{
+	t_cmd	*curr;
+	int		cmd_num;
+	int		i;
+
+	curr = commands;
+	cmd_num = 0;
+	while (curr)
+	{
+		printf("Command %d:\n", cmd_num);
+		if (curr->args)
+		{
+			printf("  Args: ");
+			i = 0;
+			while (curr->args[i])
+			{
+				printf("[%s] ", curr->args[i]);
+				i++;
+			}
+			printf("\n");
+		}
+		printf("  Redirect in: %d, out: %d\n", curr->redirect_in,
+			curr->redirect_out);
+		t_rdir *r;
+		r = curr->redirect;
+		while (r)
+		{
+			printf("  Has redirections\n");
+			printf("  Redir type: %s, r->args[1]: %s, 
+			redir->fd: %d\n", r->args[0],
+				r->args[1], r->fd);
+			r = r->next;
+		}
+		printf("\n");
+		curr = curr->next;
+		cmd_num++;
+	}
+} */
 
 static void	run_prompt(t_vtr env)
 {

@@ -62,6 +62,7 @@ t_vtr	add_env_var(t_vtr env, const t_str key, const t_str val)
 	free(tmp);
 	if (!new_var)
 		return (NULL);
+	//SEGFAULT DOWN HERE..
 	while (env[++i])
 	{
 		if (!ft_strncmp(env[i], key, len) && env[i][len] == '=')

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 13:04:04 by duandrad          #+#    #+#             */
-/*   Updated: 2025/10/03 19:10:28 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/10/06 23:10:39 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,12 @@ t_vtr	process_args(t_str cmd_str)
 		return (free_vtr(split), free(clean_cmd), NULL);
 	i = -1;
 	while (split[++i])
-		args[i] = remove_quotes(split[i]);
+	{
+		if (ft_strnstr(split[i], "<<", ft_strlen(split[i])))
+			args[i] = ft_strdup(split[i]);
+		else
+			args[i] = remove_quotes(split[i]);
+	}
 	if (args[0])
 		args[0] = get_path(shell(), args[0]);
 	return (free_vtr(split), free(clean_cmd), args);

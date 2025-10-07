@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:45:51 by duandrad          #+#    #+#             */
-/*   Updated: 2025/10/04 13:09:27 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/10/06 18:10:12 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include <stdio.h>
+# include <limits.h>
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdlib.h>
@@ -23,6 +24,8 @@
 # include <stdbool.h>
 # include <signal.h>
 # include <sys/wait.h>
+# include <sys/types.h>
+# include <sys/stat.h>
 # include "Libft/libft.h"
 # define PARENT 1
 # define CHILD 2
@@ -39,28 +42,6 @@
 # define RED "\e[1;31m"
 # define LG_RED "\e[0;31m"
 # define COLOR_RESET "\e[0m"
-# define _GNU_SOURCE 
-# include <stdio.h>
-# include <limits.h>
-# include <unistd.h>
-# include <fcntl.h>
-# include <stdlib.h>
-# define ERR_SYN_PIPE "Syntax error: pipes\n"
-# define ERR_EMPTY_INP "Error: Empy input\n"
-# define GRN "\e[4;32m"
-# define PRP "\e[0;35m"
-# define WHT "\e[1;37m"
-# define RED "\e[1;31m"
-# define LG_RED "\e[0;31m"
-# include <stdarg.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <stdbool.h>
-# include <signal.h>
-# include <sys/wait.h>
-# include <sys/types.h>
-# include <sys/stat.h>
-# include "Libft/libft.h"
 
 typedef char*	t_str;
 typedef char**	t_vtr;
@@ -156,6 +137,10 @@ t_vtr		word_split(t_str str);
 void		handle_heredoc(t_rdir *redir, t_shell *shell);
 void		load_redirections(t_shell *shell);
 void		load_heredocs(t_shell *shell);
+void		wait_heredocs(t_shell *shell, int pid);
+void		process_heredoc_line(char *line, bool expand, int fd,
+				t_shell *shell);
+bool		check_delm(t_rdir *redir);
 void		apply_redirections(t_cmd *cmd);
 void		close_redirects(t_shell *shell);
 void		free_rdirs(t_rdir *redirects);

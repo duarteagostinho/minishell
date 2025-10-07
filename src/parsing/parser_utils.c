@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 17:00:07 by duandrad          #+#    #+#             */
-/*   Updated: 2025/10/03 19:03:57 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/10/06 22:34:21 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ t_str	extract_filename(t_str cmd_str, t_arr i)
 	temp = ft_substr(cmd_str, start, *i - start);
 	if (!temp)
 		return (NULL);
-	filename = remove_quotes(temp);
+	filename = ft_strdup(temp);
 	free(temp);
 	return (filename);
 }
