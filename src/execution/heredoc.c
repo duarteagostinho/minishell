@@ -6,7 +6,7 @@
 /*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 13:55:07 by duandrad          #+#    #+#             */
-/*   Updated: 2025/10/06 20:06:12 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/10/07 22:08:48 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,13 @@ static void	create_heredoc_file(char *filename, char *delimiter,
 			open_error(filename, 1);
 		else if (access(filename, W_OK) == -1)
 			open_error(filename, 0);
+		free(delimiter);
 		ft_exit(shell);
 	}
+	signal_setup(shell, HEREDOC);
 	write_heredoc_content(expand, fd, delimiter, shell);
 	close(fd);
+	free(delimiter);
 	ft_exit(shell);
 }
 

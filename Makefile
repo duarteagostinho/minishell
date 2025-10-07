@@ -1,11 +1,10 @@
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -Ilib -g -fsanitize=address -fsanitize=leak
+CFLAGS = -Wall -Werror -Wextra -Ilib -g
 SRCS = $(shell find src/ -type f -name '*.c')
 OBJS = $(SRCS:.c=.o)
 NAME = minishell
 LIBFT_DIR = lib/Libft
 
-# OS Detection for readline library
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
 	LDFLAGS = -lft -lreadline
@@ -44,6 +43,6 @@ val: re
 	valgrind --show-leak-kinds=all --leak-check=full --track-fds=all --suppressions=readline.supp ./minishell
 
 r:
-	make re && make clean && clear && ./minishell
+	make re && ./minishell
 
 .PHONY: all clean fclean re

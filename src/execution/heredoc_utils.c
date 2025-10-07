@@ -26,6 +26,34 @@ void	wait_heredocs(t_shell *shell, int pid)
 		shell->exit_status = WEXITSTATUS(shell->exit_status);
 }
 
+static int	calculate_heredoc_length(char *str, t_vtr env, t_shell *shell)
+{
+	int		i;
+	int		final_len;
+
+	i = 0;
+	final_len = 0;
+	while (str[i])
+	{
+		if (str[i] == '$' && str[i + 1])
+			final_len += process_dollar_sign(str, i, env, shell);
+		else
+			final_len++;
+		if (str[i] == '$' && str[i + 1])
+		{
+			if (str[i + 1] == '$' || str[i + 1] == '?')
+				i += 2;
+			else if (ft_isalnum(str[i + 1]) || str[i + 1] == '_')
+				i = skip_var_name(str, i);
+			else
+				i++;
+		}
+		else
+			i++;
+	}
+	return (final_len);
+}
+
 static char	*expand_heredoc_line(char *str, t_vtr env, t_shell *shell)
 {
 	t_expand_ctx	ctx;
@@ -36,14 +64,14 @@ static char	*expand_heredoc_line(char *str, t_vtr env, t_shell *shell)
 
 	i = 0;
 	pos = 0;
-	final_len = calculate_expansion_length(str, env, shell);
+	final_len = calculate_heredoc_length(str, env, shell);
 	if (final_len <= 0)
-		expanded = ft_strdup("");
+		return (ft_strdup(""));
 	expanded = malloc(final_len + 1);
 	if (!expanded)
 		return (NULL);
 	ctx = (t_expand_ctx){str, &i, expanded, &pos, env, shell};
-	while (str[i])
+	while (str[i] && pos < final_len)
 	{
 		if (str[i] == '$' && str[i + 1])
 			handle_dollar_expansion(&ctx);
