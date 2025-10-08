@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 14:37:34 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/10/03 13:15:20 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/10/08 10:04:56 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ t_vtr	add_env_var(t_vtr env, const t_str key, const t_str val)
 	free(tmp);
 	if (!new_var)
 		return (NULL);
-	//SEGFAULT DOWN HERE..
 	while (env[++i])
 	{
 		if (!ft_strncmp(env[i], key, len) && env[i][len] == '=')

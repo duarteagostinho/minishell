@@ -6,7 +6,7 @@
 /*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 16:45:51 by duandrad          #+#    #+#             */
-/*   Updated: 2025/10/06 18:10:12 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/10/08 10:01:08 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ int			process_dollar_sign(t_str str, int i, t_vtr env, t_shell *shell);
 int			skip_whitespace(t_str line, int start);
 int			get_last_quote(t_str line);
 t_str		remove_quotes(t_str str);
+bool		has_unquoted_heredoc(t_str str);
 t_str		handle_quotes(t_str line, t_arr i);
 t_str		prepare_line(t_str line);
 t_str		handle_pipes(t_str line, t_arr i);
@@ -131,7 +132,6 @@ void		fill_commands(t_vtr cmds, t_cmd *curr);
 void		cmds_config(t_config_ctx *ctx);
 t_cmd		*parser(t_str line, t_vtr env, t_shell *shell);
 t_vtr		process_args(t_str cmd_str);
-t_vtr		word_split(t_str str);
 
 /*EXECUTION FUNCTIONS*/
 void		handle_heredoc(t_rdir *redir, t_shell *shell);

@@ -6,7 +6,7 @@
 /*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:11:35 by duandrad          #+#    #+#             */
-/*   Updated: 2025/10/06 23:09:47 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/10/08 10:04:08 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,14 @@
 			printf("\n");
 		}
 		printf("  Redirect in: %d, out: %d\n", curr->redirect_in,
-			curr->redirect_out);
+		 curr->redirect_out);
 		t_rdir *r;
 		r = curr->redirect;
 		while (r)
 		{
 			printf("  Has redirections\n");
-			printf("  Redir type: %s, r->args[1]: %s, 
-			redir->fd: %d\n", r->args[0],
-				r->args[1], r->fd);
+			printf("  Redir type: %s, r->args[1]: %s, redir->fd: %d\n",
+			 r->args[0], r->args[1], r->fd);
 			r = r->next;
 		}
 		printf("\n");
@@ -69,6 +68,7 @@ static void	run_prompt(t_vtr env)
 		free(prompt);
 		if (shell()->cmd)
 		{
+			//print_commands(shell()->cmd);
 			executor(shell(), STDIN_FILENO, STDOUT_FILENO);
 			if (!access("/tmp/heredoc_tmp", R_OK))
 				unlink("/tmp/heredoc_tmp");

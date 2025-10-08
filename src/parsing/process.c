@@ -86,7 +86,7 @@ t_vtr	process_args(t_str cmd_str)
 	i = -1;
 	while (split[++i])
 	{
-		if (ft_strnstr(split[i], "<<", ft_strlen(split[i])))
+		if (has_unquoted_heredoc(split[i]))
 			args[i] = ft_strdup(split[i]);
 		else
 			args[i] = remove_quotes(split[i]);
