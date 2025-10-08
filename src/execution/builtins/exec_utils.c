@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 19:05:33 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/10/06 22:32:42 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/10/08 16:39:26 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	cmd_error(t_str cmd)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(cmd, 2);
-	ft_putstr_fd(": command not found...\n", 2);
+	ft_putstr_fd(": command not found\n", 2);
 	shell()->exit_status = 127;
 }
 

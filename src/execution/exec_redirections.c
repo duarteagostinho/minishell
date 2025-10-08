@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redir_helpers.c                                    :+:      :+:    :+:   */
+/*   exec_redirections.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 13:50:43 by duandrad          #+#    #+#             */
-/*   Updated: 2025/10/03 16:38:47 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/10/08 17:18:29 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,16 @@ void	open_with_options(t_rdir *redir, int flags, int mode)
 {
 	int			fd;
 	struct stat	f_info;
+	char		*cleaned_filename;
 
-	fd = open(redir->args[1], flags, mode);
+	if (flags & O_RDONLY)
+		cleaned_filename = ft_strdup(redir->args[1]);
+	else
+		cleaned_filename = remove_quotes(redir->args[1]);
+	if (!cleaned_filename)
+		return ;
+	fd = open(cleaned_filename, flags, mode);
+	free(cleaned_filename);
 	if (fd == -1)
 	{
 		if (stat(redir->args[1], &f_info) == -1)
@@ -72,7 +80,7 @@ void	load_redirections(t_shell *shell)
 				open_with_options(redir, O_RDONLY, 0);
 			else if (!ft_strncmp(redir->args[0], ">", 2))
 				open_with_options(redir, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			redir = redir->next;
+				redir = redir->next;
 		}
 		cmd = cmd->next;
 	}

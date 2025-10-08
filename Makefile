@@ -43,6 +43,6 @@ val: re
 	valgrind --show-leak-kinds=all --leak-check=full --track-fds=all --suppressions=readline.supp ./minishell
 
 r:
-	make re && ./minishell
+	make re && clear && ./minishell
 
 .PHONY: all clean fclean re
