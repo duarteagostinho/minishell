@@ -48,7 +48,10 @@ void	open_with_options(t_rdir *redir, int flags, int mode)
 	else
 		cleaned_filename = remove_quotes(redir->args[1]);
 	if (!cleaned_filename)
+	{
+		redir->fd = -1;
 		return ;
+	}
 	fd = open(cleaned_filename, flags, mode);
 	free(cleaned_filename);
 	if (fd == -1)
@@ -57,6 +60,7 @@ void	open_with_options(t_rdir *redir, int flags, int mode)
 			open_error(redir->args[1], 1);
 		else if (access(redir->args[1], W_OK) == -1)
 			open_error(redir->args[1], 0);
+		redir->fd = -1;
 		return ;
 	}
 	redir->fd = fd;
@@ -80,7 +84,7 @@ void	load_redirections(t_shell *shell)
 				open_with_options(redir, O_RDONLY, 0);
 			else if (!ft_strncmp(redir->args[0], ">", 2))
 				open_with_options(redir, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-				redir = redir->next;
+			redir = redir->next;
 		}
 		cmd = cmd->next;
 	}
@@ -93,6 +97,11 @@ void	apply_redirections(t_cmd *cmd)
 	curr = cmd->redirect;
 	while (curr)
 	{
+		if (curr->fd == -1)
+		{
+			cmd->skip_exec = true;
+			return ;
+		}
 		if (!ft_strncmp(curr->args[0], "<", 2))
 			cmd->redirect_in = curr->fd;
 		else if (!ft_strncmp(curr->args[0], ">", 2)

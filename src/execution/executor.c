@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 14:49:12 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/10/04 13:10:54 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/10/08 19:06:30 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,10 @@ void	executor(t_shell *shell, int in, int out)
 				return ;
 			out = close_fd(cmd->pipes[1], out);
 		}
-		exec_cmd(cmd, in, out, (!shell->cmd->next));
+		if (!cmd->skip_exec)
+			exec_cmd(cmd, in, out, (!shell->cmd->next));
+		else
+			close_fds(in, out);
 		if (cmd->next && !cmd->redirect_out)
 			in = close_fd(cmd->pipes[0], in);
 		cmd = cmd->next;

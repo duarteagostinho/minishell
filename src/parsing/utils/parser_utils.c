@@ -66,6 +66,7 @@ t_cmd	*init_command_list(void)
 	commands->redirect = NULL;
 	commands->redirect_in = 0;
 	commands->redirect_out = 0;
+	commands->skip_exec = false;
 	return (commands);
 }
 
@@ -86,6 +87,7 @@ void	fill_commands(t_vtr cmds, t_cmd *curr)
 			curr->redirect = NULL;
 			curr->redirect_in = 0;
 			curr->redirect_out = 0;
+			curr->skip_exec = false;
 		}
 		curr->args = process_args(cmds[i]);
 		curr->redirect = extract_redirections(cmds[i]);

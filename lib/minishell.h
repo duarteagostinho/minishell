@@ -63,6 +63,7 @@ typedef struct s_cmd
 	t_rdir				*redirect;
 	int					redirect_in;
 	int					redirect_out;
+	bool				skip_exec;
 }	t_cmd;
 
 typedef struct s_shell
