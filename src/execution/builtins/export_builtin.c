@@ -6,7 +6,7 @@
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 00:41:25 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/10/03 13:17:11 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/10/09 15:48:51 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,100 +15,97 @@
 static int	is_sorted(t_vtr env)
 {
 	int		i;
-	int		j;
-	int		len;
 
 	i = -1;
 	while (env[++i] && env[i + 1])
 	{
-		j = i + 1;
-		while (env[++j])
-		{
-			len = 1;
-			while (!ft_strncmp(env[i], env[j], len))
-				len++;
-			if (ft_strncmp(env[i], env[j], ++len) > 0)
-				return (0);
-		}
+		if (ft_strcmp(env[i], env[i + 1]) > 0)
+			return (0);
 	}
 	return (1);
 }
 
-static t_vtr	sort_env(t_vtr env)
+void	sort_env(t_vtr *env)
 {
 	int		i;
-	int		j;
-	int		len;
+	int		swapped;
 
-	while (!is_sorted(env))
+	while (!is_sorted(*env))
 	{
 		i = -1;
-		while (env[++i] && env[i + 1])
+		swapped = 0;
+		while ((*env)[++i] && (*env)[i + 1])
 		{
-			j = i + 1;
-			while (env[++j])
+			if (ft_strcmp((*env)[i], (*env)[i + 1]) > 0)
 			{
-				len = 1;
-				while (!ft_strncmp(env[i], env[j], len))
-					len++;
-				if (ft_strncmp(env[i], env[j], len) > 0)
-					ft_swap((void *)&env[i], (void *)&env[j]);
+				ft_swap((void *)&(*env)[i], (void *)&(*env)[i + 1]);
+				swapped = 1;
 			}
 		}
+		if (!swapped)
+			break ;
 	}
-	return (env);
 }
 
-int	ft_export(t_shell *shell)
-{
-	if (!shell->env || !*shell->env)
-		return (EXIT_FAILURE);
-	if (get_sizeof_args(shell->cmd->args) == 1)
-		return (export_no_args(shell));
-	else if (get_sizeof_args(shell->cmd->args) > 1)
-		return (export_args(shell, shell->cmd->args));
-	return (EXIT_FAILURE);
-}
-
-int	export_args(t_shell *shell, t_vtr args)
+int	export_args(t_shell *shell, t_cmd *cmd, t_vtr args)
 {
 	int		i;
+	t_str	tmp;
 	t_vtr	var;
 
 	i = 0;
 	while (args[++i])
 	{
-		var = ft_split(args[i], '=');
-		if (is_valid_id(var[0]))
-			return (EXIT_FAILURE);
-		shell->env = add_env_var(shell->env, var[0], var[1]);
-		if (!shell->env)
-			return (EXIT_FAILURE);
-		free_vtr(var);
+		if (ft_strchr(args[i], '='))
+		{
+			var = ft_split(args[i], '=');
+			if (!var || (!*var && !is_valid_id(cmd, args[i])))
+				return (free_vtr(var), EXIT_FAILURE);
+			if (!is_valid_id(cmd, var[0]))
+				return (free_vtr(var), EXIT_FAILURE);
+			add_env_var(&shell->env, var[0], ft_strdup(args[i]));
+			add_env_var(&shell->exports, var[0], ft_strdup(args[i]));
+			free_vtr(var);
+		}
+		else if (is_valid_id(cmd, args[i]))
+		{
+			tmp = ft_strdup(args[i]);
+			add_env_var(&shell->exports, args[i], tmp);
+		}
 	}
 	return (EXIT_SUCCESS);
 }
 
-int	export_no_args(t_shell *shell)
+int	export_no_args(t_shell *shell, int out)
 {
 	int		i;
 	t_vtr	var;
-	t_vtr	exports;
 
 	i = -1;
-	exports = ft_calloc(get_sizeof_args(shell->env) + 1, sizeof(t_str));
-	while (shell->env[++i])
-		exports[i] = ft_strdup(shell->env[i]);
-	i = -1;
-	exports = sort_env(exports);
-	while (exports[++i])
+	sort_env(&shell->exports);
+	while (shell->exports[++i])
 	{
-		var = ft_split(exports[i], '=');
-		if (!var)
-			return (EXIT_FAILURE);
-		printf("declare -x %s=\"%s\"\n", var[0], get_env_val(exports, var[0]));
-		free_vtr(var);
+		if (ft_strchr(shell->exports[i], '='))
+		{
+			var = ft_split(shell->exports[i], '=');
+			if (!var)
+				return (EXIT_FAILURE);
+			print_export(var, out, 1, get_sizeof_args(var));
+			free_vtr(var);
+		}
+		else
+			print_export(&shell->exports[i], out, 0, 0);
 	}
-	free_vtr(exports);
 	return (EXIT_SUCCESS);
+}
+
+int	ft_export(t_shell *shell, t_cmd *cmd, int out)
+{
+	if (!shell->exports || !*shell->exports)
+		return (EXIT_FAILURE);
+	if (get_sizeof_args(cmd->args) == 1)
+		return (export_no_args(shell, out));
+	else if (get_sizeof_args(cmd->args) > 1)
+		return (export_args(shell, cmd, cmd->args));
+	return (EXIT_FAILURE);
 }

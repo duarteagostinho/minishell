@@ -6,7 +6,7 @@
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/17 17:00:07 by duandrad          #+#    #+#             */
-/*   Updated: 2025/10/03 19:03:57 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/10/09 10:43:11 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ t_str	extract_filename(t_str cmd_str, t_arr i)
 	temp = ft_substr(cmd_str, start, *i - start);
 	if (!temp)
 		return (NULL);
-	filename = remove_quotes(temp);
+	filename = ft_strdup(temp);
 	free(temp);
 	return (filename);
 }
@@ -66,6 +66,7 @@ t_cmd	*init_command_list(void)
 	commands->redirect = NULL;
 	commands->redirect_in = 0;
 	commands->redirect_out = 0;
+	commands->skip_exec = false;
 	return (commands);
 }
 
@@ -86,6 +87,7 @@ void	fill_commands(t_vtr cmds, t_cmd *curr)
 			curr->redirect = NULL;
 			curr->redirect_in = 0;
 			curr->redirect_out = 0;
+			curr->skip_exec = false;
 		}
 		curr->args = process_args(cmds[i]);
 		curr->redirect = extract_redirections(cmds[i]);

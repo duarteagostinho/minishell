@@ -6,7 +6,7 @@
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 13:04:04 by duandrad          #+#    #+#             */
-/*   Updated: 2025/10/03 19:10:28 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/10/09 15:33:26 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ t_str	prepare_line(t_str line)
 t_vtr	process_args(t_str cmd_str)
 {
 	int		i;
-	int		size;
 	t_vtr	args;
 	t_vtr	split;
 	t_str	clean_cmd;
@@ -77,15 +76,19 @@ t_vtr	process_args(t_str cmd_str)
 	if (!clean_cmd)
 		return (NULL);
 	split = ft_split(clean_cmd, '\x1F');
-	size = get_sizeof_args(split);
-	if (!split || size < 0)
+	if (!split || get_sizeof_args(split) < 0)
 		return (free_vtr(split), free(clean_cmd), NULL);
-	args = ft_calloc(size + 1, sizeof(t_str));
+	args = ft_calloc(get_sizeof_args(split) + 1, sizeof(t_str));
 	if (!args)
 		return (free_vtr(split), free(clean_cmd), NULL);
 	i = -1;
 	while (split[++i])
-		args[i] = remove_quotes(split[i]);
+	{
+		if (has_unquoted_heredoc(split[i]))
+			args[i] = ft_strdup(split[i]);
+		else
+			args[i] = remove_quotes(split[i]);
+	}
 	if (args[0])
 		args[0] = get_path(shell(), args[0]);
 	return (free_vtr(split), free(clean_cmd), args);

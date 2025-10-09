@@ -6,22 +6,29 @@
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 10:59:57 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/10/03 18:41:48 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/10/09 15:35:30 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	commands_size(t_cmd *cmd)
+void	print_export(t_vtr val, int out, int has_equal, int size)
 {
-	t_cmd	*curr;
-	int		size;
+	int	i;
 
-	curr = cmd;
-	size = 0;
-	while (curr && ++size)
-		curr = curr->next;
-	return (size);
+	i = 0;
+	ft_putstr_fd("declare -x ", out);
+	ft_putstr_fd(val[0], out);
+	if (!has_equal)
+		return (ft_putchar_fd('\n', out));
+	ft_putchar_fd('=', out);
+	ft_putchar_fd('"', out);
+	if (size > 0)
+	{
+		while (val[++i])
+			ft_putstr_fd(val[i], out);
+	}
+	ft_putendl_fd("\"", out);
 }
 
 void	ft_swap(void **a, void **b)
@@ -33,35 +40,39 @@ void	ft_swap(void **a, void **b)
 	*b = tmp;
 }
 
-int	is_valid_id(const t_str key)
+int	is_valid_id(t_cmd *cmd, const t_str key)
 {
 	int	i;
+	int	error;
 
 	i = 0;
+	error = 0;
 	if (!key || !key[i] || (!ft_isalpha(key[i]) && key[i] != '_'))
-		return (EXIT_FAILURE);
+		error++;
 	while (key[i] && (ft_isalnum(key[i]) || key[i] == '_'))
 		i++;
 	if (key[i] != '\0' && key[i] != '=')
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+		error++;
+	if (error)
+		return (cmd_error(cmd->args[0], key, 1), 0);
+	return (1);
 }
 
-int	exec_builtin(t_shell *shell, t_cmd *cmd)
+int	exec_builtin(t_shell *shell, t_cmd *cmd, int out)
 {
 	if (!ft_strcmp("env", cmd->args[0]))
-		return (env(shell));
+		return (ft_env(shell, cmd, out));
 	else if (!ft_strcmp("export", cmd->args[0]))
-		return (ft_export(shell));
+		return (ft_export(shell, cmd, out));
 	else if (!ft_strcmp("exit", cmd->args[0]))
-		return (ft_exit(shell));
+		return (ft_exit(shell, cmd));
 	else if (!ft_strcmp("echo", cmd->args[0]))
-		return (echo(shell));
+		return (ft_echo(cmd, out));
 	else if (!ft_strcmp("pwd", cmd->args[0]))
-		return (pwd(shell));
+		return (ft_pwd(shell, out));
 	else if (!ft_strcmp("cd", cmd->args[0]))
-		return (cd(shell));
+		return (ft_cd(shell, cmd));
 	else if (!ft_strcmp("unset", cmd->args[0]))
-		return (unset(shell));
+		return (ft_unset(shell, cmd));
 	return (-1);
 }

@@ -6,19 +6,31 @@
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 19:05:33 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/10/04 13:09:11 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/10/09 18:43:24 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	set_io(t_cmd *cmd, t_arr in, t_arr out)
+{
+	if (cmd->redirect_out)
+		*out = close_fd(cmd->redirect_out, *out);
+	if (cmd->redirect_in)
+		*in = close_fd(cmd->redirect_in, *in);
+}
+
 void	destroy_fds(void)
 {
-	int	fd;
+	int			fd;
+	struct stat	fd_info;
 
 	fd = 2;
 	while (++fd < FOPEN_MAX)
-		close(fd);
+	{
+		if (fstat(fd, &fd_info) == 0)
+			close(fd);
+	}
 }
 
 t_str	ft_str_add(t_vtr str, t_str add)
@@ -33,14 +45,6 @@ t_str	ft_str_add(t_vtr str, t_str add)
 	return (tmp);
 }
 
-void	cmd_error(t_str cmd)
-{
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(cmd, 2);
-	ft_putstr_fd(": command not found...\n", 2);
-	shell()->exit_status = 127;
-}
-
 t_str	get_path(t_shell *shell, t_str name)
 {
 	int		i;
@@ -50,7 +54,7 @@ t_str	get_path(t_shell *shell, t_str name)
 	i = -1;
 	if (!access(name, X_OK) || is_builtin(name))
 		return (name);
-	paths = ft_split(get_env_val(shell->env, "PATH"), ':');
+	paths = ft_split(shell->path, ':');
 	if (!paths)
 		return (name);
 	while (paths[++i])

@@ -1,38 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd_builtin.c                                      :+:      :+:    :+:   */
+/*   includes.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/03 00:16:27 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/10/07 09:51:13 by mrapp-he         ###   ########.fr       */
+/*   Created: 2025/10/09 09:40:44 by mrapp-he          #+#    #+#             */
+/*   Updated: 2025/10/09 10:08:36 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef INCLUDES_H
+# define INCLUDES_H
 
-int	get_sizeof_args(t_vtr args)
-{
-	int	size;
+# include <stdio.h>
+# include <unistd.h>
+# include <fcntl.h>
+# include <stdlib.h>
+# include <stdarg.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <stdbool.h>
+# include <signal.h>
+# include <sys/wait.h>
+# include <sys/stat.h>
+# include <errno.h>
+# include <limits.h>
+# include "Libft/libft.h"
 
-	size = 0;
-	if (!args || !*args)
-		return (-1);
-	while (args[size])
-		size++;
-	return (size);
-}
-
-int	ft_pwd(t_shell *shell, int out)
-{
-	t_str	pwd;
-
-	(void)shell;
-	pwd = getcwd(NULL, 0);
-	if (!pwd)
-		return (EXIT_FAILURE);
-	ft_putendl_fd(pwd, out);
-	free(pwd);
-	return (EXIT_SUCCESS);
-}
+#endif

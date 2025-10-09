@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 18:50:41 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/10/02 13:48:34 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/10/09 15:33:48 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ void	free_vtr(t_vtr args)
 {
 	int	i;
 
-	i = -1;
 	if (!args)
 		return ;
+	i = -1;
 	while (args[++i])
 		free(args[i]);
 	free(args);
@@ -68,5 +68,7 @@ void	free_shell(t_shell *shell)
 			free_cmds(shell->cmd);
 		if (shell->env)
 			free_vtr(shell->env);
+		if (shell->exports)
+			free_vtr(shell->exports);
 	}
 }

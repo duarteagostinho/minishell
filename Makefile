@@ -5,6 +5,15 @@ OBJS = $(SRCS:.c=.o)
 NAME = minishell
 LDFLAGS = -lft -L/usr/local/opt/readline/lib -lreadline
 LIBFT_DIR = lib/Libft
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+	LDFLAGS = -lft -lreadline
+else ifeq ($(UNAME_S),Darwin)
+	LDFLAGS = -lft -L$(shell brew --prefix readline)/lib -lreadline
+	CFLAGS += -I$(shell brew --prefix readline)/include
+else
+	LDFLAGS = -lft -lreadline
+endif
 LIBFT_SRCS =$(shell find $(LIBFT_DIR) -type f -name '*.c')
 LIBFT_OBJS = $(LIBFT_SRCS:.c=.o)
 LIBFT_LIB = $(LIBFT_DIR)/libft.a
@@ -32,8 +41,5 @@ re: fclean all
 
 val: re
 	valgrind --show-leak-kinds=all --leak-check=full --track-fds=all --suppressions=readline.supp ./minishell
-
-r:
-	make re && make clean && clear && ./minishell
 
 .PHONY: all clean fclean re

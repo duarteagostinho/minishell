@@ -6,26 +6,32 @@
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 16:43:32 by mrapp-he          #+#    #+#             */
-/*   Updated: 2025/10/03 13:17:59 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/10/09 19:44:37 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	unset(t_shell *shell)
+int	ft_unset(t_shell *shell, t_cmd *cmd)
 {
 	int		i;
 	t_vtr	vars;
+	int		ret;
 
 	i = 0;
-	vars = shell->cmd->args;
+	ret = EXIT_SUCCESS;
+	vars = cmd->args;
 	while (vars[++i])
 	{
-		if (is_valid_id(vars[i]))
-			return (EXIT_FAILURE);
-		shell->env = rmv_env_var(shell->env, vars[i]);
-		if (!shell->env)
-			return (EXIT_FAILURE);
+		if (!is_valid_id(cmd, vars[i]))
+		{
+			ret = EXIT_FAILURE;
+			continue ;
+		}
+		if (get_env_val(shell->env, vars[i]))
+			rmv_env_var(&shell->env, vars[i]);
+		if (get_env_val(shell->exports, vars[i]))
+			rmv_env_var(&shell->exports, vars[i]);
 	}
-	return (EXIT_SUCCESS);
+	return (ret);
 }

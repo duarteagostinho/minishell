@@ -6,7 +6,7 @@
 /*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 14:11:35 by duandrad          #+#    #+#             */
-/*   Updated: 2025/10/03 19:44:28 by mrapp-he         ###   ########.fr       */
+/*   Updated: 2025/10/09 15:57:19 by mrapp-he         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,16 @@ static void	run_prompt(t_vtr env)
 	{
 		prompt = readline(PRP" $> "WHT);
 		if (!prompt)
-			ft_exit(shell());
+			ft_exit(shell(), shell()->cmd);
+		if (!*prompt)
+			shell()->exit_status = 0;
 		if (ft_strlen(prompt))
 			add_history(prompt);
 		shell()->cmd = parser(prompt, shell()->env, shell());
 		free(prompt);
 		if (shell()->cmd)
 		{
+			load_redirections(shell());
 			executor(shell(), STDIN_FILENO, STDOUT_FILENO);
 			if (!access("/tmp/heredoc_tmp", R_OK))
 				unlink("/tmp/heredoc_tmp");
@@ -51,6 +54,6 @@ int	main(int ac, t_vtr av, t_vtr env)
 	if (ac == 1)
 		run_prompt(env);
 	else
-		return (write(2, "Too many arguments!\n", 20));
+		return (ft_putendl_fd("Too many arguments", 2), 1);
 	return (0);
 }
