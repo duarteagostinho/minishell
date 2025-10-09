@@ -1,12 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
+<<<<<<<< HEAD:src/execution/exec_redirs.c
 /*   exec_redirs.c                                      :+:      :+:    :+:   */
+========
+/*   exec_redirections.c                                :+:      :+:    :+:   */
+>>>>>>>> origin/dev:src/execution/exec_redirections.c
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 13:50:43 by duandrad          #+#    #+#             */
+<<<<<<<< HEAD:src/execution/exec_redirs.c
 /*   Updated: 2025/10/09 11:58:42 by mrapp-he         ###   ########.fr       */
+========
+/*   Updated: 2025/10/08 17:18:29 by duandrad         ###   ########.fr       */
+>>>>>>>> origin/dev:src/execution/exec_redirections.c
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +37,11 @@ void	open_with_options(t_rdir *redir, int flags, int mode)
 {
 	int			fd;
 	struct stat	f_info;
+<<<<<<<< HEAD:src/execution/exec_redirs.c
 	t_str		cleaned_filename;
+========
+	char		*cleaned_filename;
+>>>>>>>> origin/dev:src/execution/exec_redirections.c
 
 	if (flags & O_RDONLY)
 		cleaned_filename = ft_strdup(redir->args[1]);

@@ -3,7 +3,6 @@ CFLAGS = -Wall -Werror -Wextra -Ilib -g
 SRCS = $(shell find src/ -type f -name '*.c')
 OBJS = $(SRCS:.c=.o)
 NAME = minishell
-LDFLAGS = -lft -L/usr/local/opt/readline/lib -lreadline
 LIBFT_DIR = lib/Libft
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)

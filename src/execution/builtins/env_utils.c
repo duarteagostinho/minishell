@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrapp-he <mrapp-he@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 14:37:34 by mrapp-he          #+#    #+#             */
 /*   Updated: 2025/10/09 19:44:19 by mrapp-he         ###   ########.fr       */

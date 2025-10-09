@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   var_expand_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: duandrad <duandrad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: duandrad <duandrad@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 14:39:44 by duandrad          #+#    #+#             */
-/*   Updated: 2025/09/18 16:22:02 by duandrad         ###   ########.fr       */
+/*   Updated: 2025/10/06 22:58:13 by duandrad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
