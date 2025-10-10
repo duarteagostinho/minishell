@@ -31,6 +31,8 @@ void	update_pwd(t_shell *shell, t_cmd *cmd, t_str lwd, t_str cwd)
 	add_env_var(&shell->env, "OLDPWD", old_pwd);
 	add_env_var(&shell->exports, "PWD", tmp1);
 	add_env_var(&shell->exports, "OLDPWD", tmp2);
+	free(cwd);
+	free(lwd);
 }
 
 int	ft_cd(t_shell *shell, t_cmd *cmd)
@@ -49,11 +51,15 @@ int	ft_cd(t_shell *shell, t_cmd *cmd)
 		if (size == 2)
 			home = cmd->args[1];
 		if (!home || chdir(home) == -1)
+		{
+			free(cwd);
 			return (cmd_error(cmd->args[0], strerror(errno), 0), EXIT_FAILURE);
+		}
 		update_pwd(shell, cmd, cwd, getcwd(NULL, 0));
 		return (EXIT_SUCCESS);
 	}
 	else if (size > 2)
 		cmd_error(cmd->args[0], NULL, 2);
+	free(cwd);
 	return (EXIT_FAILURE);
 }
