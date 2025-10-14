@@ -1,3 +1,5 @@
+MINISHELL ﹩>
+
 Built a functional shell from the ground up, which involved:
 
 - Parsing complex command lines with pipes , redirections and variables.
