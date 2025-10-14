@@ -1,7 +1,7 @@
 # Minishell
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/...[You can add a logo or banner here if you want]..." alt="Minishell Logo" width="200"/>
+  <img src="https://github.com/ayogun/42-project-badges/blob/main/covers/cover-minishell.png" alt="Minishell Logo" width="200"/>
 </div>
 
 <h4 align="center">
