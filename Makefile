@@ -18,6 +18,24 @@ LIBFT_OBJS = $(LIBFT_SRCS:.c=.o)
 LIBFT_LIB = $(LIBFT_DIR)/libft.a
 
 all: $(NAME)
+
+install-deps:
+	@echo "Installing dependencies (readline, build tools) for your OS..."
+	@if command -v apt-get >/dev/null 2>&1; then \
+		sudo apt-get update && sudo apt-get install -y build-essential libreadline-dev || true; \
+	elif command -v dnf >/dev/null 2>&1; then \
+		sudo dnf install -y make gcc readline-devel || true; \
+	elif command -v yum >/dev/null 2>&1; then \
+		sudo yum install -y make gcc readline-devel || true; \
+	elif command -v pacman >/dev/null 2>&1; then \
+		sudo pacman -Sy --noconfirm base-devel readline || true; \
+	elif command -v brew >/dev/null 2>&1; then \
+		brew install readline || true; \
+	else \
+		echo "No supported package manager found. Please install readline (and build tools) manually." >&2; exit 1; \
+	fi
+
+
 $(LIBFT_LIB): $(LIBFT_OBJS)
 	ar rcs $(LIBFT_LIB) $(LIBFT_OBJS)
 
@@ -32,7 +50,7 @@ clean:
 	make -C $(LIBFT_DIR) clean
 
 fclean: clean
-	rm -f $(NAME)
+	rm -f $(NAME) $(DEPS_MARKER)
 	make -C $(LIBFT_DIR) fclean
 
 re: fclean all
