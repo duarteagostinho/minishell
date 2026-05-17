@@ -18,7 +18,6 @@ LIBFT_OBJS = $(LIBFT_SRCS:.c=.o)
 LIBFT_LIB = $(LIBFT_DIR)/libft.a
 
 all: $(NAME)
-
 $(LIBFT_LIB): $(LIBFT_OBJS)
 	ar rcs $(LIBFT_LIB) $(LIBFT_OBJS)
 
@@ -39,6 +38,6 @@ fclean: clean
 re: fclean all
 
 val: re
-	valgrind --show-leak-kinds=all --leak-check=full --track-fds=all --suppressions=readline.supp ./minishell
+	valgrind --show-leak-kinds=all --leak-check=full --track-origins=yes --track-fds=all --suppressions=readline.supp ./minishell
 
 .PHONY: all clean fclean re

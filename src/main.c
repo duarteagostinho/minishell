@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../lib/minishell.h"
 
 t_shell	*shell(void)
 {
@@ -19,22 +19,47 @@ t_shell	*shell(void)
 	return (&shell);
 }
 
+static t_str	make_prompt(void)
+{
+	t_str	cwd;
+	t_str	prompt;
+	t_str	tmp;
+
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
+		cwd = ft_strdup(get_env_val(shell()->env, "PWD"));
+	if (!cwd)
+		cwd = ft_strdup("");
+	if (!cwd)
+		return (NULL);
+	prompt = ft_strjoin(PRP, cwd);
+	free(cwd);
+	if (!prompt)
+		return (NULL);
+	tmp = ft_strjoin(prompt, WHT " $> " COLOR_RESET);
+	free(prompt);
+	return (tmp);
+}
+
 static void	run_prompt(void)
 {
 	t_str	prompt;
+	t_str	input;
 
 	signal_setup(shell(), PARENT);
 	while (1)
 	{
-		prompt = readline(PRP" $> "WHT);
-		if (!prompt)
-			ft_exit(shell(), shell()->cmd);
-		if (!*prompt)
-			shell()->exit_status = 0;
-		if (ft_strlen(prompt))
-			add_history(prompt);
-		shell()->cmd = parser(prompt, shell()->env, shell());
+		prompt = make_prompt();
+		input = readline(prompt ? prompt : "");
 		free(prompt);
+		if (!input)
+			ft_exit(shell(), shell()->cmd);
+		if (!*input)
+			shell()->exit_status = 0;
+		if (ft_strlen(input))
+			add_history(input);
+		shell()->cmd = parser(input, shell()->env, shell());
+		free(input);
 		if (shell()->cmd)
 		{
 			load_redirections(shell());
